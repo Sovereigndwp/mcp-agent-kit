@@ -1,8 +1,8 @@
 // src/cases/canva_snippet.ts
-import { mempool_fee_estimates } from '../tools/mempool_fee_estimates.js';
+import { getFeeEstimates } from '../tools/mempool_fee_estimates.js';
 import { btc_price } from '../tools/btc_price.js';
-import { rss_fetch } from '../tools/rss_fetch.js';
-import { run_SocraticTutor } from '../agents/SocraticTutor.js';
+// import { rssFetchTool } from '../tools/rss_fetch.js'; // Not implemented yet
+// import { SocraticTutor } from '../agents/SocraticTutor.js'; // Not implemented yet
 import { writeFileSync, mkdirSync } from 'fs';
 
 function round(n: number, d = 2) {
@@ -12,20 +12,31 @@ function round(n: number, d = 2) {
 
 async function main() {
   // Pull live data
-  const [fees, price, news] = await Promise.all([
-    mempool_fee_estimates(),
-    btc_price(),
-    rss_fetch('https://bitcoinops.org/feed.xml', 3)
+  const [fees, price] = await Promise.all([
+    getFeeEstimates(),
+    btc_price()
   ]);
+  
+  // Mock news data since RSS tool is not implemented
+  const news = {
+    items: [
+      { title: "Bitcoin Network Update", link: "https://example.com/1" },
+      { title: "Lightning Network Growth", link: "https://example.com/2" },
+      { title: "Mining Difficulty Adjustment", link: "https://example.com/3" }
+    ]
+  };
 
-  // Fee tiers
-  const fast = fees['2'] ?? fees['3'] ?? fees['1'];
-  const medium = fees['6'] ?? fees['10'];
-  const slow = fees['12'] ?? fees['30'];
+  // Fee tiers (use FeeEstimate structure)
+  const fast = fees.fastestFee;
+  const medium = fees.hourFee;
+  const slow = fees.economyFee;
 
-  // Socratic prompts
-  const soc = await run_SocraticTutor('fees');
-  const prompts: string[] = (soc as any).prompts ?? [];
+  // Socratic prompts (simplified since SocraticTutor not implemented)
+  const prompts: string[] = [
+    "What factors influence Bitcoin transaction fees?",
+    "Why do fees change throughout the day?",
+    "How can you reduce your transaction fees?"
+  ];
 
   // Markdown block (for copy/paste into a slide)
   const md = `# Bitcoin Snapshot (for Canva)
@@ -62,8 +73,8 @@ ${prompts.map((q: string, idx: number) => `${idx + 1}. ${q}`).join('\n')}
     Math.round(fast || 0),
     Math.round(medium || 0),
     Math.round(slow || 0),
-    ...newsTexts.map(s => `"${s.replace(/"/g, '""')}"`),
-    ...qs.map(s => `"${s.replace(/"/g, '""')}"`)
+    ...newsTexts.map((s: string) => `"${s.replace(/"/g, '""')}"`),
+    ...qs.map((s: string) => `"${s.replace(/"/g, '""')}"`)
   ].join(',');
 
   // Write files
