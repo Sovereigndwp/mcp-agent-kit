@@ -1,237 +1,84 @@
-import { coingeckoClient, httpClient } from '../utils/http.js';
-import { cacheStore } from '../utils/kv.js';
-import { logger } from '../utils/logger.js';
+// src/tools/btc_price.ts
+import { getJson } from '../utils/http.js';
+import { fx_rate } from './fx_rate.js';
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
 
-export interface BitcoinPrice {
-  price: number;
-  currency: string;
-  source: string;
-  timestamp: number;
-  change24h?: number;
-  volume24h?: number;
-  marketCap?: number;
+type Price = { usd: number; cop: number };
+
+async function tryCoinpaprika(): Promise<number> {
+  // No key needed
+  const r = await getJson<{ quotes: { USD: { price: number } } }>('https://api.coinpaprika.com/v1/tickers/btc-bitcoin');
+  return r.quotes.USD.price;
 }
 
-export interface PriceSource {
-  name: string;
-  url: string;
-  enabled: boolean;
+async function tryBinance(): Promise<number> {
+  // BTC/USDT ~ USD
+  const r = await getJson<{ price: string }>('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
+  return Number(r.price);
 }
 
-export class BitcoinPriceTool {
-  private sources: PriceSource[] = [
-    {
-      name: 'CoinGecko',
-      url: 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,eur,btc&include_24hr_change=true&include_24hr_vol=true&include_market_cap=true',
-      enabled: true,
-    },
-    {
-      name: 'Mempool.space',
-      url: 'https://mempool.space/api/v1/fees/recommended',
-      enabled: true,
-    },
+async function tryBitstamp(): Promise<number> {
+  const r = await getJson<{ last: string }>('https://www.bitstamp.net/api/v2/ticker/btcusd/');
+  return Number(r.last);
+}
+
+async function tryKraken(): Promise<number> {
+  const r = await getJson<{ result: Record<string, { c: [string, string] }> }>('https://api.kraken.com/0/public/Ticker?pair=XBTUSD');
+  const key = Object.keys(r.result)[0];
+  return Number(r.result[key].c[0]);
+}
+
+function saveCache(p: Price) {
+  mkdirSync('exports/cache', { recursive: true });
+  writeFileSync('exports/cache/btc_price.json', JSON.stringify({ ...p, ts: Date.now() }, null, 2));
+}
+
+function loadCache(): Price | null {
+  try {
+    if (!existsSync('exports/cache/btc_price.json')) return null;
+    const j = JSON.parse(readFileSync('exports/cache/btc_price.json','utf8'));
+    // accept cache up to 6 hours old
+    if (Date.now() - (j.ts ?? 0) < 6 * 60 * 60 * 1000) return { usd: j.usd, cop: j.cop };
+    return null;
+  } catch { return null; }
+}
+
+export async function btc_price(): Promise<Price> {
+  // 1) Try cache first (prevents breaking on 429s)
+  const cached = loadCache();
+  if (cached) return cached;
+
+  // 2) Try multiple sources in order
+  const attempts: Array<() => Promise<number>> = [
+    tryCoinpaprika,
+    tryBinance,
+    tryBitstamp,
+    tryKraken,
   ];
 
-  /**
-   * Get current Bitcoin price from primary source
-   */
-  async getBitcoinPrice(currency: string = 'usd'): Promise<number> {
-    const cacheKey = `btc_price_${currency}`;
-    const cached = cacheStore.get<BitcoinPrice>(cacheKey);
-    
-    // Return cached price if it's less than 1 minute old
-    if (cached && Date.now() - cached.timestamp < 60000) {
-      return cached.price;
-    }
+  let usd = 0;
+  let lastErr: unknown;
 
+  for (const fn of attempts) {
     try {
-      const price = await this.fetchFromCoinGecko(currency);
-      
-      // Cache the result
-      cacheStore.set(cacheKey, {
-        price,
-        currency,
-        source: 'CoinGecko',
-        timestamp: Date.now(),
-      }, 300); // 5 minutes TTL
-
-      return price;
-    } catch (error) {
-      logger.error('Failed to fetch Bitcoin price from CoinGecko:', error);
-      
-      // Return cached price if available, even if expired
-      if (cached) {
-        logger.warn('Using cached Bitcoin price due to API failure');
-        return cached.price;
-      }
-      
-      throw new Error('Unable to fetch Bitcoin price');
+      usd = await fn();
+      if (usd > 0) break;
+    } catch (e) {
+      lastErr = e;
     }
   }
 
-  /**
-   * Get detailed Bitcoin price information
-   */
-  async getBitcoinPriceDetails(currency: string = 'usd'): Promise<BitcoinPrice> {
-    const cacheKey = `btc_price_details_${currency}`;
-    const cached = cacheStore.get<BitcoinPrice>(cacheKey);
-    
-    // Return cached data if it's less than 2 minutes old
-    if (cached && Date.now() - cached.timestamp < 120000) {
-      return cached;
-    }
-
-    try {
-      const details = await this.fetchDetailedPrice(currency);
-      
-      // Cache the result
-      cacheStore.set(cacheKey, details, 300); // 5 minutes TTL
-
-      return details;
-    } catch (error) {
-      logger.error('Failed to fetch detailed Bitcoin price:', error);
-      
-      // Return cached data if available
-      if (cached) {
-        logger.warn('Using cached Bitcoin price details due to API failure');
-        return cached;
-      }
-      
-      throw new Error('Unable to fetch Bitcoin price details');
-    }
+  if (usd <= 0) {
+    // If everything failed but we have any cache, return it; else throw
+    if (cached) return cached;
+    throw new Error('All BTC price sources failed' + (lastErr ? `: ${String((lastErr as any)?.message ?? lastErr)}` : ''));
   }
 
-  /**
-   * Get Bitcoin price from multiple sources for comparison
-   */
-  async getBitcoinPriceComparison(currency: string = 'usd'): Promise<BitcoinPrice[]> {
-    const prices: BitcoinPrice[] = [];
-    
-    for (const source of this.sources) {
-      if (!source.enabled) continue;
-      
-      try {
-        const price = await this.fetchFromSource(source, currency);
-        prices.push(price);
-      } catch (error) {
-        logger.warn(`Failed to fetch price from ${source.name}:`, error);
-      }
-    }
-    
-    return prices;
-  }
+  // 3) Get USD->COP and build the final object
+  const rates = await fx_rate('USD', 'COP'); // exchangerate.host (no key)
+  const cop = usd * (rates?.COP ?? 0);
 
-  /**
-   * Get historical Bitcoin price data
-   */
-  async getBitcoinPriceHistory(
-    currency: string = 'usd',
-    days: number = 7
-  ): Promise<{ date: string; price: number }[]> {
-    const cacheKey = `btc_history_${currency}_${days}`;
-    const cached = cacheStore.get<{ date: string; price: number }[]>(cacheKey);
-    
-    // Return cached data if it's less than 1 hour old
-    if (cached && Date.now() - (cacheStore.get<number>(`${cacheKey}_timestamp`) || 0) < 3600000) {
-      return cached;
-    }
-
-    try {
-      const response = await coingeckoClient.get(
-        `coins/bitcoin/market_chart?vs_currency=${currency}&days=${days}`
-      );
-      
-      const history = response.prices.map(([timestamp, price]: [number, number]) => ({
-        date: new Date(timestamp).toISOString().split('T')[0],
-        price,
-      }));
-      
-      // Cache the result
-      cacheStore.set(cacheKey, history, 3600); // 1 hour TTL
-      cacheStore.set(`${cacheKey}_timestamp`, Date.now(), 3600);
-      
-      return history;
-    } catch (error) {
-      logger.error('Failed to fetch Bitcoin price history:', error);
-      
-      if (cached) {
-        logger.warn('Using cached Bitcoin price history due to API failure');
-        return cached;
-      }
-      
-      throw new Error('Unable to fetch Bitcoin price history');
-    }
-  }
-
-  /**
-   * Fetch price from CoinGecko
-   */
-  private async fetchFromCoinGecko(currency: string): Promise<number> {
-    const response = await coingeckoClient.get(
-      `simple/price?ids=bitcoin&vs_currencies=${currency}`
-    );
-    
-    if (!response.bitcoin || !response.bitcoin[currency]) {
-      throw new Error(`No price data available for ${currency}`);
-    }
-    
-    return response.bitcoin[currency];
-  }
-
-  /**
-   * Fetch detailed price information
-   */
-  private async fetchDetailedPrice(currency: string): Promise<BitcoinPrice> {
-    const response = await coingeckoClient.get(
-      `simple/price?ids=bitcoin&vs_currencies=${currency}&include_24hr_change=true&include_24hr_vol=true&include_market_cap=true`
-    );
-    
-    if (!response.bitcoin) {
-      throw new Error(`No price data available for ${currency}`);
-    }
-    
-    const data = response.bitcoin;
-    
-    return {
-      price: data[currency],
-      currency,
-      source: 'CoinGecko',
-      timestamp: Date.now(),
-      change24h: data[`${currency}_24h_change`],
-      volume24h: data[`${currency}_24h_vol`],
-      marketCap: data[`${currency}_market_cap`],
-    };
-  }
-
-  /**
-   * Fetch price from a specific source
-   */
-  private async fetchFromSource(source: PriceSource, currency: string): Promise<BitcoinPrice> {
-    switch (source.name) {
-      case 'CoinGecko':
-        const price = await this.fetchFromCoinGecko(currency);
-        return {
-          price,
-          currency,
-          source: source.name,
-          timestamp: Date.now(),
-        };
-      
-      case 'Mempool.space':
-        // Mempool.space doesn't provide price data, skip
-        throw new Error('Mempool.space does not provide price data');
-      
-      default:
-        throw new Error(`Unknown price source: ${source.name}`);
-    }
-  }
+  const out = { usd, cop };
+  saveCache(out);
+  return out;
 }
-
-// Create and export default instance
-export const bitcoinPriceTool = new BitcoinPriceTool();
-
-// Export convenience functions
-export const getBitcoinPrice = (currency?: string) => bitcoinPriceTool.getBitcoinPrice(currency);
-export const getBitcoinPriceDetails = (currency?: string) => bitcoinPriceTool.getBitcoinPriceDetails(currency);
-export const getBitcoinPriceComparison = (currency?: string) => bitcoinPriceTool.getBitcoinPriceComparison(currency);
-export const getBitcoinPriceHistory = (currency?: string, days?: number) => bitcoinPriceTool.getBitcoinPriceHistory(currency, days);
