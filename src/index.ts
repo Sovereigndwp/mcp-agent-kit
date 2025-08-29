@@ -22,6 +22,9 @@ async function main() {
     // Initialize task router
     const taskRouter = new TaskRouter();
     await taskRouter.initialize();
+    
+    // Set the server on the task router
+    taskRouter.setServer(server);
 
     // Register tools and agents
     await taskRouter.registerAll();
