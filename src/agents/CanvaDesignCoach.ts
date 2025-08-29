@@ -1,328 +1,131 @@
-import { logger } from '../utils/logger.js';
-import { cacheStore } from '../utils/kv.js';
+// src/agents/CanvaDesignCoach.ts
+import { btc_price } from '../tools/btc_price.js';
+import { getFeeEstimates } from '../tools/mempool_fee_estimates.js';
+// import { run_SocraticTutor } from './SocraticTutor.js'; // Not implemented yet
 
-export interface DesignAdvice {
-  category: 'layout' | 'color' | 'typography' | 'imagery' | 'branding' | 'accessibility';
-  title: string;
-  suggestion: string;
-  reasoning: string;
-  priority: 'low' | 'medium' | 'high';
-  examples?: string[];
+type Out = { briefMd: string; bulkCsv: string };
+
+function fkEase(text: string) {
+  // super simple estimate; good enough for a check
+  const sentences = Math.max(1, (text.match(/[.!?]/g) || []).length);
+  const words = Math.max(1, (text.trim().split(/\s+/g) || []).length);
+  const syllables = Math.max(
+    words,
+    (text.toLowerCase().match(/[aeiouy]{1,2}/g) || []).length
+  );
+  const wps = words / sentences;
+  const spw = syllables / words;
+  // Flesch Reading Ease
+  return Math.round((206.835 - 1.015 * wps - 84.6 * spw) * 10) / 10;
 }
 
-export interface DesignAnalysis {
-  overall_score: number;
-  strengths: string[];
-  improvements: DesignAdvice[];
-  bitcoin_specific_tips: string[];
-  accessibility_notes: string[];
+function chunkSlides(raw: string) {
+  // split on headings or blank lines; keep it simple
+  const blocks = raw
+    .split(/\n{2,}/g)
+    .map(s => s.trim())
+    .filter(Boolean);
+  return blocks;
 }
 
-export interface BitcoinDesignGuidelines {
-  brand_colors: {
-    bitcoin_orange: string;
-    neutral_gray: string;
-    accent_colors: string[];
+function makeCsv(headers: string[], row: (string | number)[]) {
+  const esc = (s: any) =>
+    `"${String(s ?? '').replace(/"/g, '""')}"`;
+  return `${headers.join(',')}\n${row.map(esc).join(',')}\n`;
+}
+
+export async function run_CanvaDesignCoach(moduleTitle: string, rawText: string): Promise<Out> {
+  // live data
+  const [price, fees] = await Promise.all([
+    btc_price(),
+    getFeeEstimates()
+  ]);
+
+  // Mock Socratic prompts since SocraticTutor is not implemented
+  const prompts: string[] = [
+    "What factors influence Bitcoin transaction fees?",
+    "Why do fees change throughout the day?",
+    "How can you reduce your transaction fees?",
+    "What happens if you set your fee too low?",
+    "How do miners decide which transactions to include?"
+  ];
+
+  const fast = Math.round(fees.fastestFee ?? 0);
+  const medium = Math.round(fees.hourFee ?? 0);
+  const slow = Math.round(fees.economyFee ?? 0);
+
+  const slides = chunkSlides(rawText);
+  const overallEase = fkEase(rawText);
+
+  // Suggest a simple structure
+  const sectionPlan = [
+    'Title & Promise',
+    'Why this matters (1–2 bullets)',
+    'Analogy (bus with limited seats)',
+    'How fees work (Fast/Med/Slow)',
+    'Try it (Socratic prompt)',
+    'Key takeaways',
+  ];
+
+  const briefLines: string[] = [];
+  briefLines.push(`# Design Brief — ${moduleTitle}`);
+  briefLines.push(`Reading Ease (Flesch): **${overallEase}** (aim 60–75).`);
+  briefLines.push(`BTC price ~ **${Math.round(price.usd)} USD** | **${Math.round(price.cop).toLocaleString('en-US')} COP**.`);
+  briefLines.push(`Fees (sat/vB): Fast **${fast}**, Medium **${medium}**, Slow **${slow}**.`);
+  briefLines.push('');
+  briefLines.push(`## Slide Plan`);
+  sectionPlan.forEach((sec, i) => briefLines.push(`${i + 1}. ${sec}`));
+  briefLines.push('');
+  briefLines.push(`## Slide-by-slide suggestions`);
+  slides.forEach((s, i) => {
+    const ease = fkEase(s);
+    briefLines.push(`### Slide ${i + 1}`);
+    briefLines.push(`- Current ease: **${ease}** (keep 60–75).`);
+    briefLines.push(`- Trim to 3 bullets max.`);
+    briefLines.push(`- Use short sentences (under 16 words).`);
+    briefLines.push(`- Add one image or icon to anchor the idea.`);
+    briefLines.push(`- Replace jargon. Prefer "fee", "space", "line", "speed".`);
+    briefLines.push('');
+  });
+  briefLines.push(`## Ready-to-paste copy (edit as needed)`);
+  briefLines.push(`**Fees today**`);
+  briefLines.push(`Fast: ${fast} sat/vB · Medium: ${medium} · Slow: ${slow}`);
+  briefLines.push(`**Price**: ~${Math.round(price.usd)} USD`);
+  briefLines.push('');
+  briefLines.push(`**Socratic prompts (pick 1 per slide):**`);
+  prompts.slice(0, 5).forEach((q, i) => briefLines.push(`${i + 1}. ${q}`));
+  briefLines.push('');
+  briefLines.push(`**Design checklist**`);
+  briefLines.push(`- Clear title. Big. 6–10 words.`);
+  briefLines.push(`- Max 3 bullets, 7–9 words each.`);
+  briefLines.push(`- Contrast: dark text on light bg (or inverse).`);
+  briefLines.push(`- Align to a grid. Use consistent spacing.`);
+  briefLines.push(`- One highlight color only.`);
+
+  // CSV for Bulk Create (single slide template, you can duplicate in Canva)
+  const csvHeaders = [
+    'module',
+    'price_usd',
+    'fee_fast',
+    'fee_medium',
+    'fee_slow',
+    'prompt1',
+    'prompt2',
+    'prompt3',
+  ];
+  const row = [
+    moduleTitle,
+    Math.round(price.usd),
+    fast,
+    medium,
+    slow,
+    prompts[0] ?? '',
+    prompts[1] ?? '',
+    prompts[2] ?? '',
+  ];
+
+  return {
+    briefMd: briefLines.join('\n'),
+    bulkCsv: makeCsv(csvHeaders, row),
   };
-  typography: {
-    recommended_fonts: string[];
-    hierarchy_tips: string[];
-  };
-  imagery: {
-    icon_guidelines: string[];
-    chart_best_practices: string[];
-  };
 }
-
-export class CanvaDesignCoach {
-  private bitcoinGuidelines: BitcoinDesignGuidelines;
-
-  constructor() {
-    this.bitcoinGuidelines = {
-      brand_colors: {
-        bitcoin_orange: '#F7931A',
-        neutral_gray: '#4A4A4A',
-        accent_colors: ['#00D4AA', '#FF6B6B', '#4ECDC4', '#45B7D1']
-      },
-      typography: {
-        recommended_fonts: [
-          'Roboto', 'Open Sans', 'Lato', 'Source Sans Pro', 
-          'Inter', 'Poppins', 'Montserrat'
-        ],
-        hierarchy_tips: [
-          'Use bold headings for key metrics (price, fees)',
-          'Keep body text readable with sufficient contrast',
-          'Limit to 2-3 font weights maximum',
-          'Ensure mobile readability at small sizes'
-        ]
-      },
-      imagery: {
-        icon_guidelines: [
-          'Use consistent Bitcoin symbol (₿)',
-          'Maintain icon consistency across designs',
-          'Ensure icons are recognizable at small sizes',
-          'Consider colorblind accessibility'
-        ],
-        chart_best_practices: [
-          'Use clear, contrasting colors for data visualization',
-          'Label axes clearly with units (USD, sats, etc.)',
-          'Include legends for multi-data charts',
-          'Keep chart types simple and familiar'
-        ]
-      }
-    };
-  }
-
-  /**
-   * Analyze design elements and provide coaching advice
-   */
-  async analyzeDesign(designType: string, elements?: any): Promise<DesignAnalysis> {
-    const cacheKey = `design_analysis_${designType}`;
-    const cached = cacheStore.get<DesignAnalysis>(cacheKey);
-    
-    if (cached) {
-      return cached;
-    }
-
-    try {
-      logger.info(`Analyzing ${designType} design for Bitcoin education content`);
-
-      const analysis: DesignAnalysis = {
-        overall_score: this.calculateOverallScore(designType, elements),
-        strengths: this.identifyStrengths(designType),
-        improvements: this.generateImprovements(designType),
-        bitcoin_specific_tips: this.getBitcoinSpecificTips(designType),
-        accessibility_notes: this.getAccessibilityNotes()
-      };
-
-      // Cache for 30 minutes
-      cacheStore.set(cacheKey, analysis, 30 * 60 * 1000);
-
-      return analysis;
-    } catch (error) {
-      logger.error('Failed to analyze design:', error);
-      throw new Error('Design analysis failed');
-    }
-  }
-
-  /**
-   * Get specific advice for Bitcoin educational content
-   */
-  async getBitcoinDesignTips(contentType: 'price' | 'fees' | 'education' | 'news' = 'education'): Promise<DesignAdvice[]> {
-    const tips: DesignAdvice[] = [];
-
-    switch (contentType) {
-      case 'price':
-        tips.push({
-          category: 'typography',
-          title: 'Price Display Hierarchy',
-          suggestion: 'Make the current price the largest, most prominent element',
-          reasoning: 'Price is the primary information users seek',
-          priority: 'high',
-          examples: ['Use 48px+ font size for main price', 'Add subtle background highlight']
-        });
-        break;
-
-      case 'fees':
-        tips.push({
-          category: 'color',
-          title: 'Fee Level Color Coding',
-          suggestion: 'Use traffic light colors: green (low), yellow (medium), red (high)',
-          reasoning: 'Intuitive color association helps quick understanding',
-          priority: 'high',
-          examples: ['Low fees: #00D4AA', 'Medium fees: #FFB900', 'High fees: #FF6B6B']
-        });
-        break;
-
-      case 'education':
-        tips.push({
-          category: 'layout',
-          title: 'Learning Flow Design',
-          suggestion: 'Create clear visual progression from simple to complex concepts',
-          reasoning: 'Supports educational scaffolding and retention',
-          priority: 'medium',
-          examples: ['Use numbered steps', 'Progressive disclosure', 'Visual connectors']
-        });
-        break;
-
-      case 'news':
-        tips.push({
-          category: 'imagery',
-          title: 'News Credibility Indicators',
-          suggestion: 'Include source logos and publication dates prominently',
-          reasoning: 'Builds trust and helps users evaluate information quality',
-          priority: 'medium',
-          examples: ['Source attribution blocks', 'Timestamp badges', 'Credibility icons']
-        });
-        break;
-    }
-
-    // Add universal Bitcoin design tips
-    tips.push(...this.getUniversalBitcoinTips());
-
-    return tips;
-  }
-
-  /**
-   * Provide template recommendations for specific use cases
-   */
-  async recommendTemplates(useCase: string): Promise<{
-    template_type: string;
-    reasoning: string;
-    canva_search_terms: string[];
-    customization_tips: string[];
-  }[]> {
-    const recommendations = [];
-
-    if (useCase.includes('price') || useCase.includes('market')) {
-      recommendations.push({
-        template_type: 'Dashboard/Infographic',
-        reasoning: 'Best for displaying multiple data points clearly',
-        canva_search_terms: ['financial dashboard', 'cryptocurrency infographic', 'data visualization'],
-        customization_tips: [
-          'Replace stock imagery with Bitcoin symbols',
-          'Use orange/gold color scheme',
-          'Add live data placeholders',
-          'Include comparison charts'
-        ]
-      });
-    }
-
-    if (useCase.includes('education') || useCase.includes('learning')) {
-      recommendations.push({
-        template_type: 'Educational Slide Deck',
-        reasoning: 'Structured format supports learning objectives',
-        canva_search_terms: ['education presentation', 'learning slides', 'tutorial template'],
-        customization_tips: [
-          'Break complex topics into digestible chunks',
-          'Use consistent icon set throughout',
-          'Add interactive elements or QR codes',
-          'Include progress indicators'
-        ]
-      });
-    }
-
-    return recommendations;
-  }
-
-  private calculateOverallScore(designType: string, elements?: any): number {
-    // Simple scoring algorithm - can be enhanced
-    let score = 70; // Base score
-    
-    if (designType === 'infographic') score += 10;
-    if (designType === 'social_media') score += 5;
-    
-    return Math.min(score, 100);
-  }
-
-  private identifyStrengths(designType: string): string[] {
-    const strengths = [
-      'Clear information hierarchy',
-      'Appropriate color contrast',
-      'Readable typography choices'
-    ];
-
-    if (designType === 'infographic') {
-      strengths.push('Effective data visualization');
-    }
-
-    return strengths;
-  }
-
-  private generateImprovements(designType: string): DesignAdvice[] {
-    return [
-      {
-        category: 'accessibility',
-        title: 'Improve Color Accessibility',
-        suggestion: 'Ensure all text has at least 4.5:1 contrast ratio',
-        reasoning: 'Meets WCAG guidelines for readability',
-        priority: 'high'
-      },
-      {
-        category: 'layout',
-        title: 'Optimize for Mobile',
-        suggestion: 'Test design at mobile screen sizes and adjust accordingly',
-        reasoning: 'Many users will view on mobile devices',
-        priority: 'medium'
-      }
-    ];
-  }
-
-  private getBitcoinSpecificTips(designType: string): string[] {
-    return [
-      'Use the official Bitcoin orange (#F7931A) for brand consistency',
-      'Include the Bitcoin symbol (₿) rather than "BTC" when possible',
-      'Ensure technical terms are explained or linked to definitions',
-      'Consider including QR codes for wallet addresses or links',
-      'Use satoshi units for small amounts to improve precision'
-    ];
-  }
-
-  private getAccessibilityNotes(): string[] {
-    return [
-      'Alt text for all images and icons',
-      'Keyboard navigation support for interactive elements',
-      'Screen reader compatible text hierarchy',
-      'Color information supplemented with text/symbols',
-      'Sufficient color contrast (4.5:1 minimum)'
-    ];
-  }
-
-  private getUniversalBitcoinTips(): DesignAdvice[] {
-    return [
-      {
-        category: 'branding',
-        title: 'Bitcoin Brand Consistency',
-        suggestion: 'Use official Bitcoin orange and maintain consistent symbol usage',
-        reasoning: 'Builds recognition and trust with Bitcoin community',
-        priority: 'medium',
-        examples: ['₿ symbol instead of "BTC"', 'Orange #F7931A accent color']
-      },
-      {
-        category: 'accessibility',
-        title: 'Technical Term Clarity',
-        suggestion: 'Provide hover definitions or footnotes for technical terms',
-        reasoning: 'Makes content accessible to newcomers while maintaining precision',
-        priority: 'high',
-        examples: ['Satoshi = 0.00000001 BTC', 'Hash rate = network computing power']
-      }
-    ];
-  }
-
-  /**
-   * Generate design checklist for specific Bitcoin content types
-   */
-  async generateChecklist(contentType: string): Promise<{
-    category: string;
-    items: { task: string; completed: boolean; priority: 'low' | 'medium' | 'high' }[];
-  }[]> {
-    return [
-      {
-        category: 'Content',
-        items: [
-          { task: 'Verify all Bitcoin data is current and accurate', completed: false, priority: 'high' },
-          { task: 'Include data sources and timestamps', completed: false, priority: 'medium' },
-          { task: 'Use consistent units (BTC, satoshis, USD)', completed: false, priority: 'medium' }
-        ]
-      },
-      {
-        category: 'Design',
-        items: [
-          { task: 'Apply Bitcoin brand colors appropriately', completed: false, priority: 'medium' },
-          { task: 'Ensure mobile responsiveness', completed: false, priority: 'high' },
-          { task: 'Test color contrast accessibility', completed: false, priority: 'high' }
-        ]
-      },
-      {
-        category: 'Functionality',
-        items: [
-          { task: 'Add QR codes for relevant links/addresses', completed: false, priority: 'low' },
-          { task: 'Include share buttons for social media', completed: false, priority: 'medium' },
-          { task: 'Optimize file size for web use', completed: false, priority: 'medium' }
-        ]
-      }
-    ];
-  }
-}
-
-export const canvaDesignCoach = new CanvaDesignCoach();
