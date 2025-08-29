@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { config } from 'dotenv';
-import { bitcoinPriceTool } from '../tools/btc_price.js';
+import { btc_price } from '../tools/btc_price.js';
 import { mempoolFeeEstimatesTool } from '../tools/mempool_fee_estimates.js';
 import { fxRateTool } from '../tools/fx_rate.js';
 import { NewsScout } from '../agents/NewsScout.js';
@@ -33,20 +33,21 @@ export class CanvaSnippetGenerator {
     timestamp: string;
   }> {
     try {
-      const btcPrice = await bitcoinPriceTool.getBitcoinPrice();
-      const btcDetails = await bitcoinPriceTool.getBitcoinPriceDetails();
+      const btcPriceData = await btc_price();
       
-      const change = btcDetails.change24h || 0;
+      // Note: New btc_price function only returns basic price data
+      // Mock change data since detailed metrics are not available
+      const change = 0; // Could be enhanced to fetch from another source
       const changeText = change >= 0 ? `+${change.toFixed(2)}%` : `${change.toFixed(2)}%`;
       const changeEmoji = change >= 0 ? '📈' : '📉';
       
       return {
         title: 'Bitcoin Price Update',
         subtitle: 'Live Market Data',
-        price: `$${btcPrice.toLocaleString()}`,
+        price: `$${btcPriceData.usd.toLocaleString()}`,
         change: `${changeEmoji} ${changeText}`,
-        marketCap: `$${(btcDetails.marketCap || 0).toLocaleString()}`,
-        volume: `$${(btcDetails.volume24h || 0).toLocaleString()}`,
+        marketCap: `Data unavailable`, // Not provided by new API
+        volume: `Data unavailable`, // Not provided by new API
         timestamp: new Date().toLocaleString()
       };
     } catch (error) {
@@ -72,12 +73,12 @@ export class CanvaSnippetGenerator {
       const estimates = await mempoolFeeEstimatesTool.getFeeEstimates();
       const congestion = await mempoolFeeEstimatesTool.getMempoolCongestion();
       
-      const btcPrice = await bitcoinPriceTool.getBitcoinPrice();
+      const btcPriceData = await btc_price();
       
       // Calculate fees in USD
-      const fastestUSD = (estimates.fastestFee * 250 / 100000000) * btcPrice;
-      const standardUSD = (estimates.hourFee * 250 / 100000000) * btcPrice;
-      const economyUSD = (estimates.economyFee * 250 / 100000000) * btcPrice;
+      const fastestUSD = (estimates.fastestFee * 250 / 100000000) * btcPriceData.usd;
+      const standardUSD = (estimates.hourFee * 250 / 100000000) * btcPriceData.usd;
+      const economyUSD = (estimates.economyFee * 250 / 100000000) * btcPriceData.usd;
       
       return {
         title: 'Bitcoin Fee Analysis',
@@ -181,7 +182,7 @@ export class CanvaSnippetGenerator {
     timestamp: string;
   }> {
     try {
-      const btcPrice = await bitcoinPriceTool.getBitcoinPrice();
+      const btcPriceData = await btc_price();
       const eurRate = await fxRateTool.getExchangeRate('bitcoin', 'eur');
       const jpyRate = await fxRateTool.getExchangeRate('bitcoin', 'jpy');
       const gbpRate = await fxRateTool.getExchangeRate('bitcoin', 'gbp');
@@ -190,7 +191,7 @@ export class CanvaSnippetGenerator {
       return {
         title: 'Bitcoin Global Prices',
         subtitle: 'Multi-Currency View',
-        usdPrice: `$${btcPrice.toLocaleString()}`,
+        usdPrice: `$${btcPriceData.usd.toLocaleString()}`,
         eurPrice: `€${eurRate.rate.toLocaleString()}`,
         jpyPrice: `¥${jpyRate.rate.toLocaleString()}`,
         gbpPrice: `£${gbpRate.rate.toLocaleString()}`,

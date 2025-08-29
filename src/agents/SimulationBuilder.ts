@@ -1,7 +1,7 @@
 import { logger } from '../utils/logger.js';
 import { cacheStore } from '../utils/kv.js';
 import { mempoolFeeEstimatesTool } from '../tools/mempool_fee_estimates.js';
-import { bitcoinPriceTool } from '../tools/btc_price.js';
+import { btc_price } from '../tools/btc_price.js';
 
 export interface SimulationScenario {
   id: string;
@@ -73,7 +73,8 @@ export class SimulationBuilder {
       );
 
       // Get current Bitcoin price for USD conversion
-      const btcPrice = await bitcoinPriceTool.getBitcoinPrice(parameters.currency || 'usd');
+      const btcPriceData = await btc_price();
+      const btcPrice = btcPriceData.usd; // Use USD price regardless of parameters.currency for now
       
       // Calculate fee in USD
       const totalFeeBTC = feeEstimate.totalFee / 100000000; // Convert satoshis to BTC

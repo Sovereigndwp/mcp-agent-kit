@@ -1,29 +1,29 @@
 // src/tools/btc_price.ts
-import { getJson } from '../utils/http.js';
-import { fx_rate } from './fx_rate.js';
+import { httpClient } from '../utils/http.js';
+import { getExchangeRate } from './fx_rate.js';
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
 
 type Price = { usd: number; cop: number };
 
 async function tryCoinpaprika(): Promise<number> {
   // No key needed
-  const r = await getJson<{ quotes: { USD: { price: number } } }>('https://api.coinpaprika.com/v1/tickers/btc-bitcoin');
+  const r = await httpClient.get<{ quotes: { USD: { price: number } } }>('https://api.coinpaprika.com/v1/tickers/btc-bitcoin');
   return r.quotes.USD.price;
 }
 
 async function tryBinance(): Promise<number> {
   // BTC/USDT ~ USD
-  const r = await getJson<{ price: string }>('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
+  const r = await httpClient.get<{ price: string }>('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
   return Number(r.price);
 }
 
 async function tryBitstamp(): Promise<number> {
-  const r = await getJson<{ last: string }>('https://www.bitstamp.net/api/v2/ticker/btcusd/');
+  const r = await httpClient.get<{ last: string }>('https://www.bitstamp.net/api/v2/ticker/btcusd/');
   return Number(r.last);
 }
 
 async function tryKraken(): Promise<number> {
-  const r = await getJson<{ result: Record<string, { c: [string, string] }> }>('https://api.kraken.com/0/public/Ticker?pair=XBTUSD');
+  const r = await httpClient.get<{ result: Record<string, { c: [string, string] }> }>('https://api.kraken.com/0/public/Ticker?pair=XBTUSD');
   const key = Object.keys(r.result)[0];
   return Number(r.result[key].c[0]);
 }
@@ -75,8 +75,8 @@ export async function btc_price(): Promise<Price> {
   }
 
   // 3) Get USD->COP and build the final object
-  const rates = await fx_rate('USD', 'COP'); // exchangerate.host (no key)
-  const cop = usd * (rates?.COP ?? 0);
+  const exchangeRate = await getExchangeRate('usd', 'cop');
+  const cop = usd * exchangeRate.rate;
 
   const out = { usd, cop };
   saveCache(out);
