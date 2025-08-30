@@ -13,6 +13,7 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "canva:snippet": "tsx src/cases/canva_snippet.ts",
+    "design:coach": "tsx src/cases/run_canva_design.ts",
     "web": "tsx src/web/server.ts",
     "ux:setup": "tsx src/cases/ux_design_setup.ts",
     "integration:demo": "tsx src/cases/content_integration_demo.ts"
