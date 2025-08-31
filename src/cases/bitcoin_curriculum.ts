@@ -2,7 +2,7 @@ import { SimulationBuilder } from '../agents/SimulationBuilder.js';
 import { NewsScout } from '../agents/NewsScout.js';
 import { CustodyCoach } from '../agents/CustodyCoach.js';
 import { DevRadar } from '../agents/DevRadar.js';
-import { bitcoinPriceTool } from '../tools/btc_price.js';
+import { btc_price } from '../tools/btc_price.js';
 import { mempoolFeeEstimatesTool } from '../tools/mempool_fee_estimates.js';
 import { fxRateTool } from '../tools/fx_rate.js';
 import { githubLatestReleaseTool } from '../tools/github_latest_release.js';
@@ -372,14 +372,12 @@ export class BitcoinCurriculum {
     console.log('🌍 === MODULE: Bitcoin Basics ===\n');
 
     // 1. Current Bitcoin price and market data
-    const btcPrice = await bitcoinPriceTool.getBitcoinPrice();
-    const btcDetails = await bitcoinPriceTool.getBitcoinPriceDetails();
+    const btcPriceData = await btc_price();
     
     console.log('💰 Current Bitcoin Data:');
-    console.log(`   Price: $${btcPrice.toLocaleString()}`);
-    console.log(`   24h Change: ${btcDetails.change24h?.toFixed(2)}%`);
-    console.log(`   Market Cap: $${(btcDetails.marketCap || 0).toLocaleString()}`);
-    console.log(`   24h Volume: $${(btcDetails.volume24h || 0).toLocaleString()}\n`);
+    console.log(`   Price: $${btcPriceData.usd.toLocaleString()}`);
+    console.log(`   Price (COP): ${btcPriceData.cop.toLocaleString()}`);
+    console.log(`   Note: Additional market data available via specialized APIs\n`);
 
     // 2. Global currency conversion
     const currencies = ['eur', 'jpy', 'gbp', 'cad'];
@@ -391,12 +389,10 @@ export class BitcoinCurriculum {
     }
     console.log();
 
-    // 3. Historical context
-    const history = await bitcoinPriceTool.getBitcoinPriceHistory('usd', 7);
-    console.log('📈 7-Day Price History:');
-    history.slice(-5).forEach(day => {
-      console.log(`   ${day.date}: $${day.price.toLocaleString()}`);
-    });
+    // 3. Historical context (simplified - could be enhanced with historical API)
+    console.log('📈 Price Context:');
+    console.log(`   Current: $${btcPriceData.usd.toLocaleString()}`);
+    console.log('   Historical data available via specialized APIs');
     console.log();
 
     console.log('💡 Key Learning Points:');
@@ -444,7 +440,8 @@ export class BitcoinCurriculum {
         'medium'
       );
       
-      const feeUSD = (result.totalFee / 100000000) * (await bitcoinPriceTool.getBitcoinPrice());
+      const currentPrice = await btc_price();
+      const feeUSD = (result.totalFee / 100000000) * currentPrice.usd;
       
       console.log(`   ${scenario.name}: $${feeUSD.toFixed(4)} (${result.totalFee} sats)`);
     }

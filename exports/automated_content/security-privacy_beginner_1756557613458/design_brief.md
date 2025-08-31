@@ -1,0 +1,39 @@
+# Design Brief — security-privacy Educational Materials
+Reading Ease (Flesch): **-54.1** (aim 60–75).
+BTC price ~ **108714 USD** | **437,060,885 COP**.
+Fees (sat/vB): Fast **2**, Medium **1**, Slow **1**.
+
+## Slide Plan
+1. Title & Promise
+2. Why this matters (1–2 bullets)
+3. Analogy (bus with limited seats)
+4. How fees work (Fast/Med/Slow)
+5. Try it (Socratic prompt)
+6. Key takeaways
+
+## Slide-by-slide suggestions
+### Slide 1
+- Current ease: **-54.1** (keep 60–75).
+- Trim to 3 bullets max.
+- Use short sentences (under 16 words).
+- Add one image or icon to anchor the idea.
+- Replace jargon. Prefer "fee", "space", "line", "speed".
+
+## Ready-to-paste copy (edit as needed)
+**Fees today**
+Fast: 2 sat/vB · Medium: 1 · Slow: 1
+**Price**: ~108714 USD
+
+**Socratic prompts (pick 1 per slide):**
+1. What factors influence Bitcoin transaction fees?
+2. Why do fees change throughout the day?
+3. How can you reduce your transaction fees?
+4. What happens if you set your fee too low?
+5. How do miners decide which transactions to include?
+
+**Design checklist**
+- Clear title. Big. 6–10 words.
+- Max 3 bullets, 7–9 words each.
+- Contrast: dark text on light bg (or inverse).
+- Align to a grid. Use consistent spacing.
+- One highlight color only.

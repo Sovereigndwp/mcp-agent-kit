@@ -51,6 +51,8 @@ export class CanvaAgent {
     
     if (!this.apiKey) {
       logger.warn('CANVA_API_KEY not found in environment variables. Canva functionality will be limited.');
+    } else {
+      logger.info('Canva API key loaded successfully');
     }
 
     this.apiClient = axios.create({

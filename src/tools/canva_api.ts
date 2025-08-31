@@ -1,4 +1,5 @@
 import { CanvaAgent } from '../agents/CanvaAgent.js';
+import { canvaMCPAgent } from '../agents/CanvaMCPAgent.js';
 import { logger } from '../utils/logger.js';
 
 /**
@@ -6,9 +7,11 @@ import { logger } from '../utils/logger.js';
  */
 class CanvaTools {
   private canvaAgent: CanvaAgent;
+  private useMCP: boolean;
 
   constructor() {
     this.canvaAgent = new CanvaAgent();
+    this.useMCP = true; // Prefer MCP when available
   }
 
   /**
@@ -100,13 +103,31 @@ class CanvaTools {
   }
 
   /**
-   * Create a new design
+   * Create a new design (with MCP integration)
    */
   async createDesign(designType: string, title?: string): Promise<any> {
     try {
-      logger.info('Creating new Canva design', { designType, title });
+      logger.info('Creating new Canva design', { designType, title, useMCP: this.useMCP });
       
-      const design = await this.canvaAgent.createDesign({
+      let design;
+      
+      if (this.useMCP) {
+        // Try MCP first
+        try {
+          design = await canvaMCPAgent.createDesignViaMCP(designType, title || 'Untitled Design');
+          return {
+            success: true,
+            data: design,
+            message: `Created design via MCP: ${design.title || design.id}`,
+            method: 'mcp'
+          };
+        } catch (mcpError) {
+          logger.warn('MCP creation failed, falling back to API:', mcpError);
+        }
+      }
+      
+      // Fallback to regular API
+      design = await this.canvaAgent.createDesign({
         design_type: designType,
         title: title
       });
@@ -114,7 +135,8 @@ class CanvaTools {
       return {
         success: true,
         data: design,
-        message: `Created design: ${design.title || design.id}`
+        message: `Created design: ${design.title || design.id}`,
+        method: 'api'
       };
     } catch (error) {
       logger.error('Failed to create design:', error);
@@ -293,25 +315,104 @@ class CanvaTools {
   }
 
   /**
-   * Test Canva API connection
+   * Create Bitcoin educational designs (MCP-optimized)
+   */
+  async createBitcoinEducationDesigns(bitcoinData: {
+    price: number;
+    fees: { fast: number; medium: number; slow: number };
+    congestion: string;
+    prompts: string[];
+  }): Promise<any> {
+    try {
+      logger.info('Creating Bitcoin education designs', bitcoinData);
+      
+      if (this.useMCP) {
+        try {
+          const designs = await canvaMCPAgent.createBitcoinEducationDesigns(bitcoinData);
+          return {
+            success: true,
+            data: {
+              designs,
+              bitcoin_data: bitcoinData,
+              method: 'mcp',
+              count: designs.length
+            },
+            message: `Created ${designs.length} Bitcoin education designs via MCP`
+          };
+        } catch (mcpError) {
+          logger.warn('MCP Bitcoin designs failed, using fallback:', mcpError);
+        }
+      }
+
+      // Fallback: create individual designs
+      const designTypes = [
+        { type: 'instagram-post', title: `Bitcoin $${Math.round(bitcoinData.price/1000)}K Alert` },
+        { type: 'presentation', title: `Bitcoin Fees - ${bitcoinData.congestion} Network` },
+        { type: 'infographic', title: `Understanding Bitcoin Transactions` }
+      ];
+
+      const createdDesigns = [];
+      for (const spec of designTypes) {
+        const result = await this.createDesign(spec.type, spec.title);
+        if (result.success) {
+          createdDesigns.push({
+            ...result.data,
+            bitcoin_context: bitcoinData,
+            design_purpose: spec.type
+          });
+        }
+      }
+
+      return {
+        success: true,
+        data: {
+          designs: createdDesigns,
+          bitcoin_data: bitcoinData,
+          method: 'api_fallback',
+          count: createdDesigns.length
+        },
+        message: `Created ${createdDesigns.length} Bitcoin education designs`
+      };
+      
+    } catch (error) {
+      logger.error('Failed to create Bitcoin education designs:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        data: null
+      };
+    }
+  }
+
+  /**
+   * Test Canva API connection (including MCP)
    */
   async testConnection(): Promise<any> {
     try {
-      logger.info('Testing Canva API connection');
+      logger.info('Testing Canva connections (API + MCP)');
       
-      const isConnected = await this.canvaAgent.testConnection();
+      const apiConnected = await this.canvaAgent.testConnection();
+      const mcpConnected = await canvaMCPAgent.testMCPConnection();
       const status = this.canvaAgent.getStatus();
+      const mcpStatus = canvaMCPAgent.getMCPStatus();
 
       return {
-        success: isConnected,
+        success: apiConnected || mcpConnected,
         data: {
-          connected: isConnected,
-          ...status
+          api: {
+            ...status,
+            connected: apiConnected
+          },
+          mcp: {
+            ...mcpStatus,
+            connected: mcpConnected
+          },
+          preferred_method: this.useMCP && mcpConnected ? 'mcp' : 'api'
         },
-        message: isConnected ? 'Canva API connection successful' : 'Canva API connection failed'
+        message: `Connections: API ${apiConnected ? '✓' : '✗'}, MCP ${mcpConnected ? '✓' : '✗'}`
       };
     } catch (error) {
-      logger.error('Failed to test connection:', error);
+      logger.error('Failed to test connections:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',

@@ -1,13 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
-import { bitcoinPriceTool } from '../tools/btc_price.js';
+import { btc_price } from '../tools/btc_price.js';
 import { mempoolFeeEstimatesTool } from '../tools/mempool_fee_estimates.js';
 import { fxRateTool } from '../tools/fx_rate.js';
 import { NewsScout } from '../agents/NewsScout.js';
 import { SimulationBuilder } from '../agents/SimulationBuilder.js';
-import { canvaSnippetGenerator } from '../cases/canva_snippet.js';
-import { bitcoinLearningDemo } from '../cases/bitcoin_learning_demo.js';
+// Note: canva_snippet and bitcoin_learning_demo are scripts, not modules
 import { bitcoinCurriculum } from '../cases/bitcoin_curriculum.js';
 import { logger } from '../utils/logger.js';
 
@@ -36,16 +35,14 @@ app.get('/api/health', (req, res) => {
 // Bitcoin Price API
 app.get('/api/bitcoin/price', async (req, res) => {
   try {
-    const currency = req.query.currency as string || 'usd';
-    const price = await bitcoinPriceTool.getBitcoinPrice(currency);
-    const details = await bitcoinPriceTool.getBitcoinPriceDetails(currency);
+    const priceData = await btc_price();
     
     res.json({
       success: true,
       data: {
-        price,
-        details,
-        currency,
+        price_usd: priceData.usd,
+        price_cop: priceData.cop,
+        currency: 'usd',
         timestamp: new Date().toISOString()
       }
     });
@@ -146,7 +143,8 @@ app.post('/api/simulation/analyze', async (req, res) => {
 // Canva Snippets API
 app.get('/api/canva/snippets', async (req, res) => {
   try {
-    const snippets = await canvaSnippetGenerator.generateAllSnippets();
+    // TODO: Implement snippet generation API
+    const snippets = { message: 'Canva snippets endpoint - not yet implemented' };
     
     res.json({
       success: true,

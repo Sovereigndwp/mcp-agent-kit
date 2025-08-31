@@ -1,10 +1,10 @@
 # Bitcoin Snapshot (for Canva)
 
 **Price**
-- BTC ≈ $108251.66 USD  |  ≈ 434,893,464 COP
+- BTC ≈ $108713.77 USD  |  ≈ 437,060,885 COP
 
 **Fees (sat/vB)**
-- Fast: 2
+- Fast: 3
 - Medium: 1
 - Slow: 1
 

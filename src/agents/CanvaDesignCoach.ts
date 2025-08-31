@@ -1,9 +1,15 @@
 // src/agents/CanvaDesignCoach.ts
 import { btc_price } from '../tools/btc_price.js';
 import { getFeeEstimates } from '../tools/mempool_fee_estimates.js';
-// import { run_SocraticTutor } from './SocraticTutor.js'; // Not implemented yet
+import { SocraticTutor } from './SocraticTutor.js';
+import { canvaTools } from '../tools/canva_api.js';
 
-type Out = { briefMd: string; bulkCsv: string };
+type Out = { 
+  briefMd: string; 
+  bulkCsv: string; 
+  designs?: any[];
+  folderId?: string;
+};
 
 function fkEase(text: string) {
   // super simple estimate; good enough for a check
@@ -34,21 +40,21 @@ function makeCsv(headers: string[], row: (string | number)[]) {
   return `${headers.join(',')}\n${row.map(esc).join(',')}\n`;
 }
 
-export async function run_CanvaDesignCoach(moduleTitle: string, rawText: string): Promise<Out> {
+export async function run_CanvaDesignCoach(
+  moduleTitle: string, 
+  rawText: string, 
+  options: { createDesigns?: boolean; folderName?: string } = {}
+): Promise<Out> {
   // live data
   const [price, fees] = await Promise.all([
     btc_price(),
     getFeeEstimates()
   ]);
 
-  // Mock Socratic prompts since SocraticTutor is not implemented
-  const prompts: string[] = [
-    "What factors influence Bitcoin transaction fees?",
-    "Why do fees change throughout the day?",
-    "How can you reduce your transaction fees?",
-    "What happens if you set your fee too low?",
-    "How do miners decide which transactions to include?"
-  ];
+  // Get real Socratic prompts
+  const socraticTutor = new SocraticTutor();
+  const socraticQuestions = await socraticTutor.generateQuestions('fees', 'beginner', 5);
+  const prompts = socraticQuestions.questions;
 
   const fast = Math.round(fees.fastestFee ?? 0);
   const medium = Math.round(fees.hourFee ?? 0);
@@ -124,8 +130,56 @@ export async function run_CanvaDesignCoach(moduleTitle: string, rawText: string)
     prompts[2] ?? '',
   ];
 
-  return {
+  const result: Out = {
     briefMd: briefLines.join('\n'),
     bulkCsv: makeCsv(csvHeaders, row),
   };
+
+  // Create actual Canva designs if requested
+  if (options.createDesigns) {
+    try {
+      // Create or find folder for Bitcoin education
+      let folderId: string | undefined;
+      if (options.folderName) {
+        const folderResult = await canvaTools.createFolder(options.folderName);
+        if (folderResult.success) {
+          folderId = folderResult.data.id;
+          result.folderId = folderId;
+        }
+      }
+
+      // Create designs based on the educational content
+      const designTypes = [
+        { type: 'instagram-post', title: `${moduleTitle} - Price Alert`, template: 'social-media' },
+        { type: 'presentation', title: `${moduleTitle} - Educational Slides`, template: 'educational' },
+        { type: 'infographic', title: `${moduleTitle} - Fee Guide`, template: 'infographic' }
+      ];
+
+      const createdDesigns = [];
+      for (const designSpec of designTypes) {
+        try {
+          const designResult = await canvaTools.createDesign(designSpec.type, designSpec.title);
+          if (designResult.success) {
+            createdDesigns.push({
+              id: designResult.data.id,
+              title: designResult.data.title,
+              edit_url: designResult.data.urls?.edit_url,
+              view_url: designResult.data.urls?.view_url,
+              type: designSpec.type,
+              template: designSpec.template
+            });
+          }
+        } catch (error) {
+          console.warn(`Failed to create ${designSpec.type} design:`, error);
+        }
+      }
+
+      result.designs = createdDesigns;
+      
+    } catch (error) {
+      console.warn('Failed to create Canva designs:', error);
+    }
+  }
+
+  return result;
 }

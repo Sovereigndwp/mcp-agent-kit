@@ -1,0 +1,2 @@
+timestamp,price_usd,price_eur,price_cop,fee_fast,fee_medium,fee_slow,congestion_level,fast_cost_usd,medium_cost_usd,sentiment,confidence,news_1,news_2,news_3,learning_prompt_1,learning_prompt_2,learning_prompt_3,design_tip,context_note
+"2025-08-30T13:48:28.550Z",108713.77,92406.71,437060885,1,1,1,"Low",0.272,0.272,"neutral",50,"What would happen if there were no transaction fees at all?","Why do you think some transactions cost more than others?","What happens when many people want to send Bitcoin at the same time?","Use low congestion visuals","$109K era, low fees"

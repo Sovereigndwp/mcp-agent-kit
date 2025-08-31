@@ -1,0 +1,4 @@
+design_type,headline,price,fee_fast,fee_medium,fee_slow,congestion,prompt,cta,color_scheme
+"price_alert","₿ $108K","$108,457","1 sat/vB","1 sat/vB","1 sat/vB","Low","How is a Bitcoin transaction fee similar to postag...","Learn More →","calm"
+"fee_guide","Bitcoin Fee Calculator","$108,457","1 sat/vB","1 sat/vB","1 sat/vB","Low","If Bitcoin blocks have limited space, how should w...","Calculate Fees →","educational"
+"achievement","Bitcoin Learning Complete!","$108,457","1 sat/vB","1 sat/vB","1 sat/vB","Low","What would happen if there were no transaction fee...","Continue Learning →","achievement"
