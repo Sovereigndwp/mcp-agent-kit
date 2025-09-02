@@ -82,3 +82,37 @@ export async function btc_price(): Promise<Price> {
   saveCache(out);
   return out;
 }
+
+export const bitcoinPriceTool = {
+  name: 'bitcoin_price',
+  description: 'Get current Bitcoin price in USD and COP',
+  inputSchema: {
+    type: 'object',
+    properties: {},
+    required: []
+  },
+  handler: async () => {
+    const price = await btc_price();
+    return {
+      price: price.usd,
+      currency: 'usd',
+      cop_price: price.cop,
+      timestamp: Date.now(),
+      source: 'Multiple exchanges'
+    };
+  },
+  getBitcoinPrice: async () => {
+    const price = await btc_price();
+    return price.usd;
+  },
+  getBitcoinPriceDetails: async () => {
+    const price = await btc_price();
+    return {
+      price: price.usd,
+      currency: 'usd',
+      cop_price: price.cop,
+      timestamp: Date.now(),
+      source: 'Multiple exchanges'
+    };
+  }
+};

@@ -248,7 +248,7 @@ export class AssessmentGenerator implements QuizGenerator {
     // Get live Bitcoin data
     const [priceData, feeData] = await Promise.all([
       btc_price().catch(() => ({ usd: 50000 })),
-      getFeeEstimates().catch(() => ({ fast: 10, medium: 5, slow: 2 }))
+      getFeeEstimates().catch(() => ({ fastestFee: 10, halfHourFee: 5, economyFee: 2, hourFee: 3, minimumFee: 1, timestamp: Date.now() }))
     ]);
 
     const scenarioTemplates = templates[difficulty as keyof typeof templates];
@@ -258,9 +258,9 @@ export class AssessmentGenerator implements QuizGenerator {
       const template = scenarioTemplates[i];
       const scenarioText = template
         .replace('{price}', `$${priceData.usd.toLocaleString()}`)
-        .replace('{fast_fee}', feeData.fast?.toString() || '10')
-        .replace('{medium_fee}', feeData.medium?.toString() || '5')
-        .replace('{slow_fee}', feeData.slow?.toString() || '2');
+        .replace('{fast_fee}', feeData.fastestFee?.toString() || '10')
+        .replace('{medium_fee}', feeData.halfHourFee?.toString() || '5')
+        .replace('{slow_fee}', feeData.economyFee?.toString() || '2');
 
       questions.push({
         id: `scenario_${topic}_${difficulty}_${i + 1}`,
@@ -295,7 +295,7 @@ export class AssessmentGenerator implements QuizGenerator {
     // Get live data
     const [priceData, feeData] = await Promise.all([
       btc_price().catch(() => ({ usd: 50000 })),
-      getFeeEstimates().catch(() => ({ fast: 10, medium: 5, slow: 2 }))
+      getFeeEstimates().catch(() => ({ fastestFee: 10, halfHourFee: 5, economyFee: 2, hourFee: 3, minimumFee: 1, timestamp: Date.now() }))
     ]);
 
     const calcTemplates = templates[difficulty as keyof typeof templates];
@@ -564,7 +564,13 @@ export class AssessmentGenerator implements QuizGenerator {
       }
     };
 
-    return explanations[topic as keyof typeof explanations]?.[difficulty as keyof any]?.[index] || 
-           'Analyze this scenario considering technical, economic, and practical factors.';
+    const topicExplanations = explanations[topic as keyof typeof explanations];
+    if (topicExplanations && typeof topicExplanations === 'object') {
+      const difficultyExplanations = (topicExplanations as any)[difficulty];
+      if (Array.isArray(difficultyExplanations) && difficultyExplanations[index]) {
+        return difficultyExplanations[index];
+      }
+    }
+    return 'Analyze this scenario considering technical, economic, and practical factors.';
   }
 }

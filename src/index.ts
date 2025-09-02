@@ -3,7 +3,7 @@
 import { config } from 'dotenv';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { TaskRouter } from './router/TaskRouter.js';
+import { EnhancedTaskRouter } from './router/EnhancedTaskRouter.js';
 import { logger } from './utils/logger.js';
 
 // Load environment variables
@@ -19,8 +19,12 @@ async function main() {
       version: '1.0.0',
     });
 
-    // Initialize task router
-    const taskRouter = new TaskRouter();
+    // Initialize enhanced task router
+    const taskRouter = new EnhancedTaskRouter({
+      enablePlugins: true,
+      enableCaching: true,
+      enableEvents: true
+    });
     await taskRouter.initialize();
     
     // Set the server on the task router
@@ -40,12 +44,14 @@ async function main() {
     // Handle graceful shutdown
     process.on('SIGINT', async () => {
       logger.info('Shutting down MCP Agent Kit...');
+      await taskRouter.shutdown();
       await server.close();
       process.exit(0);
     });
 
     process.on('SIGTERM', async () => {
       logger.info('Shutting down MCP Agent Kit...');
+      await taskRouter.shutdown();
       await server.close();
       process.exit(0);
     });

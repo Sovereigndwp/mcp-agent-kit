@@ -10,7 +10,7 @@ function round(n: number, d = 2) {
   return Math.round(n * p) / p;
 }
 
-async function main() {
+export async function canvaSnippetGenerator() {
   // Pull live data
   const [fees, price] = await Promise.all([
     getFeeEstimates(),
@@ -84,6 +84,10 @@ ${prompts.map((q: string, idx: number) => `${idx + 1}. ${q}`).join('\n')}
 
   console.log('✅ Saved: exports/canva-snippet.md');
   console.log('✅ Saved: exports/canva-snippet.csv');
+}
+
+async function main() {
+  return canvaSnippetGenerator();
 }
 
 main().catch(err => {

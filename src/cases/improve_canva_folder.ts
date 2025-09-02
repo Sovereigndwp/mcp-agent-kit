@@ -125,11 +125,11 @@ class CanvaFolderImprover {
     const analysis = await this.analyzeFolder();
 
     // Create contextual designs for your folder
-    const enhancedSpecs = specs.map((spec, index) => ({
+    const enhancedSpecs = specs.map((spec: any, index: number) => ({
       ...spec,
       title: `${spec.title} - Enhanced`,
       context: `Designed for folder: ${this.folderId}`,
-      improvements: analysis.improvement_suggestions[index] || 'General Bitcoin education enhancement',
+      improvements: (analysis.improvement_suggestions as any)[index] || 'General Bitcoin education enhancement',
       existing_designs: analysis.designs.length,
       bitcoin_focus: analysis.bitcoin_related.length > 0
     }));
@@ -199,15 +199,15 @@ class CanvaFolderImprover {
 
 ## 🚀 Improvement Suggestions
 
-${enhanced.folder_analysis.improvement_suggestions.map(s => `- ${s}`).join('\n')}
+${enhanced.folder_analysis.improvement_suggestions.map((s: string) => `- ${s}`).join('\n')}
 
 ## 💡 Live Data Integration Opportunities  
 
-${enhanced.folder_analysis.live_data_opportunities.map(o => `- ${o}`).join('\n')}
+${enhanced.folder_analysis.live_data_opportunities.map((o: string) => `- ${o}`).join('\n')}
 
 ## 🎯 Recommendations
 
-${enhanced.recommendations.map(r => `- ${r}`).join('\n')}
+${enhanced.recommendations.map((r: string) => `- ${r}`).join('\n')}
 
 ## 📋 Next Steps
 
@@ -215,7 +215,7 @@ ${enhanced.next_steps.join('\n')}
 
 ## 🎨 Enhanced Design Specifications
 
-${enhanced.enhanced_designs.map((design, idx) => `
+${enhanced.enhanced_designs.map((design: any, idx: number) => `
 ### ${idx + 1}. ${design.title}
 - **Dimensions:** ${design.width} x ${design.height}px
 - **Context:** ${design.context}

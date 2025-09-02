@@ -3,3 +3,5 @@ declare module "tree-kill" {
     pid: number,
     signalOrCallback?: string | number | ((err?: Error) => void),
     callback?: (err?: Error) => void
+  ): void;
+}

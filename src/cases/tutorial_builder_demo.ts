@@ -14,8 +14,8 @@ async function main() {
     // Test basic tutorial generation
     logger.info('📚 Generating Bitcoin Basics tutorial...');
     const basicTutorial = await builder.buildTutorial('bitcoin-basics', {
-      audience: 'beginner',
-      includeCanvaDesigns: true
+      target_audience: 'general',
+      include_live_data: true
     });
 
     // Create output directory
@@ -46,9 +46,9 @@ async function main() {
     // Test advanced tutorial
     logger.info('⚡ Generating Lightning Network tutorial...');
     const advancedTutorial = await builder.buildTutorial('lightning-network', {
-      audience: 'advanced',
-      duration: 90,
-      includeCanvaDesigns: false
+      target_audience: 'professionals',
+      time_constraint: 90,
+      include_live_data: false
     });
     
     const advancedPath = join('exports/tutorials', `${advancedTutorial.module.id}.json`);

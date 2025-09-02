@@ -34,7 +34,8 @@
     "automation": "tsx src/cases/automation_manager.ts",
     "automation:start": "tsx src/automation/CourseUpdater.ts",
     "workflow": "tsx src/cases/bitcoin_canva_workflow.ts",
-    "improve:folder": "tsx src/cases/improve_canva_folder.ts"
+    "improve:folder": "tsx src/cases/improve_canva_folder.ts",
+    "phase1:demo": "tsx src/demos/phase1-demo.ts"
   },
   "keywords": [
     "mcp",

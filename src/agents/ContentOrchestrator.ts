@@ -226,9 +226,9 @@ export class ContentOrchestrator {
         logger.info('Generating tutorial content...');
         const tutorialTopic = this.mapTopicForTutorial(request.topic);
         const tutorial = await this.tutorialBuilder.buildTutorial(tutorialTopic, {
-          audience: request.difficulty,
-          duration: request.customizations?.duration_minutes,
-          includeCanvaDesigns: request.customizations?.include_designs !== false
+          target_audience: request.difficulty === 'beginner' ? 'general' : 'professionals',
+          time_constraint: request.customizations?.duration_minutes,
+          include_live_data: request.customizations?.include_designs !== false
         });
         
         results.tutorial = tutorial;

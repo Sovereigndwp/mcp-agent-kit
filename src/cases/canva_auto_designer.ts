@@ -16,6 +16,12 @@ function round(n: number, d = 2) {
   return Math.round(n * p) / p;
 }
 
+export class CanvaAutoDesigner {
+  static async run() {
+    return main();
+  }
+}
+
 async function main() {
   console.log('🎨 Bitcoin Education Auto-Designer with Canva MCP');
   console.log('═'.repeat(60));
