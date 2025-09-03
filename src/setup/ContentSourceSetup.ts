@@ -65,8 +65,8 @@ export class ContentSourceSetup {
   async runSetup(): Promise<void> {
     console.log('🧠 Content Philosophy Analysis - Setup Wizard');
     console.log('═'.repeat(50));
-    console.log('\\nThis wizard will help you integrate your real content sources.');
-    console.log('You can always update these settings later.\\n');
+    console.log('\nThis wizard will help you integrate your real content sources.');
+    console.log('You can always update these settings later.\n');
 
     try {
       await this.setupDirectories();
@@ -77,8 +77,8 @@ export class ContentSourceSetup {
       await this.saveConfiguration();
       await this.testConnections();
 
-      console.log('\\n✅ Setup complete! Your content analysis system is ready.');
-      console.log('\\n🚀 Next steps:');
+      console.log('\n✅ Setup complete! Your content analysis system is ready.');
+      console.log('\n🚀 Next steps:');
       console.log('   1. Run: npm run import:content');
       console.log('   2. Run: npm run analyze:all-content');
       console.log('   3. Check results in:', this.config.analysis_settings.output_directory);
@@ -109,7 +109,7 @@ export class ContentSourceSetup {
   }
 
   private async setupCanva(): Promise<void> {
-    console.log('\\n🎨 Canva Integration Setup');
+    console.log('\n🎨 Canva Integration Setup');
     console.log('─'.repeat(25));
     
     const enableCanva = await this.askQuestion('Do you want to integrate Canva designs? (y/n): ');
@@ -117,7 +117,7 @@ export class ContentSourceSetup {
     if (enableCanva.toLowerCase() === 'y') {
       this.config.canva.enabled = true;
       
-      console.log('\\nTo integrate Canva, you need:');
+      console.log('\nTo integrate Canva, you need:');
       console.log('1. A Canva API token from https://developers.canva.com');
       console.log('2. Your team ID (optional for personal accounts)');
       
@@ -141,7 +141,7 @@ export class ContentSourceSetup {
   }
 
   private async setupNotion(): Promise<void> {
-    console.log('\\n📝 Notion Integration Setup');
+    console.log('\n📝 Notion Integration Setup');
     console.log('─'.repeat(25));
     
     const enableNotion = await this.askQuestion('Do you want to integrate Notion content? (y/n): ');
@@ -149,7 +149,7 @@ export class ContentSourceSetup {
     if (enableNotion.toLowerCase() === 'y') {
       this.config.notion.enabled = true;
       
-      console.log('\\nTo integrate Notion, you need:');
+      console.log('\nTo integrate Notion, you need:');
       console.log('1. Create an integration at https://www.notion.so/my-integrations');
       console.log('2. Get the internal integration token');
       console.log('3. Share your pages/databases with the integration');
@@ -160,7 +160,7 @@ export class ContentSourceSetup {
         const token = await this.askQuestion('Enter your Notion integration token: ');
         this.config.notion.token = token;
         
-        console.log('\\nEnter your database/page IDs (one per line, empty line to finish):');
+        console.log('\nEnter your database/page IDs (one per line, empty line to finish):');
         let databaseId = '';
         do {
           databaseId = await this.askQuestion('Database/Page ID: ');
@@ -179,7 +179,7 @@ export class ContentSourceSetup {
   }
 
   private async setupGPTs(): Promise<void> {
-    console.log('\\n🤖 Custom GPT Integration Setup');
+    console.log('\n🤖 Custom GPT Integration Setup');
     console.log('─'.repeat(30));
     
     const enableGPTs = await this.askQuestion('Do you want to integrate Custom GPTs? (y/n): ');
@@ -187,7 +187,7 @@ export class ContentSourceSetup {
     if (enableGPTs.toLowerCase() === 'y') {
       this.config.gpts.enabled = true;
       
-      console.log('\\nFor Custom GPTs, you can:');
+      console.log('\nFor Custom GPTs, you can:');
       console.log('1. Export GPT configurations manually');
       console.log('2. Use OpenAI API (if you have API access)');
       
@@ -236,7 +236,7 @@ export class ContentSourceSetup {
   }
 
   private async setupAnalysisSettings(): Promise<void> {
-    console.log('\\n⚙️ Analysis Settings');
+    console.log('\n⚙️ Analysis Settings');
     console.log('─'.repeat(18));
     
     const outputDir = await this.askQuestion(`Output directory [${this.config.analysis_settings.output_directory}]: `);
@@ -303,7 +303,7 @@ ENABLE_AUTO_BACKUP=${this.config.analysis_settings.auto_backup}
   }
 
   private async testConnections(): Promise<void> {
-    console.log('\\n🔍 Testing connections...');
+    console.log('\n🔍 Testing connections...');
     
     // Test Canva connection
     if (this.config.canva.enabled && this.config.canva.api_token) {
