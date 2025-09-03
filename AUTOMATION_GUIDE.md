@@ -1,6 +1,7 @@
 
 
 
+
 # 🤖 Bitcoin Course Automation Guide
 
 ## Overview
