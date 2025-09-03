@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1: The Money Problem - Free Bitcoin Discovery | Layer D</title>
+    <meta name="description" content="Discover why Bitcoin matters through a simple question about money. Free interactive module with no email required.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Free Bitcoin Module: The Money Problem">
+    <meta property="og:description" content="Ask yourself one question and discover why Bitcoin actually matters. No email required.">
+    <meta property="og:image" content="https://layer-d.net/og-free-module.jpg">
+    <meta property="og:url" content="https://layer-d.net/free-module">
+    
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    
+    <style>
+        :root {
+            --primary-orange: #FF9500;
+            --primary-green: #4CAF50;
+            --primary-blue: #2196F3;
+            --dark-bg: #0A0A0B;
+            --card-bg: #1A1B1E;
+            --text-light: #E8E8E8;
+            --text-white: #FFFFFF;
+            --text-gray: #A8A8A8;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: var(--primary-orange);
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-link:hover {
+            opacity: 0.8;
+        }
+        
+        .module-badge {
+            display: inline-block;
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--primary-green);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+        
+        .module-title {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 20px;
+        }
+        
+        .module-subtitle {
+            font-size: 1.2em;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+        }
+        
+        .progress-bar {
+            background: var(--card-bg);
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, var(--primary-green) 0%, var(--primary-orange) 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .step {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-subtle);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .step.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: var(--primary-orange);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .question-box {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--primary-green);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            font-size: 1.3em;
+            font-style: italic;
+            color: var(--text-white);
+        }
+        
+        .thinking-area {
+            background: var(--dark-bg);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            min-height: 150px;
+            font-size: 1.1em;
+            color: var(--text-light);
+            outline: none;
+            transition: border-color 0.3s ease;
+            resize: vertical;
+            width: 100%;
+        }
+        
+        .thinking-area:focus {
+            border-color: var(--primary-green);
+        }
+        
+        .thinking-area::placeholder {
+            color: var(--text-gray);
+            font-style: italic;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-orange) 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .insight-reveal {
+            background: rgba(33, 150, 243, 0.1);
+            border: 2px solid var(--primary-blue);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            display: none;
+        }
+        
+        .insight-reveal.show {
+            display: block;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .insight-title {
+            color: var(--primary-blue);
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .comparison-item {
+            background: var(--dark-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .comparison-item h4 {
+            color: var(--primary-orange);
+            margin-bottom: 10px;
+        }
+        
+        .achievement {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.1) 0%, rgba(76, 175, 80, 0.1) 100%);
+            border: 2px solid var(--primary-orange);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 40px 0;
+            display: none;
+        }
+        
+        .achievement.show {
+            display: block;
+            animation: bounceIn 0.8s ease;
+        }
+        
+        .achievement-badge {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .achievement-title {
+            color: var(--primary-orange);
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .achievement-points {
+            color: var(--primary-green);
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .next-steps {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            display: none;
+        }
+        
+        .next-steps.show {
+            display: block;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .email-capture {
+            background: var(--dark-bg);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .email-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-subtle);
+            border-radius: 50px;
+            color: var(--text-light);
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .email-input:focus {
+            border-color: var(--primary-orange);
+        }
+        
+        .email-input::placeholder {
+            color: var(--text-gray);
+        }
+        
+        .privacy-note {
+            font-size: 0.9em;
+            color: var(--text-gray);
+            margin-top: 15px;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .module-title {
+                font-size: 2em;
+            }
+            
+            .question-box {
+                font-size: 1.1em;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">← Back to Layer D</a>
+            <div class="module-badge">🔓 FREE MODULE 1</div>
+            <h1 class="module-title">The Money Problem</h1>
+            <p class="module-subtitle">
+                Discover why Bitcoin matters by asking the right question first
+            </p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: The Question -->
+        <div class="step active" id="step-1">
+            <div class="step-number">1</div>
+            <h2>Before we talk about Bitcoin...</h2>
+            
+            <div class="question-box">
+                "What problems do you think money needs to solve in our modern world?"
+            </div>
+            
+            <p>Take a moment to really think about this. What challenges or issues come to mind when you think about money and how it works today?</p>
+            
+            <textarea 
+                class="thinking-area" 
+                id="user-thoughts"
+                placeholder="Write your thoughts here... What problems does money need to solve? Think about sending money, storing value, trust, fees, speed, access, etc."
+            ></textarea>
+            
+            <button class="btn" onclick="revealInsights()" id="continue-btn" disabled>
+                I've thought about it →
+            </button>
+        </div>
+
+        <!-- Step 2: The Insight -->
+        <div class="step" id="step-2">
+            <div class="step-number">2</div>
+            <h2>Here's what most people discover...</h2>
+            
+            <div class="insight-reveal" id="insights">
+                <div class="insight-title">🎯 Your insights likely included:</div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <h4>Speed & Access</h4>
+                        <p>Sending money across borders is slow and expensive</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Trust Issues</h4>
+                        <p>We need banks and governments to verify transactions</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Control</h4>
+                        <p>Others can freeze, limit, or control our money</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Inflation</h4>
+                        <p>Money loses value over time as more is printed</p>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 1.1em; color: var(--text-white);">
+                    <strong>Here's the breakthrough:</strong> Bitcoin was specifically designed to solve exactly these problems. 
+                    Every feature of Bitcoin addresses one of the challenges you just identified.
+                </p>
+            </div>
+            
+            <button class="btn" onclick="showConnection()" id="connection-btn" style="display: none;">
+                Show me how Bitcoin solves this →
+            </button>
+        </div>
+
+        <!-- Step 3: The Connection -->
+        <div class="step" id="step-3">
+            <div class="step-number">3</div>
+            <h2>The Bitcoin Connection</h2>
+            
+            <div class="insight-reveal" id="bitcoin-connection">
+                <div class="insight-title">💡 Why Bitcoin makes sense now:</div>
+                
+                <div style="margin: 30px 0;">
+                    <div style="background: var(--dark-bg); padding: 25px; border-radius: 12px; margin-bottom: 20px;">
+                        <h4 style="color: var(--primary-green); margin-bottom: 10px;">Problem: Slow, expensive transfers</h4>
+                        <p><strong>Bitcoin solution:</strong> Send any amount to anyone, anywhere, 24/7. No bank holidays, no geographic restrictions.</p>
+                    </div>
+                    
+                    <div style="background: var(--dark-bg); padding: 25px; border-radius: 12px; margin-bottom: 20px;">
+                        <h4 style="color: var(--primary-green); margin-bottom: 10px;">Problem: Need trusted middlemen</h4>
+                        <p><strong>Bitcoin solution:</strong> Mathematical proof instead of trust. The network verifies every transaction automatically.</p>
+                    </div>
+                    
+                    <div style="background: var(--dark-bg); padding: 25px; border-radius: 12px; margin-bottom: 20px;">
+                        <h4 style="color: var(--primary-green); margin-bottom: 10px;">Problem: Money can be controlled or frozen</h4>
+                        <p><strong>Bitcoin solution:</strong> You control your money directly. No one can freeze your account or reverse your transactions.</p>
+                    </div>
+                    
+                    <div style="background: var(--dark-bg); padding: 25px; border-radius: 12px;">
+                        <h4 style="color: var(--primary-green); margin-bottom: 10px;">Problem: Inflation reduces purchasing power</h4>
+                        <p><strong>Bitcoin solution:</strong> Fixed supply of 21 million coins. No one can print more, ever.</p>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 30px; font-size: 1.2em; color: var(--text-white); text-align: center; font-weight: 600;">
+                    This is why Bitcoin exists. It's not just "digital money" - it's a solution to real problems you already understood.
+                </p>
+            </div>
+            
+            <button class="btn" onclick="showAchievement()" id="achievement-btn" style="display: none;">
+                I get it now! →
+            </button>
+        </div>
+
+        <!-- Achievement -->
+        <div class="achievement" id="achievement">
+            <span class="achievement-badge">🏆</span>
+            <div class="achievement-title">Money Detective Badge Earned!</div>
+            <div class="achievement-points">+100 Points</div>
+            <p style="color: var(--text-light); margin-bottom: 30px;">
+                You've discovered why Bitcoin matters by thinking through the problems yourself. 
+                This understanding will stick because <em>you</em> discovered it.
+            </p>
+            
+            <button class="btn" onclick="showNextSteps()" id="next-btn">
+                What's next? →
+            </button>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="next-steps" id="next-steps">
+            <h2 style="color: var(--text-white); margin-bottom: 30px;">Ready to go deeper?</h2>
+            
+            <p style="margin-bottom: 30px; font-size: 1.1em;">
+                You just experienced discovery-based learning. Instead of memorizing facts about Bitcoin, 
+                you discovered why it makes sense through your own thinking.
+            </p>
+            
+            <p style="margin-bottom: 30px;">
+                <strong>The complete course has 10 more modules like this:</strong><br>
+                Each starts with a question. Each builds understanding through discovery.
+                Each earns you achievement badges as you master Bitcoin from first principles.
+            </p>
+            
+            <div class="email-capture">
+                <h3 style="color: var(--primary-orange); margin-bottom: 20px;">Get notified when the full course launches</h3>
+                <p style="margin-bottom: 20px;">Early access + special launch pricing for people who completed this free module</p>
+                
+                <input type="email" class="email-input" id="email" placeholder="Your email address">
+                <button class="btn" onclick="captureEmail()" id="email-btn">
+                    Reserve My Spot
+                </button>
+                
+                <p class="privacy-note">
+                    🔒 Your email stays private. Unsubscribe anytime. No spam, just Bitcoin learning updates.
+                </p>
+            </div>
+            
+            <div style="margin-top: 40px; padding: 30px; background: rgba(255, 149, 0, 0.1); border-radius: 15px; border: 1px solid rgba(255, 149, 0, 0.3);">
+                <h3 style="color: var(--primary-orange); margin-bottom: 15px;">What's coming in the full course:</h3>
+                <ul style="text-align: left; max-width: 400px; margin: 0 auto; color: var(--text-light);">
+                    <li>Module 2: The Double-Spend Problem</li>
+                    <li>Module 3: The Trust Problem</li>
+                    <li>Module 4: How Consensus Works</li>
+                    <li>Module 5: Proof of Work Explained</li>
+                    <li>+ 6 more discovery modules</li>
+                    <li>+ Complete achievement system</li>
+                    <li>+ Certificate of completion</li>
+                </ul>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <a href="/" class="btn" style="background: var(--dark-bg); border: 2px solid var(--primary-orange);">
+                    ← Back to Layer D
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let userThoughts = '';
+        
+        // Enable continue button when user starts typing
+        document.getElementById('user-thoughts').addEventListener('input', function(e) {
+            const continueBtn = document.getElementById('continue-btn');
+            if (e.target.value.trim().length > 20) {
+                continueBtn.disabled = false;
+                continueBtn.textContent = "I've thought about it →";
+            } else {
+                continueBtn.disabled = true;
+                continueBtn.textContent = "Write more thoughts first...";
+            }
+            userThoughts = e.target.value;
+        });
+        
+        function updateProgress(percent) {
+            document.getElementById('progress').style.width = percent + '%';
+        }
+        
+        function revealInsights() {
+            updateProgress(33);
+            document.getElementById('insights').classList.add('show');
+            document.getElementById('connection-btn').style.display = 'inline-block';
+            
+            // Track engagement
+            gtag('event', 'module_progress', {
+                step: 'insights_revealed',
+                user_thoughts_length: userThoughts.length
+            });
+            
+            // Auto-scroll to insights after a moment
+            setTimeout(() => {
+                document.getElementById('insights').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        }
+        
+        function showConnection() {
+            updateProgress(66);
+            document.getElementById('step-2').classList.add('active');
+            document.getElementById('bitcoin-connection').classList.add('show');
+            document.getElementById('achievement-btn').style.display = 'inline-block';
+            
+            // Track progression
+            gtag('event', 'module_progress', {
+                step: 'bitcoin_connection_shown'
+            });
+            
+            setTimeout(() => {
+                document.getElementById('bitcoin-connection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        }
+        
+        function showAchievement() {
+            updateProgress(100);
+            document.getElementById('step-3').classList.add('active');
+            document.getElementById('achievement').classList.add('show');
+            
+            // Track completion
+            gtag('event', 'module_completion', {
+                step: 'achievement_earned',
+                completion_time: Date.now() - startTime
+            });
+            
+            setTimeout(() => {
+                document.getElementById('achievement').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        }
+        
+        function showNextSteps() {
+            document.getElementById('next-steps').classList.add('show');
+            
+            setTimeout(() => {
+                document.getElementById('next-steps').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 500);
+        }
+        
+        function captureEmail() {
+            const email = document.getElementById('email').value;
+            const emailBtn = document.getElementById('email-btn');
+            
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            // Update button state
+            emailBtn.textContent = 'Adding you to the list...';
+            emailBtn.disabled = true;
+            
+            // Track email capture
+            gtag('event', 'email_capture', {
+                source: 'free_module_completion'
+            });
+            
+            // Here you would integrate with your email service (ConvertKit, Mailchimp, etc.)
+            // For now, we'll simulate the process
+            setTimeout(() => {
+                emailBtn.textContent = '✅ You\'re on the list!';
+                emailBtn.style.background = 'var(--primary-green)';
+                
+                // Show success message
+                setTimeout(() => {
+                    alert('🎉 Success! You\'ll be the first to know when the full course launches. Check your email for a special preview of Module 2!');
+                }, 500);
+            }, 2000);
+        }
+        
+        // Track page load and start time
+        const startTime = Date.now();
+        gtag('event', 'free_module_start');
+        
+        // Track scroll depth
+        let maxScroll = 0;
+        window.addEventListener('scroll', function() {
+            const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+            if (scrollPercent > maxScroll) {
+                maxScroll = scrollPercent;
+                if (maxScroll >= 50 && maxScroll < 75) {
+                    gtag('event', 'scroll_depth', { depth: '50%' });
+                } else if (maxScroll >= 75) {
+                    gtag('event', 'scroll_depth', { depth: '75%' });
+                }
+            }
+        });
+        
+        // Track time spent on page
+        window.addEventListener('beforeunload', function() {
+            gtag('event', 'time_on_page', {
+                duration: Math.round((Date.now() - startTime) / 1000)
+            });
+        });
+    </script>
+</body>
+</html>

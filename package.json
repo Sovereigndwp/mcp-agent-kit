@@ -35,7 +35,20 @@
     "automation:start": "tsx src/automation/CourseUpdater.ts",
     "workflow": "tsx src/cases/bitcoin_canva_workflow.ts",
     "improve:folder": "tsx src/cases/improve_canva_folder.ts",
-    "phase1:demo": "tsx src/demos/phase1-demo.ts"
+    "phase1:demo": "tsx src/demos/phase1-demo.ts",
+    "content:philosophy": "tsx src/demos/content-philosophy-demo.ts",
+    "setup:content-sources": "tsx src/setup/ContentSourceSetup.ts",
+    "import:content": "tsx -e \"import('./src/importers/ContentImporter.js').then(m => new m.ContentImporter().importAllContent())\"",
+    "import:canva": "tsx -e \"import('./src/importers/ContentImporter.js').then(m => new m.ContentImporter().importCanvaContent())\"",
+    "import:notion": "tsx -e \"import('./src/importers/ContentImporter.js').then(m => new m.ContentImporter().importNotionContent())\"",
+    "import:gpts": "tsx -e \"import('./src/importers/ContentImporter.js').then(m => new m.ContentImporter().importGPTContent())\"",
+    "analyze:all-content": "tsx -e \"import('./src/importers/ContentImporter.js').then(m => new m.ContentImporter().analyzeImportedContent())\"",
+    "test:connections": "tsx -e \"console.log('Testing API connections...')\"",
+    "diagnose:content-sources": "tsx -e \"console.log('Running diagnostics...')\"",
+    "demo:real-content": "tsx src/demos/real-content-demo.ts",
+    "build:deploy": "tsc --project tsconfig.deploy.json",
+    "start:deploy": "node dist/web/server.js",
+    "postinstall": "npm run build:deploy"
   },
   "keywords": [
     "mcp",

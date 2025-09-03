@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Mastery - Learn from First Principles</title>
+    <meta name="description" content="Master Bitcoin through interactive learning. Free first module, then unlock the complete course with Socratic questioning and gamified achievements.">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Bitcoin Mastery - The Only Course You Need">
+    <meta property="og:description" content="Learn Bitcoin the right way - from first principles, through discovery, with zero jargon.">
+    <meta property="og:image" content="https://your-domain.com/bitcoin-course-preview.jpg">
+    <meta property="og:type" content="website">
+    
+    <style>
+        :root {
+            --primary-orange: #FF9500;
+            --primary-green: #4CAF50;
+            --dark-bg: #000000;
+            --card-bg: #1A1A1A;
+            --text-light: #E8E8E8;
+            --text-white: #FFFFFF;
+            --accent-blue: #3498db;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--card-bg) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: radial-gradient(circle at center, rgba(255, 149, 0, 0.1) 0%, transparent 70%);
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            font-weight: bold;
+            color: var(--primary-orange);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero .subtitle {
+            font-size: 1.4em;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto 60px auto;
+            padding: 0 20px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            padding: 30px 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 149, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 149, 0, 0.2);
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--primary-orange);
+            display: block;
+        }
+        
+        .stat-label {
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(90deg, rgba(76, 175, 80, 0.1) 0%, rgba(255, 149, 0, 0.1) 100%);
+            margin: 40px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-orange) 100%);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.4);
+        }
+        
+        .pricing {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+        
+        .pricing h2 {
+            text-align: center;
+            font-size: 2.5em;
+            color: var(--primary-orange);
+            margin-bottom: 50px;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--primary-orange);
+            transform: scale(1.05);
+        }
+        
+        .pricing-card.featured::before {
+            content: "🏆 MOST POPULAR";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-orange);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .plan-name {
+            font-size: 1.8em;
+            color: var(--primary-orange);
+            margin-bottom: 10px;
+        }
+        
+        .plan-price {
+            font-size: 3em;
+            color: var(--text-white);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .plan-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .plan-features li:before {
+            content: "✅ ";
+            color: var(--primary-green);
+            font-weight: bold;
+        }
+        
+        .social-proof {
+            background: var(--card-bg);
+            padding: 60px 20px;
+            text-align: center;
+            margin: 80px 0;
+        }
+        
+        .testimonial {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.2em;
+            font-style: italic;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .modules-preview {
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+        
+        .modules-preview h2 {
+            text-align: center;
+            color: var(--primary-orange);
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .module-list {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .module-item {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary-green);
+            transition: all 0.3s ease;
+        }
+        
+        .module-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+        }
+        
+        .module-title {
+            color: var(--primary-orange);
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .module-question {
+            color: var(--primary-green);
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .module-reward {
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+        
+        .footer {
+            background: var(--dark-bg);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 149, 0, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Bitcoin from First Principles</h1>
+        <p class="subtitle">
+            Master Bitcoin through interactive discovery. No jargon. No assumptions. 
+            Just clear thinking from the ground up.
+        </p>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-value">11</span>
+                <div class="stat-label">Core Principles</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">15+</span>
+                <div class="stat-label">Interactive Demos</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">2-3h</span>
+                <div class="stat-label">Total Time</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">🏆</span>
+                <div class="stat-label">Achievement System</div>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <a href="#pricing" class="cta-button">Start Your Bitcoin Journey Free</a>
+            <p style="margin-top: 20px; color: var(--text-light);">
+                ✨ First module completely free • No credit card required
+            </p>
+        </div>
+    </div>
+
+    <div class="modules-preview">
+        <h2>🧩 What You'll Discover</h2>
+        <div class="module-list">
+            <div class="module-item">
+                <div class="module-title">🔓 Module 1: The Money Problem (FREE)</div>
+                <div class="module-question">"What problems do you think money needs to solve in our modern world?"</div>
+                <div class="module-reward">🏆 Earn: Money Detective Badge (100 points)</div>
+            </div>
+            
+            <div class="module-item">
+                <div class="module-title">🔒 Module 2: The Double-Spend Problem</div>
+                <div class="module-question">"If I could copy digital money like copying a file, what would happen to its value?"</div>
+                <div class="module-reward">🏆 Earn: Digital Sleuth Badge (150 points)</div>
+            </div>
+            
+            <div class="module-item">
+                <div class="module-title">🔒 Module 3: The Trust Problem</div>
+                <div class="module-question">"Who do you currently trust with your money? What if there was no one to trust?"</div>
+                <div class="module-reward">🏆 Earn: Trust Explorer Badge (200 points)</div>
+            </div>
+            
+            <div style="text-align: center; padding: 20px; color: var(--text-light);">
+                <p>... and 8 more modules building up to complete Bitcoin mastery</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="pricing" id="pricing">
+        <h2>Choose Your Learning Path</h2>
+        
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="plan-name">Free Discovery</div>
+                <div class="plan-price">$0</div>
+                <ul class="plan-features">
+                    <li>Module 1: The Money Problem</li>
+                    <li>Interactive discovery questions</li>
+                    <li>Your first achievement badge</li>
+                    <li>Progress tracking</li>
+                    <li>Email course preview</li>
+                </ul>
+                <a href="#" class="cta-button" style="background: var(--primary-green);">Start Free</a>
+            </div>
+            
+            <div class="pricing-card featured">
+                <div class="plan-name">Complete Mastery</div>
+                <div class="plan-price">$47</div>
+                <ul class="plan-features">
+                    <li>All 11 interactive modules</li>
+                    <li>15+ hands-on demos</li>
+                    <li>Complete achievement system (4,250 points)</li>
+                    <li>Certificate of completion</li>
+                    <li>Lifetime access & updates</li>
+                    <li>Private community access</li>
+                    <li>30-day money-back guarantee</li>
+                </ul>
+                <a href="#" class="cta-button">Unlock Full Course</a>
+            </div>
+            
+            <div class="pricing-card">
+                <div class="plan-name">1-on-1 Mentoring</div>
+                <div class="plan-price">$297</div>
+                <ul class="plan-features">
+                    <li>Everything in Complete Mastery</li>
+                    <li>3 x 1-hour personal sessions</li>
+                    <li>Custom learning path</li>
+                    <li>Direct access to creator</li>
+                    <li>Review your Bitcoin projects</li>
+                    <li>Advanced implementation guidance</li>
+                </ul>
+                <a href="#" class="cta-button" style="background: linear-gradient(135deg, var(--primary-orange) 0%, #e74c3c 100%);">Book Mentoring</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="social-proof">
+        <h2 style="color: var(--primary-orange); margin-bottom: 40px;">Learning Philosophy That Works</h2>
+        
+        <div class="testimonial">
+            "This course doesn't just tell you about Bitcoin - it helps you discover why it matters through your own thinking. 
+            The Socratic approach means you truly understand, not just memorize."
+        </div>
+        <p style="color: var(--text-light);">- Built on proven educational principles</p>
+        
+        <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; max-width: 800px; margin-left: auto; margin-right: auto;">
+            <div>
+                <div style="font-size: 2em; color: var(--primary-green);">🤔</div>
+                <div style="font-weight: bold; color: var(--primary-orange);">Socratic Method</div>
+                <div style="color: var(--text-light);">Questions before answers</div>
+            </div>
+            <div>
+                <div style="font-size: 2em; color: var(--primary-green);">🏗️</div>
+                <div style="font-weight: bold; color: var(--primary-orange);">Ground-Up Building</div>
+                <div style="color: var(--text-light);">Start with what you know</div>
+            </div>
+            <div>
+                <div style="font-size: 2em; color: var(--primary-green);">🎮</div>
+                <div style="font-weight: bold; color: var(--primary-orange);">Gamified Learning</div>
+                <div style="color: var(--text-light);">Achievements & progress</div>
+            </div>
+            <div>
+                <div style="font-size: 2em; color: var(--primary-green);">💡</div>
+                <div style="font-weight: bold; color: var(--primary-orange);">Zero Jargon</div>
+                <div style="color: var(--text-light);">Plain English only</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Bitcoin Mastery Course. Built with first principles thinking.</p>
+        <p style="margin-top: 10px; color: var(--text-light);">
+            Questions? Email: hello@bitcoinmastery.com | 30-day money-back guarantee
+        </p>
+    </div>
+
+    <script>
+        // Simple progress tracking and engagement
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for CTA
+            document.querySelector('.cta-button').addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#pricing') {
+                    e.preventDefault();
+                    document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+            
+            // Add interaction tracking
+            console.log('Bitcoin Mastery course page loaded');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Discovery Journey - Learn Bitcoin from Zero | Layer D</title>
+    <meta name="description" content="Perfect for complete beginners. Discover Bitcoin through questions and interactive exploration. 8 modules, 3-4 hours, start your Bitcoin journey today.">
+    
+    <style>
+        :root {
+            --primary-orange: #FF9500;
+            --primary-green: #4CAF50;
+            --dark-bg: #0A0A0B;
+            --card-bg: #1A1B1E;
+            --text-light: #E8E8E8;
+            --text-white: #FFFFFF;
+            --text-gray: #A8A8A8;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 11, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.8em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero {
+            padding: 120px 20px 80px;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
+        }
+        
+        .path-badge {
+            display: inline-block;
+            background: var(--primary-green);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5em, 5vw, 3.5em);
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: var(--text-white);
+        }
+        
+        .hero .subtitle {
+            font-size: 1.3em;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .path-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: var(--primary-green);
+            display: block;
+        }
+        
+        .stat-label {
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-orange) 100%);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.4);
+        }
+        
+        .modules {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: var(--text-white);
+            margin-bottom: 20px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 50px;
+            font-size: 1.1em;
+        }
+        
+        .module-list {
+            display: grid;
+            gap: 25px;
+        }
+        
+        .module-item {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .module-item:hover {
+            background: rgba(26, 27, 30, 0.8);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .module-item.locked {
+            opacity: 0.6;
+        }
+        
+        .module-item.locked::after {
+            content: "🔒";
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5em;
+        }
+        
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .module-number {
+            background: var(--primary-green);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .module-info {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+        
+        .module-title {
+            font-size: 1.4em;
+            color: var(--text-white);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .discovery-question {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--primary-green);
+            padding: 15px;
+            border-radius: 8px;
+            font-style: italic;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-green);
+        }
+        
+        .module-description {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .module-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        
+        .module-duration {
+            color: var(--text-gray);
+            font-size: 0.9em;
+        }
+        
+        .module-type {
+            background: var(--primary-orange);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .start-btn {
+            background: var(--primary-green);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .start-btn:hover {
+            background: var(--primary-orange);
+        }
+        
+        .start-btn.locked {
+            background: var(--text-gray);
+            cursor: not-allowed;
+        }
+        
+        .progress-tracker {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .progress-title {
+            color: var(--text-white);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            background: var(--primary-green);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .path-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .progress-tracker {
+                position: static;
+                margin: 40px 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="/" class="logo">Layer D</a>
+            <div>
+                <a href="/" style="color: var(--text-light); text-decoration: none; margin-right: 20px;">← All Paths</a>
+                <a href="#start" class="btn-primary" style="padding: 8px 20px; font-size: 0.9em;">Start Module 1</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="path-badge">BEGINNER FRIENDLY</div>
+        
+        <h1>Bitcoin Discovery Journey</h1>
+        
+        <p class="subtitle">
+            Perfect for complete beginners. Start from zero knowledge and discover Bitcoin through questions 
+            and interactive exploration. Learn why Bitcoin matters through your own thinking.
+        </p>
+        
+        <div class="path-stats">
+            <div class="stat">
+                <span class="stat-number">8</span>
+                <div class="stat-label">Modules</div>
+            </div>
+            <div class="stat">
+                <span class="stat-number">3-4h</span>
+                <div class="stat-label">Total Time</div>
+            </div>
+            <div class="stat">
+                <span class="stat-number">5</span>
+                <div class="stat-label">Interactive Demos</div>
+            </div>
+            <div class="stat">
+                <span class="stat-number">0%</span>
+                <div class="stat-label">Your Progress</div>
+            </div>
+        </div>
+        
+        <a href="#module1" class="btn-primary">Start Your Discovery Journey</a>
+    </section>
+
+    <section class="modules">
+        <h2 class="section-title">Your Learning Path</h2>
+        <p class="section-subtitle">
+            Each module starts with a discovery question. Think through your answer before revealing the concepts. 
+            This is how real understanding happens.
+        </p>
+        
+        <div class="module-list">
+            <!-- Module 1 -->
+            <div class="module-item" id="module1">
+                <div class="module-header">
+                    <div class="module-number">1</div>
+                    <div class="module-info">
+                        <h3 class="module-title">The Double-Spend Problem</h3>
+                        <div class="discovery-question">
+                            "What happens when you try to send the same digital photo to two people?"
+                        </div>
+                        <p class="module-description">
+                            Before learning what Bitcoin is, discover the core problem it solves. Through a simple analogy 
+                            about digital files, you'll understand why digital money is fundamentally different from digital photos.
+                        </p>
+                    </div>
+                </div>
+                <div class="module-meta">
+                    <span class="module-duration">⏱ 20 minutes</span>
+                    <span class="module-type">Interactive Demo</span>
+                    <a href="/doublespendsolved" class="start-btn">Start Module →</a>
+                </div>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="module-item locked">
+                <div class="module-header">
+                    <div class="module-number">2</div>
+                    <div class="module-info">
+                        <h3 class="module-title">What Are Miners?</h3>
+                        <div class="discovery-question">
+                            "If there's no bank to verify transactions, who keeps the Bitcoin network secure?"
+                        </div>
+                        <p class="module-description">
+                            Discover what Bitcoin miners actually do through visual explanations. You'll understand why 
+                            they're essential and how they keep the network running without anyone in charge.
+                        </p>
+                    </div>
+                </div>
+                <div class="module-meta">
+                    <span class="module-duration">⏱ 15 minutes</span>
+                    <span class="module-type">Visual Guide</span>
+                    <span class="start-btn locked">Complete Module 1 First</span>
+                </div>
+            </div>
+
+            <!-- Module 3 -->
+            <div class="module-item locked">
+                <div class="module-header">
+                    <div class="module-number">3</div>
+                    <div class="module-info">
+                        <h3 class="module-title">The Bitcoin Blockchain</h3>
+                        <div class="discovery-question">
+                            "How can you link events together so no one can change history?"
+                        </div>
+                        <p class="module-description">
+                            Explore how the blockchain creates an unchangeable record. Through simple analogies, 
+                            understand why this "chain of blocks" is revolutionary for digital record-keeping.
+                        </p>
+                    </div>
+                </div>
+                <div class="module-meta">
+                    <span class="module-duration">⏱ 25 minutes</span>
+                    <span class="module-type">Educational Guide</span>
+                    <span class="start-btn locked">Complete Previous Modules</span>
+                </div>
+            </div>
+
+            <!-- Module 4 -->
+            <div class="module-item locked">
+                <div class="module-header">
+                    <div class="module-number">4</div>
+                    <div class="module-info">
+                        <h3 class="module-title">Evolution of Money to Bitcoin</h3>
+                        <div class="discovery-question">
+                            "How did humans go from bartering chickens to digital money?"
+                        </div>
+                        <p class="module-description">
+                            Interactive timeline showing money's evolution. Discover why each form of money emerged 
+                            and how Bitcoin represents the next logical step in monetary evolution.
+                        </p>
+                    </div>
+                </div>
+                <div class="module-meta">
+                    <span class="module-duration">⏱ 30 minutes</span>
+                    <span class="module-type">Interactive Timeline</span>
+                    <span class="start-btn locked">Complete Previous Modules</span>
+                </div>
+            </div>
+
+            <!-- Module 5 -->
+            <div class="module-item locked">
+                <div class="module-header">
+                    <div class="module-number">5</div>
+                    <div class="module-info">
+                        <h3 class="module-title">Bitcoin's Revolutionary Impact</h3>
+                        <div class="discovery-question">
+                            "What would the world look like if everyone had access to programmable money?"
+                        </div>
+                        <p class="module-description">
+                            Explore Bitcoin's potential to revolutionize finance and empower users globally. 
+                            Real examples of how Bitcoin is already changing lives around the world.
+                        </p>
+                    </div>
+                </div>
+                <div class="module-meta">
+                    <span class="module-duration">⏱ 35 minutes</span>
+                    <span class="module-type">Impact Analysis</span>
+                    <span class="start-btn locked">Complete Previous Modules</span>
+                </div>
+            </div>
+
+            <!-- Module 6 -->
+            <div class="module-item locked">
+                <div class="module-header">
+                    <div class="module-number">6</div>
+                    <div class="module-info">
+                        <h3 class="module-title">Bitcoin vs Traditional Banking</h3>
+                        <div class="discovery-question">
+                            "What if you could send money like you send an email?"
+                        </div>
+                        <p class="module-description">
+                            Compare Bitcoin transactions with traditional banking. Discover the advantages of 
+                            peer-to-peer digital money through practical examples and real-world scenarios.
+                        </p>
+                    </div>
+                </div>
+                <div class="module-meta">
+                    <span class="module-duration">⏱ 25 minutes</span>
+                    <span class="module-type">Comparative Analysis</span>
+                    <span class="start-btn locked">Complete Previous Modules</span>
+                </div>
+            </div>
+
+            <!-- Module 7 -->
+            <div class="module-item locked">
+                <div class="module-header">
+                    <div class="module-number">7</div>
+                    <div class="module-info">
+                        <h3 class="module-title">Bitcoin Security Fundamentals</h3>
+                        <div class="discovery-question">
+                            "How do you prove a digital message really came from you?"
+                        </div>
+                        <p class="module-description">
+                            Understand Bitcoin's security through digital signatures and cryptographic principles. 
+                            Learn how Bitcoin ensures your money stays yours without complex technical jargon.
+                        </p>
+                    </div>
+                </div>
+                <div class="module-meta">
+                    <span class="module-duration">⏱ 30 minutes</span>
+                    <span class="module-type">Security Guide</span>
+                    <span class="start-btn locked">Complete Previous Modules</span>
+                </div>
+            </div>
+
+            <!-- Module 8 -->
+            <div class="module-item locked">
+                <div class="module-header">
+                    <div class="module-number">8</div>
+                    <div class="module-info">
+                        <h3 class="module-title">Your Bitcoin Journey Continues</h3>
+                        <div class="discovery-question">
+                            "Now that you understand Bitcoin's foundations, what's your next step?"
+                        </div>
+                        <p class="module-description">
+                            Celebrate completing your discovery journey! Review key insights, assess your understanding, 
+                            and choose your next learning path based on your interests and goals.
+                        </p>
+                    </div>
+                </div>
+                <div class="module-meta">
+                    <span class="module-duration">⏱ 20 minutes</span>
+                    <span class="module-type">Assessment & Planning</span>
+                    <span class="start-btn locked">Complete Previous Modules</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="progress-tracker">
+        <div class="progress-title">Your Progress</div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div style="color: var(--text-gray); font-size: 0.9em;">0 of 8 modules complete</div>
+    </div>
+
+    <script>
+        // Progress tracking
+        let completedModules = 0;
+        const totalModules = 8;
+        
+        function updateProgress() {
+            const progressFill = document.querySelector('.progress-fill');
+            const progressText = document.querySelector('.progress-tracker div:last-child');
+            const progressPercent = document.querySelector('.stat-number:last-of-type');
+            
+            const percentage = (completedModules / totalModules) * 100;
+            
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = `${completedModules} of ${totalModules} modules complete`;
+            progressPercent.textContent = Math.round(percentage) + '%';
+        }
+        
+        // Simulate module completion (in real implementation, this would sync with actual progress)
+        document.querySelectorAll('.start-btn').forEach((btn, index) => {
+            if (!btn.classList.contains('locked')) {
+                btn.addEventListener('click', function(e) {
+                    // Track module start
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'module_start', {
+                            module_number: index + 1,
+                            module_name: this.closest('.module-item').querySelector('.module-title').textContent,
+                            learning_path: 'discovery_journey'
+                        });
+                    }
+                });
+            }
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
