@@ -89,7 +89,7 @@ export class TaskRouter {
       },
       handler: async (args: any) => {
         const currency = args.currency || 'usd';
-        const price = await bitcoinPriceTool.getBitcoinPrice(currency);
+        const price = await bitcoinPriceTool.getBitcoinPrice();
         return {
           price,
           currency,
@@ -114,7 +114,7 @@ export class TaskRouter {
       },
       handler: async (args: any) => {
         const currency = args.currency || 'usd';
-        return await bitcoinPriceTool.getBitcoinPriceDetails(currency);
+        return await bitcoinPriceTool.getBitcoinPriceDetails();
       }
     });
 
