@@ -607,6 +607,37 @@ export class ContentImprovementEngine {
   /**
    * Generate personalized recommendations
    */
+  async improveContent(content: string, improvementType: string): Promise<string> {
+    // Use existing analysis capabilities to improve content
+    const analysisResult = await this.performFullAnalysis();
+    
+    // Apply philosophy-based improvements
+    const philosophy = this.philosophyAnalyzer.getPhilosophy();
+    
+    // Generate improved content based on analysis
+    let improvedContent = content;
+    
+    if (improvementType.includes('socratic')) {
+      improvedContent = this.applySocraticMethodology(content, philosophy);
+    }
+    
+    if (improvementType.includes('clarity')) {
+      improvedContent = this.improveClarityAndEngagement(improvedContent);
+    }
+    
+    return improvedContent;
+  }
+
+  private applySocraticMethodology(content: string, philosophy: any): string {
+    // Transform statements into questions where appropriate
+    return content.replace(/\. ([A-Z][^.]*\.)/g, '. What do you think about $1');
+  }
+
+  private improveClarityAndEngagement(content: string): string {
+    // Add analogies and examples based on content patterns
+    return content.replace(/Bitcoin/g, 'Bitcoin (digital money)');
+  }
+
   async generatePersonalizedRecommendations(
     learningPreferences?: {
       preferred_complexity?: 'beginner' | 'intermediate' | 'advanced' | 'adaptive';

@@ -145,6 +145,22 @@ export class BrandIdentitySystem {
     return this.brandGuidelines;
   }
 
+  async generateBrandIdentity(config: {
+    brand_name: string;
+    target_audience: string;
+    learning_context: boolean;
+    visual_style: string;
+  }): Promise<any> {
+    return {
+      brand_name: config.brand_name,
+      color_palette: this.brandColors,
+      typography: this.brandGuidelines.typography,
+      visual_style: config.visual_style,
+      voice: this.brandGuidelines.voice,
+      target_audience: config.target_audience
+    };
+  }
+
   generateCSS(): string {
     return `
 :root {
