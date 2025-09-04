@@ -152,7 +152,12 @@ export class MCPAgentServer extends EventEmitter {
   }
 
   private async routeToContentAnalysis(message: MCPMessage): Promise<any> {
-    const { contentMentorOrchestrator } = await import('../agents/ContentMentorOrchestrator.js');
+    // Import from trusted agent directory only
+    const agentPath = '../agents/ContentMentorOrchestrator.js';
+    if (!agentPath.startsWith('../agents/') || agentPath.includes('..', 10)) {
+      throw new Error('Invalid agent path');
+    }
+    const { contentMentorOrchestrator } = await import(agentPath);
     
     if (!message.params?.content) {
       throw new Error('Content parameter required for analysis');
@@ -165,7 +170,12 @@ export class MCPAgentServer extends EventEmitter {
   }
 
   private async routeToPlatformStrategy(message: MCPMessage): Promise<any> {
-    const { platformStrategyMentor } = await import('../agents/PlatformStrategyMentor.js');
+    // Import from trusted agent directory only
+    const agentPath = '../agents/PlatformStrategyMentor.js';
+    if (!agentPath.startsWith('../agents/') || agentPath.includes('..', 10)) {
+      throw new Error('Invalid agent path');
+    }
+    const { platformStrategyMentor } = await import(agentPath);
     
     if (message.params?.platform) {
       return platformStrategyMentor.analyzePlatform(message.params.platform);
@@ -175,13 +185,23 @@ export class MCPAgentServer extends EventEmitter {
   }
 
   private async routeToNewsMonitoring(message: MCPMessage): Promise<any> {
-    const { bitcoinNewsAnalyzer } = await import('../agents/BitcoinNewsAnalyzer.js');
+    // Import from trusted agent directory only
+    const agentPath = '../agents/BitcoinNewsAnalyzer.js';
+    if (!agentPath.startsWith('../agents/') || agentPath.includes('..', 10)) {
+      throw new Error('Invalid agent path');
+    }
+    const { bitcoinNewsAnalyzer } = await import(agentPath);
     
     return bitcoinNewsAnalyzer.generateDailyNewsDigest();
   }
 
   private async routeToMarketIntelligence(message: MCPMessage): Promise<any> {
-    const { marketIntelligenceAgent } = await import('../agents/MarketIntelligenceAgent.js');
+    // Import from trusted agent directory only
+    const agentPath = '../agents/MarketIntelligenceAgent.js';
+    if (!agentPath.startsWith('../agents/') || agentPath.includes('..', 10)) {
+      throw new Error('Invalid agent path');
+    }
+    const { marketIntelligenceAgent } = await import(agentPath);
     
     return marketIntelligenceAgent.generateDailyMarketInsight();
   }

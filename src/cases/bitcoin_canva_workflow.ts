@@ -1,9 +1,7 @@
 // Complete Bitcoin Canva Workflow - Enhanced data + Design automation
 import { CanvaAutoDesigner } from './canva_auto_designer.js';
-import { exec } from 'child_process';
+import { spawn } from 'child_process';
 import { promisify } from 'util';
-
-const execAsync = promisify(exec);
 
 async function runCompleteWorkflow() {
   console.log('🚀 Bitcoin Educational Design Workflow Starting...\n');
@@ -11,7 +9,29 @@ async function runCompleteWorkflow() {
   try {
     // Step 1: Generate enhanced Bitcoin data
     console.log('📊 Step 1: Generating enhanced Bitcoin data...');
-    const { stdout: enhancedOutput } = await execAsync('npm run canva:enhanced');
+    
+    // Use spawn instead of exec for better security
+    const enhancedProcess = spawn('npm', ['run', 'canva:enhanced'], {
+      stdio: ['pipe', 'pipe', 'pipe'],
+      shell: false
+    });
+    
+    let enhancedOutput = '';
+    enhancedProcess.stdout?.on('data', (data) => {
+      enhancedOutput += data.toString();
+    });
+    
+    await new Promise((resolve, reject) => {
+      enhancedProcess.on('close', (code) => {
+        if (code === 0) {
+          resolve(code);
+        } else {
+          reject(new Error(`Enhanced data generation failed with code ${code}`));
+        }
+      });
+      enhancedProcess.on('error', reject);
+    });
+    
     console.log('✅ Enhanced data generated\n');
     
     // Step 2: Create Canva designs from the enhanced data  
