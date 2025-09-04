@@ -54,6 +54,11 @@
     "intel:summary": "tsx src/scripts/bitcoin_intelligence.ts summary",
     "intel:education": "tsx src/scripts/bitcoin_intelligence.ts monitor-education",
     "intel:sources": "tsx src/scripts/bitcoin_intelligence.ts sources",
+    "layerd:analyze": "tsx src/scripts/layer_d_content.ts analyze",
+    "layerd:summary": "tsx src/scripts/layer_d_content.ts summary",
+    "layerd:search": "tsx src/scripts/layer_d_content.ts search",
+    "layerd:integrate": "tsx src/scripts/layer_d_content.ts integrate",
+    "layerd:philosophy": "tsx src/scripts/layer_d_content.ts philosophy",
     "build:deploy": "tsc --project tsconfig.deploy.json",
     "start:deploy": "node dist/web/server.js",
     "postinstall": "npm run build:deploy"
