@@ -147,7 +147,7 @@ export class CanvaDesignAnalyzer {
    * Perform visual analysis of design elements
    */
   private async performVisualAnalysis(designData: CanvaDesignData) {
-    const elements = designData.design_elements || designData.elements || [];
+    const elements = designData.design_elements || (designData as any).elements || [];
     const textElements = elements.filter(elem => elem.type === 'text');
     const visualElements = elements.filter(elem => elem.type !== 'text');
 

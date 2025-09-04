@@ -387,10 +387,13 @@ export class PlatformStrategyMentor {
   }
 
   generatePlatformComparison(): PlatformComparison {
-    const analyses = Object.keys(this.platforms).map(platform => ({
-      platform,
-      ...this.analyzePlatform(platform)
-    }));
+    const analyses = Object.keys(this.platforms).map(platform => {
+      const analysis = this.analyzePlatform(platform);
+      return {
+        platform,
+        ...analysis
+      };
+    });
 
     // Sort by overall score
     analyses.sort((a, b) => b.overall_score - a.overall_score);

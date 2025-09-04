@@ -390,6 +390,7 @@ export class ContentOrchestrator {
           step_id: stepId,
           status: 'running',
           started_at: new Date().toISOString(),
+          output: null, // Add required output field
           retry_attempts: 0
         };
 
@@ -573,7 +574,15 @@ export class ContentOrchestrator {
   private loadWorkflow(workflowId: string): ContentWorkflow | null {
     // Implementation would load from file system
     // For demo, return predefined workflow
-    return this.predefinedWorkflows.find(w => w.id === workflowId) as ContentWorkflow || null;
+    const workflow = this.predefinedWorkflows.find(w => w.id === workflowId);
+    return workflow ? {
+      ...workflow,
+      outputs: [],
+      status: 'inactive' as const,
+      created_at: new Date().toISOString(),
+      last_run: '',
+      steps: workflow.steps || []
+    } : null;
   }
 
   private calculateExecutionOrder(steps: WorkflowStep[]): string[] {

@@ -10,7 +10,15 @@ module.exports = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
-  testMatch: ['**/tests/**/*.spec.ts'],
+  testMatch: [
+    '**/tests/**/*.test.ts',
+    '**/tests/**/*.spec.ts',
+    '**/src/**/*.test.ts'
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/src/agents/btc-mcp-agent/'
+  ],
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/**/*.d.ts',
@@ -19,4 +27,5 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
+  roots: ['<rootDir>/src', '<rootDir>/tests'],
 };

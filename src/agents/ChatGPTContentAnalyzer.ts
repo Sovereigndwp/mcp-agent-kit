@@ -226,7 +226,8 @@ export class ChatGPTContentAnalyzer {
         }
       }
     } catch (error) {
-      console.warn('⚠️  Error parsing conversations:', error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.warn('⚠️  Error parsing conversations:', errorMessage);
     }
 
     return conversations;
