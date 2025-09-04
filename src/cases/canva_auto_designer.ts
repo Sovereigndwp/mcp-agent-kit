@@ -20,6 +20,108 @@ export class CanvaAutoDesigner {
   static async run() {
     return main();
   }
+
+  /**
+   * Create Canva design instructions
+   */
+  async createCanvaInstructions(): Promise<string> {
+    const [fees, price] = await Promise.all([
+      getFeeEstimates(),
+      btc_price()
+    ]);
+
+    const fast = fees.fastestFee || 10;
+    const congestionLevel = fast > 20 ? 'High' : fast > 5 ? 'Medium' : 'Low';
+
+    return `# Canva Design Instructions
+
+## Current Bitcoin Data
+- **Price:** $${Math.round(price.usd).toLocaleString()}
+- **Fast Fee:** ${fast} sat/vB
+- **Congestion:** ${congestionLevel}
+
+## Design Templates
+1. **Price Alert** - Current Bitcoin price with trending indicator
+2. **Fee Guide** - Educational fee comparison chart
+3. **Achievement** - Learning completion certificate
+
+## Color Schemes
+- High congestion: Red/Orange (#FF4444)
+- Medium congestion: Yellow/Gold (#FFD700)
+- Low congestion: Green/Blue (#44CC44)
+
+## Instructions
+1. Import the generated CSV into Canva Bulk Create
+2. Select appropriate template based on congestion level
+3. Ensure text is readable with high contrast
+4. Use consistent spacing and alignment`;
+  }
+
+  /**
+   * Generate bulk create CSV for Canva
+   */
+  generateBulkCreateCSV(): string {
+    // This will be populated with live data when called
+    const csvHeader = [
+      'design_type', 'headline', 'price_placeholder', 'fee_placeholder', 
+      'congestion_placeholder', 'prompt_placeholder', 'cta', 'color_scheme'
+    ].join(',');
+
+    const csvRows = [
+      '"price_alert","₿ Price Update","PRICE_HERE","FEE_HERE","CONGESTION_HERE","PROMPT_HERE","Learn More →","dynamic"',
+      '"fee_guide","Bitcoin Fee Calculator","PRICE_HERE","FEE_HERE","CONGESTION_HERE","PROMPT_HERE","Calculate Fees →","educational"',
+      '"achievement","Bitcoin Learning Complete!","PRICE_HERE","FEE_HERE","CONGESTION_HERE","PROMPT_HERE","Continue Learning →","achievement"'
+    ];
+
+    return csvHeader + '\n' + csvRows.join('\n') + '\n';
+  }
+
+  /**
+   * Generate design specifications
+   */
+  generateDesignSpecs(): any[] {
+    return [
+      {
+        title: 'Bitcoin Price Alert',
+        width: 1080,
+        height: 1080,
+        type: 'social-media',
+        elements: {
+          price: '$108000', // Placeholder
+          fees: '5 sat/vB',
+          congestion: 'Low',
+          colors: ['#44CC44', '#FFFFFF', '#333333'],
+          call_to_action: 'Learn More →'
+        }
+      },
+      {
+        title: 'Fee Education Guide',
+        width: 1200,
+        height: 800,
+        type: 'educational',
+        elements: {
+          price: '$108000',
+          fees: 'Fast: 10, Medium: 5, Slow: 2',
+          congestion: 'Medium',
+          colors: ['#FFD700', '#FFFFFF', '#333333'],
+          call_to_action: 'Calculate Fees →'
+        }
+      },
+      {
+        title: 'Achievement Certificate',
+        width: 1600,
+        height: 900,
+        type: 'certificate',
+        elements: {
+          price: '$108000',
+          fees: '1 sat/vB',
+          congestion: 'Low',
+          colors: ['#4CAF50', '#FFD700', '#FFFFFF'],
+          call_to_action: 'Continue Learning →'
+        }
+      }
+    ];
+  }
 }
 
 async function main() {

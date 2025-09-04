@@ -276,7 +276,7 @@ export class SocraticCourseOrchestrator {
         request.target_audience === 'beginner' ? 'beginner' : 'intermediate',
         8
       ),
-      progressive_sequences: [],
+      progressive_sequences: [] as Array<{topic: string, questions: string[], objectives: string[]}>,
       critical_thinking_prompts: [],
       discovery_pathways: []
     };
@@ -375,7 +375,11 @@ export class SocraticCourseOrchestrator {
   private async createVisualMaterials(request: SocraticCourseRequest, intelligence: any): Promise<any> {
     logger.info('Creating visual learning materials...');
     
-    const materials = {
+    const materials: {
+      designSystem: any;
+      canvaAssets: any;
+      brandGuidelines: any;
+    } = {
       designSystem: null,
       canvaAssets: null,
       brandGuidelines: null
@@ -510,13 +514,10 @@ export class SocraticCourseOrchestrator {
         activities: m.hands_on_activities
       }));
 
-      const improvements = await this.improvementEngine.improveContent({
-        content: courseContent,
-        improvement_type: 'educational_effectiveness',
-        target_audience: request.target_audience,
-        learning_objectives: request.learning_objectives,
-        focus_areas: ['engagement', 'comprehension', 'retention']
-      });
+      const improvements = await this.improvementEngine.improveContent(
+        JSON.stringify(courseContent), 
+        'educational_effectiveness'
+      );
 
       // Apply improvements to modules
       if (improvements && improvements.improved_content) {
