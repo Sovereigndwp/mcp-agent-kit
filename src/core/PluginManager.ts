@@ -67,6 +67,24 @@ export class PluginManager {
    */
   async loadPlugin(pluginPath: string): Promise<void> {
     try {
+      // Validate plugin path for security
+      if (!pluginPath || typeof pluginPath !== 'string') {
+        throw new Error('Plugin path must be a valid string');
+      }
+      
+      // Restrict to safe plugin directories and extensions
+      const normalizedPath = path.normalize(pluginPath);
+      if (normalizedPath.includes('..') || normalizedPath.includes('~')) {
+        throw new Error('Plugin path contains unsafe directory traversal');
+      }
+      
+      // Only allow specific extensions
+      const allowedExtensions = ['.js', '.mjs', '.ts'];
+      const ext = path.extname(normalizedPath).toLowerCase();
+      if (!allowedExtensions.includes(ext)) {
+        throw new Error(`Plugin must have allowed extension: ${allowedExtensions.join(', ')}`);
+      }
+      
       logger.info(`Loading plugin from: ${pluginPath}`);
 
       // Dynamic import the plugin
