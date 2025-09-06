@@ -431,7 +431,227 @@
             margin: 0 5px;
         }
 
+        .scenario-explorer {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .scenario-question {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
         /* Enhanced Mobile Optimizations */
+        /* New Interactive Elements CSS */
+        .money-properties-demo {
+            margin: 20px 0;
+        }
+        
+        .money-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .money-option {
+            background: rgba(79, 70, 229, 0.1);
+            border: 2px solid rgba(79, 70, 229, 0.3);
+            border-radius: 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .money-option:hover, .money-option.active {
+            background: rgba(79, 70, 229, 0.2);
+            border-color: #4f46e5;
+            transform: translateY(-2px);
+        }
+        
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .property-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+        
+        .property-score {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            color: #ffd700;
+        }
+        
+        .property-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, #4f46e5, #7c3aed);
+            z-index: 1;
+        }
+        
+        .timeline-item {
+            background: rgba(15, 15, 15, 0.9);
+            border: 2px solid #4f46e5;
+            border-radius: 15px;
+            padding: 10px;
+            min-width: 120px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .timeline-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(79, 70, 229, 0.4);
+        }
+        
+        .timeline-year {
+            font-size: 0.8rem;
+            color: #4f46e5;
+            font-weight: bold;
+        }
+        
+        .timeline-content {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .ledger-keeper-demo {
+            margin: 20px 0;
+        }
+        
+        .keeper-scenario {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .keeper-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .keeper-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .keeper-option:hover {
+            border-color: #4f46e5;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .keeper-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .keeper-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4f46e5;
+        }
+        
+        .keeper-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .trust-failure-timeline {
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+        
+        .failure-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .failure-card {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .failure-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.4);
+            border-color: #dc3545;
+        }
+        
+        .failure-year {
+            font-size: 0.8rem;
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .failure-title {
+            font-size: 0.9rem;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+        
+        .failure-impact {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2rem;
@@ -583,6 +803,34 @@
                 font-size: 0.85rem;
                 padding: 8px 15px;
             }
+            
+            .money-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .properties-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 10px;
+            }
+            
+            .timeline-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .timeline-container::before {
+                display: none;
+            }
+            
+            .keeper-options {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 10px;
+            }
+            
+            .failure-examples {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
         }
     </style>
 </head>
@@ -595,12 +843,139 @@
 
         <div class="principle-tracker">
             <div style="font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;">
-                Your First Principles Journey: <span id="progress-text">0/8 Principles Understood</span>
+                Your First Principles Journey: <span id="progress-text">0/10 Principles Understood</span>
             </div>
             <div class="principle-bar">
                 <div class="principle-fill" id="progress-fill" style="width: 0%;"></div>
             </div>
             <p style="color: #cccccc; margin-top: 10px;">Each principle builds logically on the previous ones</p>
+        </div>
+
+        <!-- Principle 0: Why Money Fails -->
+        <div class="principle-section">
+            <div class="principle-header" onclick="togglePrinciple(0)">
+                <span>Principle 0: Why Money Fails (The Properties of Sound vs. Unsound Money)</span>
+                <span class="principle-icon" id="icon-0">▼</span>
+            </div>
+            <div class="principle-content" id="content-0">
+                <div class="principle-inner">
+                    <div class="insight-box">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px;">First Principles Question:</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"What makes money 'good' or 'bad'? Why do some forms of money survive while others fail?"</strong>
+                        </p>
+                        <p>
+                            Throughout history, humans have used shells, stones, metals, and paper as money. 
+                            Each had different properties that made them succeed or fail. Understanding these 
+                            properties reveals why Bitcoin might be the ultimate form of money.
+                        </p>
+                    </div>
+                    
+                    <div class="demo-container">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Money Properties Comparison</h4>
+                        
+                        <div class="money-properties-demo">
+                            <p style="margin-bottom: 20px;">
+                                Good money must have specific properties. Let's compare different forms of money across these properties:
+                            </p>
+                            
+                            <div class="money-selector" style="margin: 20px 0;">
+                                <button type="button" class="btn money-option active" onclick="selectMoney('shells')" id="btn-shells">🐚 Shells</button>
+                                <button type="button" class="btn money-option" onclick="selectMoney('gold')" id="btn-gold">🥇 Gold</button>
+                                <button type="button" class="btn money-option" onclick="selectMoney('fiat')" id="btn-fiat">💵 Fiat</button>
+                                <button type="button" class="btn money-option" onclick="selectMoney('bitcoin')" id="btn-bitcoin">₿ Bitcoin</button>
+                            </div>
+                            
+                            <div id="money-properties-grid" class="properties-grid">
+                                <div class="property-card">
+                                    <h4>Scarcity</h4>
+                                    <div class="property-score" id="score-scarcity">⭐⭐⭐</div>
+                                    <p class="property-desc" id="desc-scarcity">Limited supply is crucial</p>
+                                </div>
+                                <div class="property-card">
+                                    <h4>Durability</h4>
+                                    <div class="property-score" id="score-durability">⭐⭐</div>
+                                    <p class="property-desc" id="desc-durability">Must withstand time</p>
+                                </div>
+                                <div class="property-card">
+                                    <h4>Divisibility</h4>
+                                    <div class="property-score" id="score-divisibility">⭐</div>
+                                    <p class="property-desc" id="desc-divisibility">Can be split into small units</p>
+                                </div>
+                                <div class="property-card">
+                                    <h4>Portability</h4>
+                                    <div class="property-score" id="score-portability">⭐⭐</div>
+                                    <p class="property-desc" id="desc-portability">Easy to transport</p>
+                                </div>
+                                <div class="property-card">
+                                    <h4>Verifiability</h4>
+                                    <div class="property-score" id="score-verifiability">⭐⭐</div>
+                                    <p class="property-desc" id="desc-verifiability">Can prove authenticity</p>
+                                </div>
+                                <div class="property-card">
+                                    <h4>Fungibility</h4>
+                                    <div class="property-score" id="score-fungibility">⭐⭐⭐</div>
+                                    <p class="property-desc" id="desc-fungibility">All units are equal</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Historical Money Timeline</h4>
+                            <div class="timeline-container">
+                                <div class="timeline-item" onclick="showTimelineEvent('barter')">
+                                    <div class="timeline-year">10,000 BCE</div>
+                                    <div class="timeline-content">🔄 Barter System</div>
+                                </div>
+                                <div class="timeline-item" onclick="showTimelineEvent('commodity')">
+                                    <div class="timeline-year">3000 BCE</div>
+                                    <div class="timeline-content">🌾 Commodity Money</div>
+                                </div>
+                                <div class="timeline-item" onclick="showTimelineEvent('metal')">
+                                    <div class="timeline-year">700 BCE</div>
+                                    <div class="timeline-content">🪙 Metal Coins</div>
+                                </div>
+                                <div class="timeline-item" onclick="showTimelineEvent('gold')">
+                                    <div class="timeline-year">1792</div>
+                                    <div class="timeline-content">🏛️ Gold Standard</div>
+                                </div>
+                                <div class="timeline-item" onclick="showTimelineEvent('fiat')">
+                                    <div class="timeline-year">1971</div>
+                                    <div class="timeline-content">💵 Fiat Currency</div>
+                                </div>
+                                <div class="timeline-item" onclick="showTimelineEvent('bitcoin')">
+                                    <div class="timeline-year">2009</div>
+                                    <div class="timeline-content">₿ Bitcoin</div>
+                                </div>
+                            </div>
+                            <div id="timeline-result" style="margin-top: 20px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="problem-box" style="margin-top: 30px;">
+                        <h4 style="color: #dc3545; margin-bottom: 15px;">The Evolution of Money:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>Each form improved on previous limitations:</strong> Shells → Metals → Paper → Digital</li>
+                            <li><strong>But trade-offs remained:</strong> Scarcity vs. portability, durability vs. divisibility</li>
+                            <li><strong>Fiat money sacrificed scarcity for convenience</strong> - leading to inflation and control</li>
+                            <li><strong>Bitcoin attempts to optimize all properties simultaneously</strong> through cryptography</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="insight-box" style="margin-top: 20px;">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">The Fundamental Question:</h4>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"What if there was money that no one could inflate, freeze, confiscate, or control except you?"</strong>
+                        </p>
+                        <p>
+                            This is what Bitcoin attempts to solve. Not just a technical problem, but a human problem: 
+                            How do we create money that serves people, not the other way around?
+                        </p>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="completePrinciple(0)">I Understand Why We Need Better Money</button>
+                </div>
+            </div>
         </div>
 
         <!-- Principle 1: The Fundamental Problem -->
@@ -680,70 +1055,104 @@
                     <div class="insight-box">
                         <h3 style="color: #4f46e5; margin-bottom: 15px;">First Principles Question:</h3>
                         <p style="font-size: 1.1rem; margin-bottom: 15px;">
-                            <strong>"Who should control the global ledger, and how can we trust them?"</strong>
+                            <strong>"If we need someone to maintain the ledger, who can we trust to never cheat?"</strong>
                         </p>
                         <p>
-                            We need a ledger, but who maintains it? Banks? Governments? What if they become corrupt, 
-                            get hacked, or decide to change the rules? How can we create a system that doesn't 
-                            require trusting any single party?
+                            Digital payments require a ledger showing who owns what. But this creates a massive problem: 
+                            whoever controls the ledger has immense power. They can freeze accounts, reverse transactions, 
+                            or create money for themselves. History shows us that this power is always abused eventually.
                         </p>
                     </div>
                     
                     <div class="problem-box">
-                        <h4 style="color: #dc3545; margin-bottom: 15px;">The Problem: Central Points of Failure</h4>
+                        <h4 style="color: #dc3545; margin-bottom: 15px;">The Core Trust Dilemma</h4>
                         <p style="margin-bottom: 15px;">
-                            Traditional solutions rely on trusted third parties (banks, governments, companies). 
-                            But these create single points of failure - they can be corrupted, hacked, shut down, 
-                            or simply change the rules to benefit themselves.
+                            Every digital payment system requires someone to keep score. But giving anyone that power 
+                            creates an irresistible incentive to abuse it. This is the fundamental trust problem that 
+                            has plagued digital money since its inception.
                         </p>
                         
                         <div class="demo-container">
-                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Trust Scenarios</h4>
+                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: The Ledger Keeper's Dilemma</h4>
                             
-                            <div class="trust-demo">
-                                <div class="trust-card" id="bank-trust">
-                                    <h4>🏦 Bank</h4>
-                                    <p>Controls your money</p>
-                                    <p>Can freeze accounts</p>
-                                    <p>Can fail or be bailed out</p>
-                                    <button class="btn" onclick="testTrust(&#39;bank&#39;)">Test Trust</button>
+                            <p style="margin-bottom: 20px;">
+                                Imagine you need to choose who maintains the global ledger. Each option has different incentives and risks:
+                            </p>
+                            
+                            <div class="ledger-keeper-demo">
+                                <div class="keeper-scenario">
+                                    <h4>Scenario: Choose Your Ledger Keeper</h4>
+                                    <p>You have $1M in the system. Who do you trust to manage everyone's balances?</p>
+                                    
+                                    <div class="keeper-options">
+                                        <button type="button" class="keeper-option" onclick="testLedgerKeeper('centralBank')" id="central-bank-btn">
+                                            <div class="keeper-icon">🏛️</div>
+                                            <div class="keeper-title">Central Bank</div>
+                                            <div class="keeper-desc">Government controlled, regulated</div>
+                                        </button>
+                                        
+                                        <button type="button" class="keeper-option" onclick="testLedgerKeeper('techCompany')" id="tech-company-btn">
+                                            <div class="keeper-icon">🏢</div>
+                                            <div class="keeper-title">Tech Company</div>
+                                            <div class="keeper-desc">Profit-motivated, innovative</div>
+                                        </button>
+                                        
+                                        <button type="button" class="keeper-option" onclick="testLedgerKeeper('cooperative')" id="cooperative-btn">
+                                            <div class="keeper-icon">🤝</div>
+                                            <div class="keeper-title">Cooperative</div>
+                                            <div class="keeper-desc">Member-owned, democratic</div>
+                                        </button>
+                                        
+                                        <button type="button" class="keeper-option" onclick="testLedgerKeeper('algorithm')" id="algorithm-btn">
+                                            <div class="keeper-icon">⚡</div>
+                                            <div class="keeper-title">Algorithm</div>
+                                            <div class="keeper-desc">Code-based, no human control</div>
+                                        </button>
+                                    </div>
+                                    
+                                    <div id="ledger-keeper-result" style="margin-top: 20px;"></div>
                                 </div>
                                 
-                                <div class="trust-card" id="government-trust">
-                                    <h4>🏛️ Government</h4>
-                                    <p>Controls money supply</p>
-                                    <p>Can print more money</p>
-                                    <p>Can change rules</p>
-                                    <button class="btn" onclick="testTrust(&#39;government&#39;)">Test Trust</button>
-                                </div>
-                                
-                                <div class="trust-card" id="company-trust">
-                                    <h4>🏢 Company</h4>
-                                    <p>Controls platform</p>
-                                    <p>Can change fees</p>
-                                    <p>Can shut down</p>
-                                    <button class="btn" onclick="testTrust(&#39;company&#39;)">Test Trust</button>
-                                </div>
-                                
-                                <div class="trust-card" id="network-trust">
-                                    <h4>🌐 Network</h4>
-                                    <p>No single controller</p>
-                                    <p>Rules in code</p>
-                                    <p>Transparent &amp; open</p>
-                                    <button class="btn" onclick="testTrust(&#39;network&#39;)">Test Trust</button>
+                                <div class="trust-failure-timeline" style="margin-top: 30px;">
+                                    <h4 style="color: #dc3545;">Real Trust Failures in Digital Payments:</h4>
+                                    <div class="failure-examples">
+                                        <div class="failure-card" onclick="showTrustFailure('paypal')">
+                                            <div class="failure-year">2010</div>
+                                            <div class="failure-title">PayPal WikiLeaks</div>
+                                            <div class="failure-impact">Froze donations</div>
+                                        </div>
+                                        <div class="failure-card" onclick="showTrustFailure('canada')">
+                                            <div class="failure-year">2022</div>
+                                            <div class="failure-title">Canadian Trucker</div>
+                                            <div class="failure-impact">Froze protesters</div>
+                                        </div>
+                                        <div class="failure-card" onclick="showTrustFailure('russia')">
+                                            <div class="failure-year">2022</div>
+                                            <div class="failure-title">Russian SWIFT Ban</div>
+                                            <div class="failure-impact">Cut off country</div>
+                                        </div>
+                                        <div class="failure-card" onclick="showTrustFailure('mt-gox')">
+                                            <div class="failure-year">2014</div>
+                                            <div class="failure-title">Mt. Gox Hack</div>
+                                            <div class="failure-impact">Lost 850K BTC</div>
+                                        </div>
+                                    </div>
+                                    <div id="trust-failure-result" style="margin-top: 15px;"></div>
                                 </div>
                             </div>
-                            
-                            <div id="trust-result" style="margin-top: 15px;"></div>
                         </div>
                     </div>
                     
                     <div class="solution-box">
-                        <h4 style="color: #28a745; margin-bottom: 15px;">The Insight: Decentralized Consensus</h4>
+                        <h4 style="color: #28a745; margin-bottom: 15px;">The Revolutionary Insight: Eliminate the Trusted Party</h4>
                         <p>
-                            Instead of trusting one party, we can have many independent parties maintain copies 
-                            of the ledger. If most of them agree on the current state, we can trust that state 
-                            without trusting any individual party. This is called "decentralized consensus."
+                            What if we didn't need to trust anyone at all? What if the ledger could be maintained 
+                            by thousands of independent computers, none of which you need to trust individually? 
+                            If they all have to agree before anything changes, then no single party can cheat you.
+                        </p>
+                        <p style="margin-top: 10px;">
+                            <strong>This leads us to the next challenge:</strong> How do you get thousands of strangers 
+                            on the internet to agree on anything?
                         </p>
                     </div>
                     
@@ -1274,6 +1683,134 @@
             </div>
         </div>
 
+        <!-- Principle 9: Digital Scarcity & Financial Sovereignty -->
+        <div class="principle-section">
+            <div class="principle-header" onclick="togglePrinciple(9)">
+                <span>Principle 9: Digital Scarcity & Financial Sovereignty (Be Your Own Bank)</span>
+                <span class="principle-icon" id="icon-9">▼</span>
+            </div>
+            <div class="principle-content" id="content-9">
+                <div class="principle-inner">
+                    <div class="insight-box">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px;">Final Revelation:</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"What if you could have true digital scarcity AND complete financial sovereignty?"</strong>
+                        </p>
+                        <p>
+                            We've built the technical foundation. Now let's understand what this means for 
+                            human freedom and wealth preservation. Bitcoin isn't just better technology - 
+                            it's a fundamental shift in monetary sovereignty.
+                        </p>
+                    </div>
+                    
+                    <div class="demo-container">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Discovery: The 21 Million Revolution</h4>
+                        
+                        <div class="scenario-explorer">
+                            <div class="scenario-question">
+                                <strong>Digital Scarcity:</strong> Why 21 million matters
+                            </div>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value">21,000,000</div>
+                                    <div class="stat-label">Maximum Bitcoin Ever</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="current-supply">19,800,000</div>
+                                    <div class="stat-label">Currently Mined</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value">∞</div>
+                                    <div class="stat-label">Fiat Dollars (No Limit)</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value">50%</div>
+                                    <div class="stat-label">Reward Cut Every 4 Years</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <button class="btn" onclick="showScarcityComparison('gold')" style="margin: 5px;">vs Gold</button>
+                                <button class="btn" onclick="showScarcityComparison('land')" style="margin: 5px;">vs Real Estate</button>
+                                <button class="btn" onclick="showScarcityComparison('art')" style="margin: 5px;">vs Art</button>
+                                <button class="btn" onclick="showScarcityComparison('stocks')" style="margin: 5px;">vs Stocks</button>
+                            </div>
+                            
+                            <div id="scarcity-result" style="margin-top: 15px;"></div>
+                        </div>
+                        
+                        <div class="scenario-explorer" style="margin-top: 30px;">
+                            <div class="scenario-question">
+                                <strong>Financial Sovereignty:</strong> What "Be Your Own Bank" Really Means
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <button class="btn" onclick="showSovereigntyExample('custody')" style="margin: 5px;">Self-Custody</button>
+                                <button class="btn" onclick="showSovereigntyExample('borders')" style="margin: 5px;">Cross Borders</button>
+                                <button class="btn" onclick="showSovereigntyExample('permissionless')" style="margin: 5px;">No Permission</button>
+                                <button class="btn" onclick="showSovereigntyExample('censorship')" style="margin: 5px;">Censorship Resistant</button>
+                            </div>
+                            
+                            <div id="sovereignty-result" style="margin-top: 15px;"></div>
+                        </div>
+                        
+                        <div class="scenario-explorer" style="margin-top: 30px;">
+                            <div class="scenario-question">
+                                <strong>Time Preference:</strong> Why Bitcoin Changes How We Think About Time
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <label>Years of Savings:</label>
+                                <input type="range" id="time-slider" min="0" max="40" value="10" style="width: 200px; margin: 0 10px;">
+                                <span id="time-display">10 years</span>
+                            </div>
+                            
+                            <div id="time-result" class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="fiat-value">$10,000</div>
+                                    <div class="stat-label">Fiat Purchasing Power</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="bitcoin-value">1 BTC</div>
+                                    <div class="stat-label">Bitcoin Holdings</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-box" style="margin-top: 30px;">
+                        <h4 style="color: #28a745; margin-bottom: 15px;">The Complete Revolution:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>True Scarcity:</strong> First time in human history we have mathematically provable digital scarcity</li>
+                            <li><strong>Self-Custody:</strong> You hold your keys, you hold your wealth - no third party risk</li>
+                            <li><strong>Borderless:</strong> Move value anywhere in the world without permission</li>
+                            <li><strong>Neutral:</strong> No government, corporation, or individual can control it</li>
+                            <li><strong>Sound Money:</strong> Encourages saving and long-term thinking</li>
+                            <li><strong>Financial Inclusion:</strong> Anyone with internet can participate in the global economy</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="problem-box" style="margin-top: 20px;">
+                        <h4 style="color: #ffd700; margin-bottom: 15px;">This Changes Everything:</h4>
+                        <p style="margin-bottom: 15px;">
+                            Bitcoin isn't just "digital gold" or "internet money." It's the first technology that allows 
+                            humans to achieve true monetary sovereignty. For the first time in history, individuals can:
+                        </p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Own wealth that can't be printed away by inflation</li>
+                            <li>Move value without banks, governments, or payment processors</li>
+                            <li>Preserve wealth across generations with mathematical certainty</li>
+                            <li>Participate in a global economy without anyone's permission</li>
+                        </ul>
+                        <p><strong>This is why Bitcoin matters. This is why it's inevitable.</strong></p>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="completePrinciple(9)">I Understand Bitcoin's True Value</button>
+                </div>
+            </div>
+        </div>
+
         <div style="text-align: center; margin: 40px 0; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 15px;">
             <h2 style="color: #4f46e5; margin-bottom: 15px;">🎉 Congratulations!</h2>
             <p style="font-size: 1.1rem; margin-bottom: 20px;">
@@ -1341,6 +1878,228 @@
             return Math.abs(hash).toString(16).padStart(8, '0');
         }
 
+        // New Interactive Demo Functions for Principle 0
+        const moneyData = {
+            shells: {
+                scarcity: 1, durability: 1, divisibility: 1, portability: 2, verifiability: 1, fungibility: 2,
+                descriptions: {
+                    scarcity: "Easy to find more shells on beaches",
+                    durability: "Break easily, degrade over time", 
+                    divisibility: "Can't split a shell into smaller pieces",
+                    portability: "Light but bulky in large amounts",
+                    verifiability: "Hard to distinguish from fakes",
+                    fungibility: "All shells are different sizes/shapes"
+                }
+            },
+            gold: {
+                scarcity: 5, durability: 5, divisibility: 3, portability: 2, verifiability: 4, fungibility: 5,
+                descriptions: {
+                    scarcity: "Limited supply, hard to mine",
+                    durability: "Lasts forever, doesn't corrode",
+                    divisibility: "Can melt and reshape, but impractical",
+                    portability: "Very heavy to transport",
+                    verifiability: "Can be tested but requires expertise",
+                    fungibility: "Pure gold is perfectly interchangeable"
+                }
+            },
+            fiat: {
+                scarcity: 1, durability: 2, divisibility: 5, portability: 4, verifiability: 3, fungibility: 4,
+                descriptions: {
+                    scarcity: "Can be printed infinitely by governments",
+                    durability: "Paper wears out, digital records can be lost",
+                    divisibility: "Easily divided into smaller denominations", 
+                    portability: "Digital form is very portable",
+                    verifiability: "Security features but can be counterfeited",
+                    fungibility: "Each dollar is worth the same (mostly)"
+                }
+            },
+            bitcoin: {
+                scarcity: 5, durability: 5, divisibility: 5, portability: 5, verifiability: 5, fungibility: 4,
+                descriptions: {
+                    scarcity: "Fixed supply of 21 million, mathematically enforced",
+                    durability: "Digital, can't degrade if properly stored",
+                    divisibility: "Divisible to 8 decimal places (100M satoshis)",
+                    portability: "Can send anywhere instantly with internet",
+                    verifiability: "Cryptographically verifiable by anyone",
+                    fungibility: "Each bitcoin equal, but transaction history visible"
+                }
+            }
+        };
+
+        function selectMoney(moneyType) {
+            // Update button states
+            document.querySelectorAll('.money-option').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${moneyType}`).classList.add('active');
+            
+            const data = moneyData[moneyType];
+            
+            // Update property scores and descriptions
+            const properties = ['scarcity', 'durability', 'divisibility', 'portability', 'verifiability', 'fungibility'];
+            properties.forEach(prop => {
+                const scoreEl = document.getElementById(`score-${prop}`);
+                const descEl = document.getElementById(`desc-${prop}`);
+                
+                if (scoreEl && descEl) {
+                    scoreEl.textContent = '⭐'.repeat(data[prop]) + '☆'.repeat(5 - data[prop]);
+                    descEl.textContent = data.descriptions[prop];
+                }
+            });
+        }
+
+        const timelineEvents = {
+            barter: {
+                title: "Barter System (10,000 BCE)",
+                description: "Direct exchange of goods and services without money.",
+                limitations: "Requires double coincidence of wants, indivisible goods, no store of value."
+            },
+            commodity: {
+                title: "Commodity Money (3000 BCE)", 
+                description: "Cattle, grain, salt used as money. Valuable in themselves.",
+                limitations: "Perishable, hard to transport, not uniform in quality."
+            },
+            metal: {
+                title: "Metal Coins (700 BCE)",
+                description: "Gold and silver coins standardized trade and store of value.",
+                limitations: "Heavy to transport, can be debased by rulers, still requires trust in issuer."
+            },
+            gold: {
+                title: "Gold Standard (1792-1933)",
+                description: "Paper money backed by gold reserves. Combined portability with scarcity.",
+                limitations: "Limited by gold supply, vulnerable to bank runs, abandoned during wars."
+            },
+            fiat: {
+                title: "Fiat Currency (1971-present)",
+                description: "Money backed only by government promise and force. Maximum flexibility.",
+                limitations: "Infinite inflation potential, requires trust in government, can be weaponized."
+            },
+            bitcoin: {
+                title: "Bitcoin (2009-present)",
+                description: "Digital money with mathematically enforced scarcity and no central authority.",
+                limitations: "Still young, volatile, energy intensive, limited throughput (currently)."
+            }
+        };
+
+        function showTimelineEvent(period) {
+            const event = timelineEvents[period];
+            const result = document.getElementById('timeline-result');
+            
+            if (result && event) {
+                result.innerHTML = `
+                    <div class="insight-box">
+                        <h4 style="color: #4f46e5;">${event.title}</h4>
+                        <p><strong>Innovation:</strong> ${event.description}</p>
+                        <p><strong>Limitations:</strong> ${event.limitations}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // New Interactive Demo Functions for Principle 2
+        const ledgerKeeperData = {
+            centralBank: {
+                title: "Central Bank Ledger",
+                risks: ["Can freeze your account for political reasons", "May devalue currency through money printing", "Subject to government pressure and corruption"],
+                benefits: ["Regulated and supervised", "Deposit insurance up to limits", "Established legal framework"],
+                realExample: "The Federal Reserve can create trillions of dollars instantly, as seen in 2008 and 2020 crises.",
+                trustScore: 2
+            },
+            techCompany: {
+                title: "Tech Company Ledger", 
+                risks: ["Profit motive may conflict with user interests", "Can change terms of service anytime", "Single point of failure if company fails"],
+                benefits: ["Innovation and user experience focused", "Technical expertise", "Market competition drives improvement"],
+                realExample: "PayPal froze WikiLeaks donations in 2010, showing how companies can be pressured to restrict payments.",
+                trustScore: 2
+            },
+            cooperative: {
+                title: "Democratic Cooperative",
+                risks: ["Slow decision making through consensus", "Susceptible to majority tyranny", "May lack technical expertise"],
+                benefits: ["Member-owned and controlled", "Aligned incentives with users", "Democratic governance"],
+                realExample: "Credit unions operate this way, but still subject to government regulations and potential member conflicts.",
+                trustScore: 3
+            },
+            algorithm: {
+                title: "Algorithmic System",
+                risks: ["Code bugs could cause permanent losses", "Difficult to upgrade or fix issues", "No human recourse for mistakes"],
+                benefits: ["No human bias or corruption", "Transparent and predictable rules", "Cannot be coerced or bribed"],
+                realExample: "Bitcoin has operated for 15+ years with no successful attacks on its core algorithm, despite being worth hundreds of billions.",
+                trustScore: 4
+            }
+        };
+
+        function testLedgerKeeper(keeperType) {
+            const data = ledgerKeeperData[keeperType];
+            const result = document.getElementById('ledger-keeper-result');
+            
+            if (result && data) {
+                const trustStars = '⭐'.repeat(data.trustScore) + '☆'.repeat(5 - data.trustScore);
+                
+                result.innerHTML = `
+                    <div class="solution-box">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">${data.title}</h4>
+                        <div style="margin-bottom: 15px;">
+                            <strong>Trust Score: ${trustStars}</strong>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: #dc3545;">Risks:</strong>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                ${data.risks.map(risk => `<li>${risk}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: #28a745;">Benefits:</strong>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                ${data.benefits.map(benefit => `<li>${benefit}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <strong>Real World Example:</strong> ${data.realExample}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        const trustFailures = {
+            paypal: {
+                title: "PayPal WikiLeaks Freeze (2010)",
+                description: "PayPal froze WikiLeaks donation account after government pressure, showing how payment processors can be weaponized for political control.",
+                impact: "Prevented public from donating to journalism organization, demonstrating censorship power of centralized payment systems."
+            },
+            canada: {
+                title: "Canadian Trucker Convoy (2022)", 
+                description: "Canadian government froze bank accounts of truckers and donors protesting COVID mandates, without court orders.",
+                impact: "Showed how governments can instantly cut off citizens from financial system for political dissent, affecting hundreds of accounts."
+            },
+            russia: {
+                title: "Russian SWIFT Exclusion (2022)",
+                description: "Western nations excluded Russian banks from SWIFT payment network after Ukraine invasion, affecting millions of civilians.",
+                impact: "Demonstrated how global payment infrastructure can be weaponized geopolitically, trapping ordinary citizens."
+            },
+            'mt-gox': {
+                title: "Mt. Gox Exchange Collapse (2014)",
+                description: "World's largest Bitcoin exchange lost 850,000 bitcoins (7% of all Bitcoin) due to hacking and mismanagement.", 
+                impact: "Showed risks of trusting centralized Bitcoin services - users lost $450 million worth of Bitcoin permanently."
+            }
+        };
+
+        function showTrustFailure(failureType) {
+            const failure = trustFailures[failureType];
+            const result = document.getElementById('trust-failure-result');
+            
+            if (result && failure) {
+                result.innerHTML = `
+                    <div class="problem-box">
+                        <h4 style="color: #dc3545;">${failure.title}</h4>
+                        <p><strong>What Happened:</strong> ${failure.description}</p>
+                        <p><strong>Impact:</strong> ${failure.impact}</p>
+                    </div>
+                `;
+            }
+        }
+
         function togglePrinciple(principleNum) {
             const content = document.getElementById(`content-${principleNum}`);
             const icon = document.getElementById(`icon-${principleNum}`);
@@ -1382,10 +2141,110 @@
         function updateProgress() {
             const progressFill = document.getElementById('progress-fill');
             const progressText = document.getElementById('progress-text');
-            const percentage = (completedPrinciples / 8) * 100;
+            const percentage = (completedPrinciples / 10) * 100;
             
             progressFill.style.width = percentage + '%';
-            progressText.textContent = `${completedPrinciples}/8 Principles Understood`;
+            progressText.textContent = `${completedPrinciples}/10 Principles Understood`;
+        }
+
+        // Principle 0: Money Problem Demos
+        
+        // Initialize inflation slider
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('inflation-slider');
+            if (slider) {
+                slider.addEventListener('input', updateInflation);
+                updateInflation(); // Initialize
+            }
+        });
+        
+        function updateInflation() {
+            const slider = document.getElementById('inflation-slider');
+            const year = parseInt(slider.value);
+            const yearDisplay = document.getElementById('year-display');
+            const buyingPower = document.getElementById('buying-power');
+            const inflationRate = document.getElementById('inflation-rate');
+            const moneyLost = document.getElementById('money-lost');
+            
+            const currentYear = 2024 + year;
+            const annualInflation = 0.03; // 3% average
+            const realValue = 10000 * Math.pow(1 - annualInflation, year);
+            const lost = 10000 - realValue;
+            
+            yearDisplay.textContent = currentYear;
+            buyingPower.textContent = '$' + Math.round(realValue).toLocaleString();
+            inflationRate.textContent = (annualInflation * 100).toFixed(1) + '%';
+            moneyLost.textContent = '$' + Math.round(lost).toLocaleString();
+        }
+        
+        function showHistoricalExample(country) {
+            const result = document.getElementById('historical-result');
+            const examples = {
+                'venezuela': {
+                    title: 'Venezuela 2018 - Hyperinflation',
+                    story: 'Inflation reached 1,000,000%. A cup of coffee that cost 450 bolivars in 2013 cost 1 million bolivars in 2018.',
+                    lesson: 'Government money printing destroyed purchasing power overnight.'
+                },
+                'lebanon': {
+                    title: 'Lebanon 2020 - Banking Crisis', 
+                    story: 'Banks froze accounts and limited withdrawals to $200/week. People lost access to their life savings.',
+                    lesson: 'When banks fail, your "money" disappears even though you did nothing wrong.'
+                },
+                'cyprus': {
+                    title: 'Cyprus 2013 - Bank Bail-in',
+                    story: 'Government seized up to 60% of deposits over €100,000 to save failing banks.',
+                    lesson: 'Your bank account is actually an unsecured loan to the bank.'
+                },
+                'germany': {
+                    title: 'Germany 1923 - Weimar Hyperinflation',
+                    story: 'People needed wheelbarrows full of cash to buy bread. Savings were wiped out in months.',
+                    lesson: 'Even advanced economies can destroy their currency through money printing.'
+                }
+            };
+            
+            const example = examples[country];
+            result.innerHTML = `
+                <div class="insight-box">
+                    <h4 style="color: #dc3545;">${example.title}</h4>
+                    <p><strong>What Happened:</strong> ${example.story}</p>
+                    <p><strong>Key Lesson:</strong> ${example.lesson}</p>
+                </div>
+            `;
+        }
+        
+        function showControlExample(type) {
+            const result = document.getElementById('control-result');
+            const examples = {
+                'freeze': {
+                    title: 'Account Freezing',
+                    story: 'Banks can freeze your account for "suspicious activity," wrong politics, or simply technical errors.',
+                    lesson: 'You don\'t actually own the money in your bank account.'
+                },
+                'capital': {
+                    title: 'Capital Controls',
+                    story: 'Countries like Argentina and China limit how much money citizens can move or exchange.',
+                    lesson: 'Governments can trap your wealth within borders.'
+                },
+                'bail': {
+                    title: 'Bank Bail-ins',
+                    story: 'When banks fail, new laws allow them to use depositor funds instead of taxpayer bailouts.',
+                    lesson: 'Your deposits become the bank\'s emergency fund.'
+                },
+                'negative': {
+                    title: 'Negative Interest Rates',
+                    story: 'Some banks now charge you to hold your money, literally taxing savings.',
+                    lesson: 'Traditional saving is under attack by monetary policy.'
+                }
+            };
+            
+            const example = examples[type];
+            result.innerHTML = `
+                <div class="insight-box">
+                    <h4 style="color: #dc3545;">${example.title}</h4>
+                    <p><strong>Reality:</strong> ${example.story}</p>
+                    <p><strong>Key Lesson:</strong> ${example.lesson}</p>
+                </div>
+            `;
         }
 
         // Principle 1: Double-Spending Demo
@@ -2022,6 +2881,118 @@
             document.getElementById('value').textContent = `$${networkValue}`;
             document.getElementById('security').textContent = 'Low';
             document.getElementById('growth-result').innerHTML = '';
+        }
+
+        // Principle 9: Digital Scarcity & Financial Sovereignty Demos
+        
+        // Initialize time preference slider
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeSlider = document.getElementById('time-slider');
+            if (timeSlider) {
+                timeSlider.addEventListener('input', updateTimePreference);
+                updateTimePreference(); // Initialize
+            }
+        });
+        
+        function updateTimePreference() {
+            const slider = document.getElementById('time-slider');
+            const years = parseInt(slider.value);
+            const timeDisplay = document.getElementById('time-display');
+            const fiatValue = document.getElementById('fiat-value');
+            const bitcoinValue = document.getElementById('bitcoin-value');
+            
+            // 3% annual inflation for fiat
+            const inflationRate = 0.03;
+            const fiatPurchasingPower = 10000 * Math.pow(1 - inflationRate, years);
+            
+            timeDisplay.textContent = years + ' years';
+            fiatValue.textContent = '$' + Math.round(fiatPurchasingPower).toLocaleString();
+            bitcoinValue.textContent = '1 BTC'; // Bitcoin remains 1 BTC
+        }
+        
+        function showScarcityComparison(asset) {
+            const result = document.getElementById('scarcity-result');
+            const comparisons = {
+                'gold': {
+                    title: 'Bitcoin vs Gold',
+                    supply: 'Gold: ~190,000 tons exist, ~3,000 tons mined yearly',
+                    problem: 'Gold supply increases ~1.5% per year. Asteroid mining could flood supply.',
+                    bitcoin: 'Bitcoin: Exactly 21,000,000 maximum. No exceptions, no new discoveries.',
+                    winner: 'Bitcoin has provable absolute scarcity. Gold does not.'
+                },
+                'land': {
+                    title: 'Bitcoin vs Real Estate', 
+                    supply: 'Land: "They ain\'t making any more of it" - but they are (reclamation, space)',
+                    problem: 'Governments can seize land, create new land, change zoning laws.',
+                    bitcoin: 'Bitcoin: Exists in cyberspace. No government can create more or seize it easily.',
+                    winner: 'Bitcoin is scarcer and more secure than land.'
+                },
+                'art': {
+                    title: 'Bitcoin vs Fine Art',
+                    supply: 'Art: Unique pieces, but new artists emerge, forgeries exist, tastes change',
+                    problem: 'Art value is subjective and can be replicated or fall out of fashion.',
+                    bitcoin: 'Bitcoin: Mathematically scarce, impossible to counterfeit, growing adoption.',
+                    winner: 'Bitcoin scarcity is objective and verifiable. Art scarcity is subjective.'
+                },
+                'stocks': {
+                    title: 'Bitcoin vs Stocks',
+                    supply: 'Stocks: Companies can issue more shares, diluting your ownership',
+                    problem: 'Stock buybacks and splits change supply. Companies can fail or be nationalized.',
+                    bitcoin: 'Bitcoin: No CEO can dilute your holdings. Protocol enforces scarcity.',
+                    winner: 'Bitcoin cannot be diluted by corporate decisions.'
+                }
+            };
+            
+            const comparison = comparisons[asset];
+            result.innerHTML = `
+                <div class="insight-box">
+                    <h4 style="color: #ffd700;">${comparison.title}</h4>
+                    <p><strong>Traditional Asset:</strong> ${comparison.supply}</p>
+                    <p><strong>The Problem:</strong> ${comparison.problem}</p>
+                    <p><strong>Bitcoin Advantage:</strong> ${comparison.bitcoin}</p>
+                    <p><strong>Conclusion:</strong> ${comparison.winner}</p>
+                </div>
+            `;
+        }
+        
+        function showSovereigntyExample(type) {
+            const result = document.getElementById('sovereignty-result');
+            const examples = {
+                'custody': {
+                    title: 'Self-Custody = True Ownership',
+                    traditional: 'Banks hold your money. If the bank fails or freezes your account, your money is gone.',
+                    bitcoin: 'You hold your private keys = you control your Bitcoin. No third party can take it.',
+                    lesson: 'With Bitcoin, you don\'t have to trust anyone else to hold your wealth.'
+                },
+                'borders': {
+                    title: 'Cross Borders Freely',
+                    traditional: 'Wire transfers take days, cost fees, require permission, and can be blocked.',
+                    bitcoin: 'Send Bitcoin anywhere in the world in minutes for minimal fees. No one can stop you.',
+                    lesson: 'Bitcoin makes you a global citizen with borderless money.'
+                },
+                'permissionless': {
+                    title: 'No Permission Required',
+                    traditional: 'Banks can deny you accounts based on politics, credit, nationality, or arbitrary rules.',
+                    bitcoin: 'Anyone with internet can use Bitcoin. No applications, no rejections, no discrimination.',
+                    lesson: 'Bitcoin is financial inclusion for every human on Earth.'
+                },
+                'censorship': {
+                    title: 'Censorship Resistant',
+                    traditional: 'Governments can freeze accounts, block payments, and control your economic activity.',
+                    bitcoin: 'Bitcoin transactions cannot be stopped by any government or authority.',
+                    lesson: 'Bitcoin protects your economic freedom even from authoritarian regimes.'
+                }
+            };
+            
+            const example = examples[type];
+            result.innerHTML = `
+                <div class="insight-box">
+                    <h4 style="color: #28a745;">${example.title}</h4>
+                    <p><strong>Traditional System:</strong> ${example.traditional}</p>
+                    <p><strong>With Bitcoin:</strong> ${example.bitcoin}</p>
+                    <p><strong>The Power:</strong> ${example.lesson}</p>
+                </div>
+            `;
         }
 
         function resetAllProgress() {
