@@ -25,6 +25,9 @@ npm run test:watch
 # Linting
 npm run lint
 npm run lint:fix
+
+# Web interface development
+npm run web                  # Start web interface server
 ```
 
 ### Course Generation System
@@ -83,6 +86,11 @@ npm run canva:create        # Create real Canva designs
 # Specialized demos
 npm run automation          # Automation manager demo
 npm run workflow           # Bitcoin Canva workflow
+
+# System integration demos
+npm run phase1:demo         # Phase 1 enhanced system demo
+npm run demo:real-content   # Real content processing demo
+npm run content:philosophy  # Content philosophy analyzer demo
 ```
 
 ### Running Single Tests
@@ -93,6 +101,10 @@ npm run test -- src/tests/agents/CanvaAgent.test.js
 
 # Run tests for specific directory
 npm run test -- src/tests/tools/
+
+# Test specific functions or patterns
+npm run test -- --testPathPattern="integration"
+npm run test -- --testNamePattern="MCP"
 ```
 
 ## Architecture Overview
@@ -114,6 +126,7 @@ This is a Model Context Protocol (MCP) Agent Kit designed for Bitcoin education 
 - 30+ specialized agents for Bitcoin education and content creation
 - Tool implementations for Bitcoin data (price, fees, mempool stats)
 - Integration agents for Canva, Notion, and ChatGPT content
+- Web interface layer (`src/web/`) for REST API access to tools and agents
 
 ### Key Agent Categories
 
@@ -153,16 +166,20 @@ This is a Model Context Protocol (MCP) Agent Kit designed for Bitcoin education 
 - **Bitcoin APIs**: Live network data (mempool.space, CoinGecko)
 - **RSS Feeds**: News monitoring and sentiment analysis
 - **MCP Protocol**: Standard interface for AI agent communication
+- **REST API**: Web interface with health check, price, fees, news, simulation endpoints
 
 ### File Organization
 - `src/agents/` - Individual agent implementations (30+ files)
 - `src/tools/` - Bitcoin data tools and API integrations
 - `src/core/` - Core MCP server infrastructure and coordination
-- `src/router/` - Message routing and task distribution
+- `src/router/` - Message routing and task distribution (TaskRouter, EnhancedTaskRouter)
 - `src/cases/` - Example use cases and demonstration scripts
 - `src/automation/` - Automated course updating and maintenance
+- `src/web/` - Express.js web server with REST API endpoints
+- `src/demos/` - System integration and phase-specific demonstrations
 - `exports/` - Generated course content, CSVs, and HTML outputs
 - `docs/` - Setup guides for Canva, Notion, and deployment
+- `tests/` - Unit and integration tests for MCP protocol compliance
 
 ## Environment Requirements
 
@@ -207,4 +224,31 @@ npm run build:deploy
 npm run start:deploy
 ```
 
-The project includes Docker support with a `Dockerfile` for containerized deployment.
+### MCP Server vs Web Interface
+The system provides two deployment modes:
+
+1. **MCP Server Mode** (default): Runs as MCP-compliant server for AI integration
+   - Entry point: `src/index.ts`
+   - Uses stdio transport for MCP protocol communication
+   - Handles agent registration and message routing
+
+2. **Web Interface Mode**: Provides REST API endpoints
+   - Entry point: `src/web/server.ts`
+   - Express.js server on port 3000 (configurable via PORT env var)
+   - Endpoints: `/api/health`, `/api/bitcoin/*`, `/api/news`, `/api/simulation/*`
+   - Start with: `npm run web`
+
+### Docker Support
+Includes `Dockerfile` for containerized deployment:
+- Uses Node.js 18 Alpine image
+- Builds application and exposes port 3000
+- Includes health check endpoint
+- Default command runs web interface mode
+
+### MCP Protocol Implementation
+Implements proper Model Context Protocol standards:
+- Protocol version: 2024-11-05
+- Resource management with URIs and metadata
+- Tool registration with input schema validation
+- Prompt management with argument validation
+- Error handling with proper MCP error codes
