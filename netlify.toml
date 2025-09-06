@@ -1,0 +1,17 @@
+[build]
+  publish = "educational-content/bitcoin-course"
+  
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirect root to the Bitcoin course
+[[redirects]]
+  from = "/"
+  to = "/bitcoin-first-principles.html"
+  status = 200
+
+# Handle any 404s by serving the main course
+[[redirects]]
+  from = "/*"
+  to = "/bitcoin-first-principles.html"
+  status = 404
