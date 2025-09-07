@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0140)https://bjpwxhyr74bba31n.canva-hosted-embed.com/codelet/AAEAEGJqcHd4aHlyNzRiYmEzMW4AAAAAAZkkadwQ8IhJT1GoQdvn2ZvPKV6qU0iwIwfZb9jOQ2A9ey4n56A/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en"><head><meta charset="UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bitcoin from First Principles - The Complete Interactive Guide</title>
@@ -973,7 +972,7 @@
                         </p>
                     </div>
                     
-                    <button class="btn btn-success" onclick="completePrinciple(0)">I Understand Why We Need Better Money</button>
+                    <button type="button" class="btn btn-success" onclick="completePrinciple(0)">I Understand Why We Need Better Money</button>
                 </div>
             </div>
         </div>
@@ -1025,7 +1024,7 @@
                                 <div class="person">Charlie</div>
                             </div>
                             
-                            <button class="btn" onclick="attemptDoubleSpend()">Try Double-Spending Attack</button>
+                            <button type="button" class="btn" onclick="attemptDoubleSpend()">Try Double-Spending Attack</button>
                             <div id="double-spend-result" style="margin-top: 15px;"></div>
                         </div>
                     </div>
@@ -1222,8 +1221,8 @@
                             
                             <div style="margin: 20px 0;">
                                 <p><strong>Scenario:</strong> Alice wants to send 1 BTC to Bob. Nodes must agree this transaction is valid.</p>
-                                <button class="btn" onclick="simulateConsensus()">Simulate Consensus Vote</button>
-                                <button class="btn" onclick="addMaliciousNodes()">Add More Malicious Nodes</button>
+                                <button type="button" class="btn" onclick="simulateConsensus()">Simulate Consensus Vote</button>
+                                <button type="button" class="btn" onclick="addMaliciousNodes()">Add More Malicious Nodes</button>
                             </div>
                             
                             <div id="consensus-result" style="margin-top: 15px;"></div>
@@ -1309,8 +1308,8 @@
                                     </div>
                                 </div>
                                 
-                                <button class="btn" onclick="autoSolvePuzzle()">Auto-Solve Puzzle</button>
-                                <button class="btn" onclick="resetPuzzle()">Reset Puzzle</button>
+                                <button type="button" class="btn" onclick="autoSolvePuzzle()">Auto-Solve Puzzle</button>
+                                <button type="button" class="btn" onclick="resetPuzzle()">Reset Puzzle</button>
                                 
                                 <div id="puzzle-result" style="margin-top: 15px;"></div>
                             </div>
@@ -1376,8 +1375,9 @@
                             </div>
                             
                             <div style="margin: 20px 0;">
+                                <label for="new-tx" style="display: block; margin-bottom: 5px; color: #ffffff;">Transaction Details:</label>
                                 <input type="text" id="new-tx" placeholder="Enter transaction (e.g., &#39;Alice sends 10 BTC to Bob&#39;)" style="width: 70%; padding: 10px; border: 2px solid #4f46e5; border-radius: 5px; background: #2d2d5f; color: #ffffff; margin-right: 10px;">
-                                <button class="btn" onclick="addTransaction()">Add Transaction</button>
+                                <button type="button" class="btn" onclick="addTransaction()">Add Transaction</button>
                             </div>
                             
                             <div class="chain-visual" id="chain-visual">
@@ -1388,7 +1388,7 @@
                                 </div>
                             </div>
                             
-                            <button class="btn" onclick="attemptTamper()">Try to Change Block 1</button>
+                            <button type="button" class="btn" onclick="attemptTamper()">Try to Change Block 1</button>
                             <div id="tamper-result" style="margin-top: 15px;"></div>
                         </div>
                     </div>
@@ -1449,7 +1449,7 @@
                             <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Digital Signatures</h4>
                             
                             <div style="margin: 20px 0;">
-                                <button class="btn" onclick="generateKeyPair()">Generate Key Pair</button>
+                                <button type="button" class="btn" onclick="generateKeyPair()">Generate Key Pair</button>
                                 
                                 <div style="margin: 15px 0;">
                                     <p><strong>Private Key (Keep Secret!):</strong></p>
@@ -1731,10 +1731,10 @@
                             </div>
                             
                             <div style="margin: 20px 0;">
-                                <button class="btn" onclick="showScarcityComparison('gold')" style="margin: 5px;">vs Gold</button>
-                                <button class="btn" onclick="showScarcityComparison('land')" style="margin: 5px;">vs Real Estate</button>
-                                <button class="btn" onclick="showScarcityComparison('art')" style="margin: 5px;">vs Art</button>
-                                <button class="btn" onclick="showScarcityComparison('stocks')" style="margin: 5px;">vs Stocks</button>
+                                <button type="button" class="btn" onclick="showScarcityComparison('gold')" style="margin: 5px;">vs Gold</button>
+                                <button type="button" class="btn" onclick="showScarcityComparison('land')" style="margin: 5px;">vs Real Estate</button>
+                                <button type="button" class="btn" onclick="showScarcityComparison('art')" style="margin: 5px;">vs Art</button>
+                                <button type="button" class="btn" onclick="showScarcityComparison('stocks')" style="margin: 5px;">vs Stocks</button>
                             </div>
                             
                             <div id="scarcity-result" style="margin-top: 15px;"></div>
@@ -1746,10 +1746,10 @@
                             </div>
                             
                             <div style="margin: 20px 0;">
-                                <button class="btn" onclick="showSovereigntyExample('custody')" style="margin: 5px;">Self-Custody</button>
-                                <button class="btn" onclick="showSovereigntyExample('borders')" style="margin: 5px;">Cross Borders</button>
-                                <button class="btn" onclick="showSovereigntyExample('permissionless')" style="margin: 5px;">No Permission</button>
-                                <button class="btn" onclick="showSovereigntyExample('censorship')" style="margin: 5px;">Censorship Resistant</button>
+                                <button type="button" class="btn" onclick="showSovereigntyExample('custody')" style="margin: 5px;">Self-Custody</button>
+                                <button type="button" class="btn" onclick="showSovereigntyExample('borders')" style="margin: 5px;">Cross Borders</button>
+                                <button type="button" class="btn" onclick="showSovereigntyExample('permissionless')" style="margin: 5px;">No Permission</button>
+                                <button type="button" class="btn" onclick="showSovereigntyExample('censorship')" style="margin: 5px;">Censorship Resistant</button>
                             </div>
                             
                             <div id="sovereignty-result" style="margin-top: 15px;"></div>
@@ -3072,6 +3072,5 @@
         // Initialize
         updateProgress();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97ae63a6b0598707',t:'MTc1NzE2NjE0Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;" src="./saved_resource.html"></iframe>
 
 </body></html>
