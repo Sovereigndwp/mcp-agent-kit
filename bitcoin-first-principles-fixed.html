@@ -440,6 +440,47 @@
             margin-bottom: 15px;
             color: #ffd700;
         }
+        
+        /* New styles for principles 3-9 */
+        .consensus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .node {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .node.dishonest {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+        }
+        
+        .ledger-demo {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .ledger-entry {
+            display: grid;
+            grid-template-columns: 100px 1fr 150px;
+            gap: 15px;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 5px;
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
 
         /* Enhanced Mobile Optimizations */
         /* New Interactive Elements CSS */
@@ -1157,8 +1198,655 @@
             </div>
         </div>
 
-        <!-- Additional sections would continue here following the same pattern... -->
-        <!-- For brevity, I'll add a final section to demonstrate completion -->
+        <!-- Principle 3: The Consensus Problem -->
+        <div class="principle-section">
+            <div class="principle-header" onclick="togglePrinciple(3)">
+                <span>Principle 3: The Consensus Problem (How Do Strangers Agree?)</span>
+                <span class="principle-icon" id="icon-3">▼</span>
+            </div>
+            <div class="principle-content" id="content-3">
+                <div class="principle-inner">
+                    <div class="insight-box">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px;">First Principles Question:</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"How can thousands of strangers on the internet agree on a single version of truth?"</strong>
+                        </p>
+                        <p>
+                            We want many independent parties to maintain the ledger, but how do they coordinate? 
+                            What if they disagree? What if some are dishonest? How do we ensure they all 
+                            converge on the same version of the ledger?
+                        </p>
+                    </div>
+                    
+                    <div class="problem-box">
+                        <h4 style="color: #dc3545; margin-bottom: 15px;">The Problem: Byzantine Generals</h4>
+                        <p style="margin-bottom: 15px;">
+                            This is known as the "Byzantine Generals Problem" - how do distributed parties 
+                            coordinate when some might be dishonest or unreliable? In a network, some nodes 
+                            might be malicious, offline, or simply mistaken.
+                        </p>
+                        
+                        <div class="demo-container">
+                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Network Consensus</h4>
+                            
+                            <div class="consensus-grid">
+                                <div class="node honest" id="node1">
+                                    <div>Node 1</div>
+                                    <div>Status: Honest</div>
+                                    <div>Vote: <span id="vote1">?</span></div>
+                                </div>
+                                <div class="node honest" id="node2">
+                                    <div>Node 2</div>
+                                    <div>Status: Honest</div>
+                                    <div>Vote: <span id="vote2">?</span></div>
+                                </div>
+                                <div class="node honest" id="node3">
+                                    <div>Node 3</div>
+                                    <div>Status: Honest</div>
+                                    <div>Vote: <span id="vote3">?</span></div>
+                                </div>
+                                <div class="node dishonest" id="node4">
+                                    <div>Node 4</div>
+                                    <div>Status: Dishonest</div>
+                                    <div>Vote: <span id="vote4">?</span></div>
+                                </div>
+                                <div class="node honest" id="node5">
+                                    <div>Node 5</div>
+                                    <div>Status: Honest</div>
+                                    <div>Vote: <span id="vote5">?</span></div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <p><strong>Scenario:</strong> Alice wants to send 1 BTC to Bob. Nodes must agree this transaction is valid.</p>
+                                <button type="button" class="btn" onclick="simulateConsensus()">Simulate Consensus Vote</button>
+                                <button type="button" class="btn" onclick="addMaliciousNodes()">Add More Malicious Nodes</button>
+                            </div>
+                            
+                            <div id="consensus-result" style="margin-top: 15px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 style="color: #28a745; margin-bottom: 15px;">The Insight: Majority Rule with Proof</h4>
+                        <p>
+                            The solution is majority rule - but not just any majority. We need a way to prevent 
+                            someone from creating fake identities to outvote honest participants. Bitcoin solves 
+                            this with "Proof of Work" - you must prove you've done computational work to vote.
+                        </p>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="completePrinciple(3)">I Understand the Consensus Problem</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principle 4: The Proof of Work Solution -->
+        <div class="principle-section">
+            <div class="principle-header" onclick="togglePrinciple(4)">
+                <span>Principle 4: Proof of Work (Making Votes Expensive)</span>
+                <span class="principle-icon" id="icon-4">▼</span>
+            </div>
+            <div class="principle-content" id="content-4">
+                <div class="principle-inner">
+                    <div class="insight-box">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px;">First Principles Question:</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"How do we prevent someone from creating millions of fake identities to control the vote?"</strong>
+                        </p>
+                        <p>
+                            In a digital system, creating new identities is free. An attacker could create 
+                            millions of fake nodes to outvote honest participants. We need to make voting 
+                            expensive so that honest participants naturally have more voting power.
+                        </p>
+                    </div>
+                    
+                    <div class="problem-box">
+                        <h4 style="color: #dc3545; margin-bottom: 15px;">The Problem: Sybil Attacks</h4>
+                        <p style="margin-bottom: 15px;">
+                            This is called a "Sybil Attack" - creating many fake identities to gain control. 
+                            In traditional voting, we prevent this with identity verification. But in a 
+                            decentralized system with no central authority, how do we verify identities?
+                        </p>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 style="color: #28a745; margin-bottom: 15px;">The Insight: Make Voting Expensive</h4>
+                        <p style="margin-bottom: 15px;">
+                            Instead of verifying identities, we make voting expensive. Each vote requires 
+                            solving a difficult computational puzzle. This is "Proof of Work" - you must 
+                            prove you've expended real-world resources (electricity, hardware) to vote.
+                        </p>
+                        
+                        <div class="demo-container">
+                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Computational Puzzles</h4>
+                            
+                            <div class="mining-visual">
+                                <p style="margin-bottom: 15px;">
+                                    <strong>The Puzzle:</strong> Find a number that, when combined with transaction data, 
+                                    creates a hash starting with four zeros (0000...).
+                                </p>
+                                
+                                <div class="puzzle-demo">
+                                    <div class="puzzle-piece" onclick="tryPuzzle(1)" id="puzzle1">
+                                        <div>Try: 1</div>
+                                        <div id="hash1">Click to hash</div>
+                                    </div>
+                                    <div class="puzzle-piece" onclick="tryPuzzle(2)" id="puzzle2">
+                                        <div>Try: 2</div>
+                                        <div id="hash2">Click to hash</div>
+                                    </div>
+                                    <div class="puzzle-piece" onclick="tryPuzzle(3)" id="puzzle3">
+                                        <div>Try: 3</div>
+                                        <div id="hash3">Click to hash</div>
+                                    </div>
+                                    <div class="puzzle-piece" onclick="tryPuzzle(4)" id="puzzle4">
+                                        <div>Try: 4</div>
+                                        <div id="hash4">Click to hash</div>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn" onclick="autoSolvePuzzle()">Auto-Solve Puzzle</button>
+                                <button type="button" class="btn" onclick="resetPuzzle()">Reset Puzzle</button>
+                                
+                                <div id="puzzle-result" style="margin-top: 15px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-box">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">Why This Works:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>Expensive to Attack:</strong> Creating fake votes requires real electricity and hardware</li>
+                            <li><strong>Honest Majority:</strong> Honest participants collectively have more resources than attackers</li>
+                            <li><strong>Verifiable:</strong> Anyone can quickly verify that work was done</li>
+                            <li><strong>Fair:</strong> More work = more voting power, regardless of identity</li>
+                        </ul>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="completePrinciple(4)">I Understand Proof of Work</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principle 5: The Blockchain Structure -->
+        <div class="principle-section">
+            <div class="principle-header" onclick="togglePrinciple(5)">
+                <span>Principle 5: The Chain Structure (Ordering Transactions in Time)</span>
+                <span class="principle-icon" id="icon-5">▼</span>
+            </div>
+            <div class="principle-content" id="content-5">
+                <div class="principle-inner">
+                    <div class="insight-box">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px;">First Principles Question:</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"How do we organize transactions in a way that creates an unchangeable history?"</strong>
+                        </p>
+                        <p>
+                            We have proof of work for consensus, but how do we structure the ledger itself? 
+                            We need a way to organize transactions that makes it extremely difficult to 
+                            change past records while allowing new ones to be added.
+                        </p>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 style="color: #28a745; margin-bottom: 15px;">The Insight: Chain Blocks Together</h4>
+                        <p style="margin-bottom: 15px;">
+                            Group transactions into "blocks" and chain them together cryptographically. 
+                            Each block contains a reference to the previous block. To change an old 
+                            transaction, you'd have to redo all the work for that block and every 
+                            block that came after it.
+                        </p>
+                        
+                        <div class="demo-container">
+                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Building the Chain</h4>
+                            
+                            <div class="ledger-demo">
+                                <h4 style="color: #4f46e5; margin-bottom: 15px;">Current Ledger State:</h4>
+                                <div id="ledger-entries">
+                                    <div class="ledger-entry">
+                                        <div class="entry-time">Genesis</div>
+                                        <div class="entry-tx">System creates 50 BTC for Alice</div>
+                                        <div class="entry-balance">Alice: 50 BTC</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <label for="new-tx" style="display: block; margin-bottom: 5px; color: #ffffff;">Transaction Details:</label>
+                                <input type="text" id="new-tx" placeholder="Enter transaction (e.g., 'Alice sends 10 BTC to Bob')" style="width: 70%; padding: 10px; border: 2px solid #4f46e5; border-radius: 5px; background: #2d2d5f; color: #ffffff; margin-right: 10px;">
+                                <button type="button" class="btn" onclick="addTransaction()">Add Transaction</button>
+                            </div>
+                            
+                            <div class="chain-visual" id="chain-visual">
+                                <div class="block">
+                                    <div>Block 0</div>
+                                    <div>Genesis</div>
+                                    <div>Hash: 000a...</div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn" onclick="attemptTamper()">Try to Change Block 1</button>
+                            <div id="tamper-result" style="margin-top: 15px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-box">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">Why Chaining Works:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>Immutability:</strong> Changing old data requires redoing all subsequent work</li>
+                            <li><strong>Chronological Order:</strong> Blocks create a clear timeline of events</li>
+                            <li><strong>Cumulative Security:</strong> Each new block makes all previous blocks more secure</li>
+                            <li><strong>Verifiable History:</strong> Anyone can verify the entire history from the beginning</li>
+                        </ul>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="completePrinciple(5)">I Understand the Chain Structure</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principle 6: Digital Signatures -->
+        <div class="principle-section">
+            <div class="principle-header" onclick="togglePrinciple(6)">
+                <span>Principle 6: Digital Signatures (Proving Ownership Without Revealing Secrets)</span>
+                <span class="principle-icon" id="icon-6">▼</span>
+            </div>
+            <div class="principle-content" id="content-6">
+                <div class="principle-inner">
+                    <div class="insight-box">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px;">First Principles Question:</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"How can someone prove they own Bitcoin without revealing their private key?"</strong>
+                        </p>
+                        <p>
+                            We have a secure ledger, but how do we prove ownership of Bitcoin? We need a way 
+                            for people to prove they have the right to spend certain Bitcoin without revealing 
+                            their secret key to everyone.
+                        </p>
+                    </div>
+                    
+                    <div class="problem-box">
+                        <h4 style="color: #dc3545; margin-bottom: 15px;">The Problem: Proving Ownership</h4>
+                        <p style="margin-bottom: 15px;">
+                            If we use passwords or secret keys directly, anyone who sees the transaction 
+                            could steal the key and spend the Bitcoin themselves. We need a way to prove 
+                            we know the secret without revealing the secret itself.
+                        </p>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 style="color: #28a745; margin-bottom: 15px;">The Insight: Public-Key Cryptography</h4>
+                        <p style="margin-bottom: 15px;">
+                            Use public-key cryptography! Generate a pair of keys: a private key (secret) and 
+                            a public key (shareable). You can create a digital signature with your private 
+                            key that proves you own the corresponding public key, without revealing the private key.
+                        </p>
+                        
+                        <div class="demo-container">
+                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Digital Signatures</h4>
+                            
+                            <div style="margin: 20px 0;">
+                                <button type="button" class="btn" onclick="generateKeyPair()">Generate Key Pair</button>
+                                
+                                <div style="margin: 15px 0;">
+                                    <p><strong>Private Key (Keep Secret!):</strong></p>
+                                    <div class="hash-display" id="private-key">Click "Generate Key Pair" first</div>
+                                </div>
+                                
+                                <div style="margin: 15px 0;">
+                                    <p><strong>Public Key (Share Freely):</strong></p>
+                                    <div class="hash-display" id="public-key">Generate keys first</div>
+                                </div>
+                                
+                                <div style="margin: 15px 0;">
+                                    <input type="text" id="message-to-sign" placeholder="Enter message to sign (e.g., 'Send 1 BTC to Alice')" title="Message to create digital signature for" style="width: 70%; padding: 10px; border: 2px solid #4f46e5; border-radius: 5px; background: #2d2d5f; color: #ffffff; margin-right: 10px;">
+                                    <button type="button" class="btn" onclick="signMessage()">Sign Message</button>
+                                </div>
+                                
+                                <div style="margin: 15px 0;">
+                                    <p><strong>Digital Signature:</strong></p>
+                                    <div class="hash-display" id="signature">Sign a message first</div>
+                                </div>
+                                
+                                <button type="button" class="btn" onclick="verifySignature()">🔍 Verify Signature</button>
+                                <button type="button" class="btn" onclick="simulateInvalidSignature()" style="background: linear-gradient(45deg, #dc3545, #c82333); margin-left: 10px;">⚠️ Try Invalid Signature</button>
+                                <div id="signature-result" style="margin-top: 15px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-box">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">How Bitcoin Uses This:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>Bitcoin Addresses:</strong> Derived from public keys</li>
+                            <li><strong>Transaction Authorization:</strong> Signed with private keys</li>
+                            <li><strong>Ownership Proof:</strong> Only the private key holder can create valid signatures</li>
+                            <li><strong>Public Verification:</strong> Anyone can verify signatures using public keys</li>
+                        </ul>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="completePrinciple(6)">I Understand Digital Signatures</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principle 7: Economic Incentives -->
+        <div class="principle-section">
+            <div class="principle-header" onclick="togglePrinciple(7)">
+                <span>Principle 7: Economic Incentives (Making Honesty Profitable)</span>
+                <span class="principle-icon" id="icon-7">▼</span>
+            </div>
+            <div class="principle-content" id="content-7">
+                <div class="principle-inner">
+                    <div class="insight-box">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px;">First Principles Question:</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"Why would anyone spend electricity and hardware to maintain the Bitcoin network?"</strong>
+                        </p>
+                        <p>
+                            We have the technical solution, but we need people to actually run it. 
+                            Proof of work requires expensive computation. Why would rational actors 
+                            spend their own resources to secure a network for strangers?
+                        </p>
+                    </div>
+                    
+                    <div class="problem-box">
+                        <h4 style="color: #dc3545; margin-bottom: 15px;">The Problem: Free Rider Problem</h4>
+                        <p style="margin-bottom: 15px;">
+                            Everyone benefits from a secure network, but securing it is expensive. 
+                            Without incentives, everyone would want others to pay the costs while 
+                            they enjoy the benefits for free. This would lead to an insecure network.
+                        </p>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 style="color: #28a745; margin-bottom: 15px;">The Insight: Reward Honest Behavior</h4>
+                        <p style="margin-bottom: 15px;">
+                            Create economic incentives that make honest behavior profitable. Miners who 
+                            successfully add blocks to the chain receive newly created Bitcoin plus 
+                            transaction fees. This aligns individual profit with network security.
+                        </p>
+                        
+                        <div class="demo-container">
+                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Mining Economics</h4>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="block-reward">6.25</div>
+                                    <div class="stat-label">Block Reward (BTC)</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="tx-fees">0.15</div>
+                                    <div class="stat-label">Transaction Fees (BTC)</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="total-reward">6.40</div>
+                                    <div class="stat-label">Total Reward (BTC)</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="btc-price">$43,000</div>
+                                    <div class="stat-label">BTC Price (USD)</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <p><strong>Mining Profitability Calculator:</strong></p>
+                                <div style="margin: 15px 0;">
+                                    <label>Electricity Cost ($/kWh): </label>
+                                    <input type="number" id="electricity-cost" value="0.10" step="0.01" title="Electricity cost per kilowatt-hour in USD" style="padding: 5px; border: 2px solid #4f46e5; border-radius: 5px; background: #2d2d5f; color: #ffffff;">
+                                </div>
+                                <div style="margin: 15px 0;">
+                                    <label>Hash Rate (TH/s): </label>
+                                    <input type="number" id="hash-rate" value="100" min="1" max="1000000" title="Mining hardware hash rate in terahashes per second" aria-label="Hash rate in TH/s" style="padding: 5px; border: 2px solid #4f46e5; border-radius: 5px; background: #2d2d5f; color: #ffffff;">
+                                </div>
+                                <button type="button" class="btn" onclick="calculateProfitability()">Calculate Profitability</button>
+                            </div>
+                            
+                            <div id="profitability-result" style="margin-top: 15px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-box">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">The Incentive Structure:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>Block Rewards:</strong> New Bitcoin created for successful miners</li>
+                            <li><strong>Transaction Fees:</strong> Users pay fees for transaction processing</li>
+                            <li><strong>Competition:</strong> Miners compete, driving efficiency and security</li>
+                            <li><strong>Self-Regulation:</strong> More miners = higher difficulty = maintained 10-minute blocks</li>
+                        </ul>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="completePrinciple(7)">I Understand Economic Incentives</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principle 8: Network Effects -->
+        <div class="principle-section">
+            <div class="principle-header" onclick="togglePrinciple(8)">
+                <span>Principle 8: Network Effects (Why Bitcoin Becomes Stronger Over Time)</span>
+                <span class="principle-icon" id="icon-8">▼</span>
+            </div>
+            <div class="principle-content" id="content-8">
+                <div class="principle-inner">
+                    <div class="insight-box">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px;">First Principles Question:</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"How does Bitcoin become more valuable and secure as more people use it?"</strong>
+                        </p>
+                        <p>
+                            We've solved the technical problems, but how does Bitcoin grow from a small 
+                            experiment to a global monetary system? What makes it stronger over time 
+                            rather than weaker?
+                        </p>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 style="color: #28a745; margin-bottom: 15px;">The Insight: Positive Feedback Loops</h4>
+                        <p style="margin-bottom: 15px;">
+                            Bitcoin exhibits network effects - it becomes more valuable and secure as 
+                            more people use it. This creates positive feedback loops that strengthen 
+                            the system over time.
+                        </p>
+                        
+                        <div class="demo-container">
+                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Network Growth Simulation</h4>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="users">1,000</div>
+                                    <div class="stat-label">Active Users</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="miners">10</div>
+                                    <div class="stat-label">Miners</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="security">Low</div>
+                                    <div class="stat-label">Network Security</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="value">$1</div>
+                                    <div class="stat-label">Bitcoin Value</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <button type="button" class="btn" onclick="simulateGrowth()">🚀 Simulate Network Growth</button>
+                                <button type="button" class="btn" onclick="resetNetwork()" style="background: linear-gradient(45deg, #6c757d, #5a6268); margin-left: 10px;">🔄 Reset Network</button>
+                            </div>
+                            
+                            <div id="growth-result" style="margin-top: 15px;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-box">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">The Network Effects:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>More Users → More Value:</strong> Increased demand drives up price</li>
+                            <li><strong>Higher Price → More Miners:</strong> More profitable to secure the network</li>
+                            <li><strong>More Miners → More Security:</strong> Harder to attack the network</li>
+                            <li><strong>More Security → More Trust:</strong> Attracts more users and institutions</li>
+                            <li><strong>More Adoption → More Development:</strong> Better tools and infrastructure</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="demo-container">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">Bitcoin's Journey: From Experiment to Global Money</h4>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">2009</div>
+                                <div class="stat-label">Genesis Block<br>First Bitcoin created</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">2010</div>
+                                <div class="stat-label">First Transaction<br>10,000 BTC for pizza</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">2017</div>
+                                <div class="stat-label">Mainstream Attention<br>$20,000 per BTC</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">2024</div>
+                                <div class="stat-label">Global Adoption<br>Institutional investment</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="completePrinciple(8)">I Understand Network Effects</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principle 9: Digital Scarcity & Financial Sovereignty -->
+        <div class="principle-section">
+            <div class="principle-header" onclick="togglePrinciple(9)">
+                <span>Principle 9: Digital Scarcity & Financial Sovereignty (Be Your Own Bank)</span>
+                <span class="principle-icon" id="icon-9">▼</span>
+            </div>
+            <div class="principle-content" id="content-9">
+                <div class="principle-inner">
+                    <div class="insight-box">
+                        <h3 style="color: #4f46e5; margin-bottom: 15px;">Final Revelation:</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                            <strong>"What if you could have true digital scarcity AND complete financial sovereignty?"</strong>
+                        </p>
+                        <p>
+                            We've built the technical foundation. Now let's understand what this means for 
+                            human freedom and wealth preservation. Bitcoin isn't just better technology - 
+                            it's a fundamental shift in monetary sovereignty.
+                        </p>
+                    </div>
+                    
+                    <div class="demo-container">
+                        <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Discovery: The 21 Million Revolution</h4>
+                        
+                        <div class="scenario-explorer">
+                            <div class="scenario-question">
+                                <strong>Digital Scarcity:</strong> Why 21 million matters
+                            </div>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value">21,000,000</div>
+                                    <div class="stat-label">Maximum Bitcoin Ever</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="current-supply">19,800,000</div>
+                                    <div class="stat-label">Currently Mined</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value">∞</div>
+                                    <div class="stat-label">Fiat Dollars (No Limit)</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value">50%</div>
+                                    <div class="stat-label">Reward Cut Every 4 Years</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <button type="button" class="btn" onclick="showScarcityComparison('gold')" style="margin: 5px;">vs Gold</button>
+                                <button type="button" class="btn" onclick="showScarcityComparison('land')" style="margin: 5px;">vs Real Estate</button>
+                                <button type="button" class="btn" onclick="showScarcityComparison('art')" style="margin: 5px;">vs Art</button>
+                                <button type="button" class="btn" onclick="showScarcityComparison('stocks')" style="margin: 5px;">vs Stocks</button>
+                            </div>
+                            
+                            <div id="scarcity-result" style="margin-top: 15px;"></div>
+                        </div>
+                        
+                        <div class="scenario-explorer" style="margin-top: 30px;">
+                            <div class="scenario-question">
+                                <strong>Financial Sovereignty:</strong> What "Be Your Own Bank" Really Means
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <button type="button" class="btn" onclick="showSovereigntyExample('custody')" style="margin: 5px;">Self-Custody</button>
+                                <button type="button" class="btn" onclick="showSovereigntyExample('borders')" style="margin: 5px;">Cross Borders</button>
+                                <button type="button" class="btn" onclick="showSovereigntyExample('permissionless')" style="margin: 5px;">No Permission</button>
+                                <button type="button" class="btn" onclick="showSovereigntyExample('censorship')" style="margin: 5px;">Censorship Resistant</button>
+                            </div>
+                            
+                            <div id="sovereignty-result" style="margin-top: 15px;"></div>
+                        </div>
+                        
+                        <div class="scenario-explorer" style="margin-top: 30px;">
+                            <div class="scenario-question">
+                                <strong>Time Preference:</strong> Why Bitcoin Changes How We Think About Time
+                            </div>
+                            
+                            <div style="margin: 20px 0;">
+                                <label>Years of Savings:</label>
+                                <input type="range" id="time-slider" min="0" max="40" value="10" style="width: 200px; margin: 0 10px;">
+                                <span id="time-display">10 years</span>
+                            </div>
+                            
+                            <div id="time-result" class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="fiat-value">$10,000</div>
+                                    <div class="stat-label">Fiat Purchasing Power</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="bitcoin-value">1 BTC</div>
+                                    <div class="stat-label">Bitcoin Holdings</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-box" style="margin-top: 30px;">
+                        <h4 style="color: #28a745; margin-bottom: 15px;">The Complete Revolution:</h4>
+                        <ul style="margin-left: 20px;">
+                            <li><strong>True Scarcity:</strong> First time in human history we have mathematically provable digital scarcity</li>
+                            <li><strong>Self-Custody:</strong> You hold your keys, you hold your wealth - no third party risk</li>
+                            <li><strong>Borderless:</strong> Move value anywhere in the world without permission</li>
+                            <li><strong>Neutral:</strong> No government, corporation, or individual can control it</li>
+                            <li><strong>Sound Money:</strong> Encourages saving and long-term thinking</li>
+                            <li><strong>Financial Inclusion:</strong> Anyone with internet can participate in the global economy</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="problem-box" style="margin-top: 20px;">
+                        <h4 style="color: #ffd700; margin-bottom: 15px;">This Changes Everything:</h4>
+                        <p style="margin-bottom: 15px;">
+                            Bitcoin isn't just "digital gold" or "internet money." It's the first technology that allows 
+                            humans to achieve true monetary sovereignty. For the first time in history, individuals can:
+                        </p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Own wealth that can't be printed away by inflation</li>
+                            <li>Move value without banks, governments, or payment processors</li>
+                            <li>Preserve wealth across generations with mathematical certainty</li>
+                            <li>Participate in a global economy without anyone's permission</li>
+                        </ul>
+                        <p><strong>This is why Bitcoin matters. This is why it's inevitable.</strong></p>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="completePrinciple(9)">I Understand Bitcoin's True Value</button>
+                </div>
+            </div>
+        </div>
 
         <div style="text-align: center; margin: 40px 0; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 15px;">
             <h2 style="color: #4f46e5; margin-bottom: 15px;">🎉 Continue Your Bitcoin Journey!</h2>
@@ -1552,6 +2240,442 @@
         function openBitcoinPaper() {
             window.open('https://bitcoin.org/bitcoin.pdf', '_blank');
         }
+        
+        // Principle 3: Consensus functions
+        function simulateConsensus() {
+            const votes = ['Accept', 'Accept', 'Accept', 'Reject', 'Accept'];
+            const dishonest = [false, false, false, true, false];
+            
+            for (let i = 1; i <= 5; i++) {
+                const voteElement = document.getElementById(`vote${i}`);
+                if (dishonest[i-1]) {
+                    voteElement.textContent = 'Reject';
+                    voteElement.style.color = '#dc3545';
+                } else {
+                    voteElement.textContent = 'Accept';
+                    voteElement.style.color = '#28a745';
+                }
+            }
+            
+            document.getElementById('consensus-result').innerHTML = `
+                <div class="result-box" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px;">
+                    <strong>Result:</strong> Transaction ACCEPTED by majority (4/5 nodes)
+                    <br><small>Note: Even with one dishonest node, honest majority wins!</small>
+                </div>
+            `;
+        }
+        
+        function addMaliciousNodes() {
+            document.getElementById('consensus-result').innerHTML = `
+                <div class="result-box" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px;">
+                    <strong>Problem:</strong> If we add more malicious nodes without Proof of Work, they could create millions of fake identities!
+                    <br><small>This is why we need Proof of Work (next principle)...</small>
+                </div>
+            `;
+        }
+        
+        // Principle 4: Proof of Work functions
+        function tryPuzzle(attempt) {
+            const hashes = {
+                1: 'a4b2f1e8c9d3...',
+                2: 'f7e1b3a9c2d5...',
+                3: '0000a1b2c3d4...', // This one starts with 0000
+                4: 'c8d2e1f3a9b7...'
+            };
+            
+            const hashElement = document.getElementById(`hash${attempt}`);
+            hashElement.textContent = hashes[attempt];
+            
+            const puzzlePiece = document.getElementById(`puzzle${attempt}`);
+            
+            if (attempt === 3) {
+                puzzlePiece.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+                hashElement.style.color = '#28a745';
+                document.getElementById('puzzle-result').innerHTML = `
+                    <div class="result-box" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px;">
+                        <strong>🎉 Puzzle Solved!</strong> Number 3 produces a hash starting with 0000...
+                        <br><small>This represents the computational work needed to "vote" in Bitcoin</small>
+                    </div>
+                `;
+            } else {
+                puzzlePiece.style.background = 'linear-gradient(45deg, #dc3545, #c82333)';
+                hashElement.style.color = '#dc3545';
+            }
+        }
+        
+        function autoSolvePuzzle() {
+            let attempts = 0;
+            const interval = setInterval(() => {
+                attempts++;
+                if (attempts <= 3) {
+                    tryPuzzle(attempts);
+                }
+                if (attempts >= 3) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+        
+        function resetPuzzle() {
+            for (let i = 1; i <= 4; i++) {
+                const hashElement = document.getElementById(`hash${i}`);
+                const puzzlePiece = document.getElementById(`puzzle${i}`);
+                if (hashElement) hashElement.textContent = 'Click to hash';
+                if (hashElement) hashElement.style.color = '#ffffff';
+                if (puzzlePiece) puzzlePiece.style.background = 'linear-gradient(45deg, #4f46e5, #7c3aed)';
+            }
+            const puzzleResult = document.getElementById('puzzle-result');
+            if (puzzleResult) puzzleResult.innerHTML = '';
+        }
+        
+        // Principle 5: Blockchain functions
+        let blockchainData = [
+            { id: 0, data: 'Genesis', hash: '000a1b2c...' }
+        ];
+        
+        function addTransaction() {
+            const txInput = document.getElementById('new-tx');
+            if (!txInput) return;
+            const transaction = txInput.value;
+            if (!transaction) return;
+            
+            const newBlock = {
+                id: blockchainData.length,
+                data: transaction,
+                hash: generateHash(transaction)
+            };
+            
+            blockchainData.push(newBlock);
+            updateChainVisual();
+            updateLedger(transaction);
+            txInput.value = '';
+        }
+        
+        function generateHash(data) {
+            // Simulate hash generation
+            const hashes = ['000b1c2d...', '000c2d3e...', '000d3e4f...', '000e4f5g...'];
+            return hashes[Math.floor(Math.random() * hashes.length)];
+        }
+        
+        function updateChainVisual() {
+            const chainVisual = document.getElementById('chain-visual');
+            if (!chainVisual) return;
+            chainVisual.innerHTML = '';
+            
+            blockchainData.forEach((block, index) => {
+                const blockDiv = document.createElement('div');
+                blockDiv.className = 'block';
+                blockDiv.innerHTML = `
+                    <div>Block ${block.id}</div>
+                    <div>${block.data}</div>
+                    <div>Hash: ${block.hash}</div>
+                `;
+                chainVisual.appendChild(blockDiv);
+            });
+        }
+        
+        function updateLedger(transaction) {
+            const ledgerEntries = document.getElementById('ledger-entries');
+            if (!ledgerEntries) return;
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'ledger-entry';
+            entryDiv.innerHTML = `
+                <div class="entry-time">Block ${blockchainData.length - 1}</div>
+                <div class="entry-tx">${transaction}</div>
+                <div class="entry-balance">Updated balances...</div>
+            `;
+            ledgerEntries.appendChild(entryDiv);
+        }
+        
+        function attemptTamper() {
+            const tamperResult = document.getElementById('tamper-result');
+            if (!tamperResult) return;
+            
+            if (blockchainData.length > 1) {
+                tamperResult.innerHTML = `
+                    <div class="result-box" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px;">
+                        <strong>❌ Tampering Detected!</strong> To change Block 1, you would need to:
+                        <br>1. Redo the Proof of Work for Block 1
+                        <br>2. Redo the Proof of Work for Block 2
+                        <br>3. Continue for ALL subsequent blocks
+                        <br><small>This makes the blockchain practically immutable!</small>
+                    </div>
+                `;
+            } else {
+                tamperResult.innerHTML = `
+                    <div class="result-box" style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 5px;">
+                        <strong>Add a transaction first!</strong> Then try to tamper with the blockchain.
+                    </div>
+                `;
+            }
+        }
+        
+        // Principle 6: Digital Signatures functions
+        let keyPair = null;
+        let currentMessage = '';
+        let currentSignature = '';
+        
+        function generateKeyPair() {
+            keyPair = {
+                privateKey: 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262',
+                publicKey: '03D4B4A4E1D1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF123456'
+            };
+            
+            const privateKeyEl = document.getElementById('private-key');
+            const publicKeyEl = document.getElementById('public-key');
+            if (privateKeyEl) privateKeyEl.textContent = keyPair.privateKey;
+            if (publicKeyEl) publicKeyEl.textContent = keyPair.publicKey;
+        }
+        
+        function signMessage() {
+            if (!keyPair) {
+                alert('Generate a key pair first!');
+                return;
+            }
+            
+            const messageInput = document.getElementById('message-to-sign');
+            if (!messageInput) return;
+            const message = messageInput.value;
+            if (!message) {
+                alert('Enter a message to sign!');
+                return;
+            }
+            
+            currentMessage = message;
+            currentSignature = 'A1B2C3D4E5F6789012345678901234567890ABCDEF1234567890ABCDEF123456789012345678901234567890ABCDEF';
+            
+            const signatureEl = document.getElementById('signature');
+            if (signatureEl) signatureEl.textContent = currentSignature;
+        }
+        
+        function verifySignature() {
+            if (!currentSignature || !currentMessage) {
+                alert('Sign a message first!');
+                return;
+            }
+            
+            const signatureResult = document.getElementById('signature-result');
+            if (signatureResult) {
+                signatureResult.innerHTML = `
+                    <div class="result-box" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px;">
+                        <strong>✅ Signature Valid!</strong> This signature was created with the private key that matches the public key.
+                        <br><small>Anyone can verify this without seeing the private key!</small>
+                    </div>
+                `;
+            }
+        }
+        
+        function simulateInvalidSignature() {
+            const signatureResult = document.getElementById('signature-result');
+            if (signatureResult) {
+                signatureResult.innerHTML = `
+                    <div class="result-box" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px;">
+                        <strong>❌ Invalid Signature!</strong> This signature doesn't match the message or public key.
+                        <br><small>This proves the private key holder didn't authorize this transaction.</small>
+                    </div>
+                `;
+            }
+        }
+        
+        // Principle 7: Economic Incentives functions
+        function calculateProfitability() {
+            const electricityInput = document.getElementById('electricity-cost');
+            const hashRateInput = document.getElementById('hash-rate');
+            if (!electricityInput || !hashRateInput) return;
+            
+            const electricityCost = parseFloat(electricityInput.value);
+            const hashRate = parseFloat(hashRateInput.value);
+            
+            // Simplified calculation
+            const dailyRevenue = (hashRate / 400000000) * 6.40 * 43000; // Very simplified
+            const dailyCost = 24 * 3.5 * electricityCost; // 3.5 kW consumption estimate
+            const dailyProfit = dailyRevenue - dailyCost;
+            
+            const profitabilityResult = document.getElementById('profitability-result');
+            if (profitabilityResult) {
+                profitabilityResult.innerHTML = `
+                    <div class="result-box" style="background: ${dailyProfit > 0 ? '#d4edda' : '#f8d7da'}; color: ${dailyProfit > 0 ? '#155724' : '#721c24'}; padding: 15px; border-radius: 5px;">
+                        <strong>Daily Mining Results:</strong><br>
+                        Revenue: $${dailyRevenue.toFixed(2)}<br>
+                        Electricity Cost: $${dailyCost.toFixed(2)}<br>
+                        Profit: $${dailyProfit.toFixed(2)}<br>
+                        <small>This creates incentive to secure the network!</small>
+                    </div>
+                `;
+            }
+        }
+        
+        // Principle 8: Network Effects functions
+        let networkStats = {
+            users: 1000,
+            miners: 10,
+            security: 'Low',
+            value: 1
+        };
+        
+        function simulateGrowth() {
+            networkStats.users *= 2;
+            networkStats.miners *= 1.5;
+            networkStats.value *= 3;
+            
+            if (networkStats.users > 100000) {
+                networkStats.security = 'High';
+            } else if (networkStats.users > 10000) {
+                networkStats.security = 'Medium';
+            }
+            
+            const usersEl = document.getElementById('users');
+            const minersEl = document.getElementById('miners');
+            const securityEl = document.getElementById('security');
+            const valueEl = document.getElementById('value');
+            
+            if (usersEl) usersEl.textContent = Math.floor(networkStats.users).toLocaleString();
+            if (minersEl) minersEl.textContent = Math.floor(networkStats.miners);
+            if (securityEl) securityEl.textContent = networkStats.security;
+            if (valueEl) valueEl.textContent = '$' + Math.floor(networkStats.value);
+            
+            const growthResult = document.getElementById('growth-result');
+            if (growthResult) {
+                growthResult.innerHTML = `
+                    <div class="result-box" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px;">
+                        <strong>🚀 Network Growing!</strong> Notice how all metrics improve together.
+                        <br><small>This positive feedback loop makes Bitcoin stronger over time.</small>
+                    </div>
+                `;
+            }
+        }
+        
+        function resetNetwork() {
+            networkStats = { users: 1000, miners: 10, security: 'Low', value: 1 };
+            const usersEl = document.getElementById('users');
+            const minersEl = document.getElementById('miners');
+            const securityEl = document.getElementById('security');
+            const valueEl = document.getElementById('value');
+            const growthResult = document.getElementById('growth-result');
+            
+            if (usersEl) usersEl.textContent = '1,000';
+            if (minersEl) minersEl.textContent = '10';
+            if (securityEl) securityEl.textContent = 'Low';
+            if (valueEl) valueEl.textContent = '$1';
+            if (growthResult) growthResult.innerHTML = '';
+        }
+        
+        // Principle 9: Scarcity and Sovereignty functions
+        function showScarcityComparison(asset) {
+            const comparisons = {
+                gold: {
+                    title: 'Bitcoin vs Gold',
+                    content: `
+                        <strong>Gold:</strong> ~2% annual inflation (new mining)<br>
+                        <strong>Bitcoin:</strong> Decreasing inflation, approaching 0%<br>
+                        <strong>Advantage:</strong> Bitcoin has a hard cap, gold supply keeps growing
+                    `
+                },
+                land: {
+                    title: 'Bitcoin vs Real Estate',
+                    content: `
+                        <strong>Land:</strong> Can be seized, taxed, requires maintenance<br>
+                        <strong>Bitcoin:</strong> Cannot be seized if properly secured<br>
+                        <strong>Advantage:</strong> True ownership without geographical constraints
+                    `
+                },
+                art: {
+                    title: 'Bitcoin vs Art/Collectibles',
+                    content: `
+                        <strong>Art:</strong> Subjective value, can be counterfeited<br>
+                        <strong>Bitcoin:</strong> Mathematically verifiable scarcity<br>
+                        <strong>Advantage:</strong> Objective, programmable scarcity
+                    `
+                },
+                stocks: {
+                    title: 'Bitcoin vs Stocks',
+                    content: `
+                        <strong>Stocks:</strong> Companies can issue more shares<br>
+                        <strong>Bitcoin:</strong> No entity can create more Bitcoin<br>
+                        <strong>Advantage:</strong> True digital scarcity, no dilution risk
+                    `
+                }
+            };
+            
+            const comparison = comparisons[asset];
+            const scarcityResult = document.getElementById('scarcity-result');
+            if (scarcityResult) {
+                scarcityResult.innerHTML = `
+                    <div class="result-box" style="background: #e7f3ff; color: #004085; padding: 15px; border-radius: 5px;">
+                        <strong>${comparison.title}</strong><br>
+                        ${comparison.content}
+                    </div>
+                `;
+            }
+        }
+        
+        function showSovereigntyExample(type) {
+            const examples = {
+                custody: {
+                    title: 'Self-Custody',
+                    content: `
+                        With Bitcoin, YOU control your wealth directly. No bank can freeze your account, 
+                        no government can seize it without your private keys. You are your own bank.
+                    `
+                },
+                borders: {
+                    title: 'Borderless Value Transfer',
+                    content: `
+                        Send $1 million to Japan or $10 to Nigeria - same process, same low fees. 
+                        No currency controls, no permission needed, settles in ~10 minutes globally.
+                    `
+                },
+                permissionless: {
+                    title: 'No Permission Required',
+                    content: `
+                        No credit checks, no account applications, no minimum balances. 
+                        If you have internet, you can participate in the global Bitcoin economy.
+                    `
+                },
+                censorship: {
+                    title: 'Censorship Resistance',
+                    content: `
+                        No single entity can stop Bitcoin transactions. Even if some countries ban it, 
+                        the network continues operating globally through thousands of nodes.
+                    `
+                }
+            };
+            
+            const example = examples[type];
+            const sovereigntyResult = document.getElementById('sovereignty-result');
+            if (sovereigntyResult) {
+                sovereigntyResult.innerHTML = `
+                    <div class="result-box" style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 5px;">
+                        <strong>${example.title}</strong><br>
+                        ${example.content}
+                    </div>
+                `;
+            }
+        }
+        
+        // Time preference slider event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeSlider = document.getElementById('time-slider');
+            if (timeSlider) {
+                timeSlider.addEventListener('input', function() {
+                    const years = this.value;
+                    const timeDisplay = document.getElementById('time-display');
+                    if (timeDisplay) timeDisplay.textContent = years + ' years';
+                    
+                    // Simulate inflation effects on fiat vs Bitcoin appreciation
+                    const inflationRate = 0.03; // 3% annually
+                    const bitcoinAppreciation = 0.20; // 20% annually (historical average)
+                    
+                    const fiatValue = 10000 * Math.pow((1 - inflationRate), years);
+                    const btcImpliedValue = 10000 * Math.pow((1 + bitcoinAppreciation), years);
+                    
+                    const fiatValueEl = document.getElementById('fiat-value');
+                    const bitcoinValueEl = document.getElementById('bitcoin-value');
+                    if (fiatValueEl) fiatValueEl.textContent = '$' + Math.floor(fiatValue).toLocaleString();
+                    if (bitcoinValueEl) bitcoinValueEl.textContent = '1 BTC (~$' + Math.floor(btcImpliedValue).toLocaleString() + ')';
+                });
+            }
+        });
 
         // Initialize
         updateProgress();
