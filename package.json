@@ -71,7 +71,14 @@
     "security:scan": "tsx scripts/security-scan.ts",
     "build:deploy": "tsc --project tsconfig.deploy.json",
     "start:deploy": "node dist/web/server.js",
-    "postinstall": "npm run build:deploy"
+    "postinstall": "npm run build:deploy",
+    "brand:learn": "tsx src/pipelines/brand_learn.ts",
+    "course:build": "tsx src/pipelines/course_build.ts",
+    "course:revise": "tsx src/pipelines/course_revise.ts",
+    "marketing:run": "tsx src/pipelines/marketing_run.ts",
+    "eval:run": "tsx src/pipelines/eval_run.ts",
+    "lesson:new": "tsx src/pipelines/lesson_new.ts",
+    "export:pack": "tsx src/pipelines/export_pack.ts"
   },
   "keywords": [
     "mcp",
