@@ -1,4 +1,4 @@
-import { mcpAgentServer } from '../core/MCPAgentServer.js';
+import { mcpAgentServer } from '../core/mcpAgentServer.js';
 import { agentCommunicationProtocol } from '../core/AgentCommunicationProtocol.js';
 import { securityManager } from '../core/SecurityManager.js';
 import { RetryHandler, MCPError, ErrorLogger } from '../core/ErrorHandler.js';

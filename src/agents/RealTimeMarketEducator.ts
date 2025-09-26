@@ -1,5 +1,5 @@
-import { MCPAgent } from '../core/MCPAgent';
-import { Tool, ToolInput, ToolOutput } from '../types/Agent';
+import { BaseAgent } from './BaseAgent.js';
+import { Tool, ToolInput, ToolOutput } from '../types/agent';
 
 export interface MarketData {
   timestamp: string;
