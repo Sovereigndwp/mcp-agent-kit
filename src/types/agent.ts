@@ -22,3 +22,7 @@ export interface MCPAgent {
   getTools(): Tool[];
   handleToolCall(name: string, args: any): Promise<any>;
 }
+
+// Legacy aliases to unblock older agents quickly
+export interface ToolInput { [key: string]: unknown; }
+export interface ToolOutput { [key: string]: unknown; }

@@ -1,15 +1,38 @@
-import { MCPAgent, Tool } from '../types/agent.js';
+import { z } from 'zod';
+import { BaseAgent } from './BaseAgent.js';
+import type { Tool } from '../types/agent.js';
 
 /**
  * Economic Modeling Agent
  * Creates sophisticated economic models and simulations for Bitcoin education
  * Helps students understand monetary policy, market dynamics, and economic implications
  */
-export class EconomicModelingAgent implements MCPAgent {
-  name = "EconomicModelingAgent";
-  description = "Advanced economic modeling and simulation agent that creates interactive economic models, market simulations, and monetary policy demonstrations to help students understand Bitcoin's economic properties and implications";
+export class EconomicModelingAgent extends BaseAgent {
+  readonly name = "EconomicModelingAgent";
+  readonly description = "Advanced economic modeling and simulation agent that creates interactive economic models, market simulations, and monetary policy demonstrations to help students understand Bitcoin's economic properties and implications";
 
-  tools = [
+  private readonly monetaryPolicySchema = z.object({
+    model_type: z.enum(['supply_curve', 'inflation_comparison', 'purchasing_power', 'velocity_analysis', 'stock_to_flow']),
+    comparison_systems: z.array(z.enum(['fiat_currencies', 'gold_standard', 'commodity_money', 'central_bank_policies'])).optional(),
+    time_horizon: z.enum(['historical', 'current', 'projected_10_years', 'projected_50_years', 'full_timeline']).optional(),
+    interactivity_level: z.enum(['static_visualization', 'parameter_adjustment', 'scenario_simulation', 'full_interactive']).optional()
+  });
+
+  private readonly marketDynamicsSchema = z.object({
+    simulation_type: z.enum(['price_discovery', 'liquidity_analysis', 'volatility_modeling', 'adoption_curves', 'network_effects']),
+    market_conditions: z.array(z.enum(['bull_market', 'bear_market', 'high_volatility', 'low_liquidity', 'regulatory_uncertainty', 'mass_adoption'])).optional(),
+    variables_to_model: z.array(z.enum(['supply_demand', 'market_sentiment', 'institutional_adoption', 'regulatory_changes', 'technological_developments'])).optional(),
+    educational_focus: z.enum(['market_mechanics', 'price_formation', 'risk_factors', 'investment_principles']).optional()
+  });
+
+  private readonly networkEconomicsSchema = z.object({
+    economics_aspect: z.enum(['mining_economics', 'fee_market', 'security_budget', 'miner_incentives', 'halving_effects']),
+    complexity_level: z.enum(['simplified', 'intermediate', 'detailed', 'research_grade']).optional(),
+    scenario_variables: z.array(z.enum(['hash_rate', 'difficulty', 'transaction_volume', 'fee_rates', 'energy_costs', 'hardware_efficiency'])).optional(),
+    visualization_style: z.enum(['charts_graphs', 'interactive_dashboard', 'animated_simulation', 'comparative_analysis']).optional()
+  });
+
+  private readonly tools: Tool[] = [
     {
       name: "create_monetary_policy_model",
       description: "Create interactive models demonstrating Bitcoin's monetary policy compared to traditional systems",
@@ -359,14 +382,39 @@ export class EconomicModelingAgent implements MCPAgent {
     }
   ];
 
-  async executeToolCall(toolName: string, args: any): Promise<any> {
+  getTools(): Tool[] {
+    return this.tools;
+  }
+
+  async handleToolCall(name: string, args: unknown): Promise<unknown> {
+    switch (name) {
+      case 'create_monetary_policy_model': {
+        const validatedArgs = this.validateInput(this.monetaryPolicySchema, args);
+        return this.createMonetaryPolicyModel(validatedArgs);
+      }
+      case 'simulate_market_dynamics': {
+        const validatedArgs = this.validateInput(this.marketDynamicsSchema, args);
+        return this.simulateMarketDynamics(validatedArgs);
+      }
+      case 'model_network_economics': {
+        const validatedArgs = this.validateInput(this.networkEconomicsSchema, args);
+        return this.modelNetworkEconomics(validatedArgs);
+      }
+      case 'analyze_adoption_economics':
+      case 'create_macroeconomic_analysis':
+      case 'build_risk_assessment_models':
+      case 'simulate_economic_scenarios':
+      case 'generate_comparative_analyses':
+      case 'create_game_theory_models':
+      case 'analyze_economic_data':
+        return this.handleLegacyToolCall(name, args);
+      default:
+        throw new Error(`Unknown tool: ${name}`);
+    }
+  }
+
+  private async handleLegacyToolCall(toolName: string, args: unknown): Promise<unknown> {
     switch (toolName) {
-      case 'create_monetary_policy_model':
-        return this.createMonetaryPolicyModel(args);
-      case 'simulate_market_dynamics':
-        return this.simulateMarketDynamics(args);
-      case 'model_network_economics':
-        return this.modelNetworkEconomics(args);
       case 'analyze_adoption_economics':
         return this.analyzeAdoptionEconomics(args);
       case 'create_macroeconomic_analysis':
@@ -382,11 +430,11 @@ export class EconomicModelingAgent implements MCPAgent {
       case 'analyze_economic_data':
         return this.analyzeEconomicData(args);
       default:
-        throw new Error(`Unknown tool: ${toolName}`);
+        throw new Error(`Unknown legacy tool: ${toolName}`);
     }
   }
 
-  private async createMonetaryPolicyModel(args: any) {
+  private async createMonetaryPolicyModel(args: z.infer<typeof this.monetaryPolicySchema>) {
     return {
       model_specification: {
         model_type: args.model_type,
@@ -486,7 +534,7 @@ export class EconomicModelingAgent implements MCPAgent {
     };
   }
 
-  private async simulateMarketDynamics(args: any) {
+  private async simulateMarketDynamics(args: z.infer<typeof this.marketDynamicsSchema>) {
     return {
       simulation_framework: {
         simulation_type: args.simulation_type,
@@ -583,7 +631,7 @@ export class EconomicModelingAgent implements MCPAgent {
     };
   }
 
-  private async modelNetworkEconomics(args: any) {
+  private async modelNetworkEconomics(args: z.infer<typeof this.networkEconomicsSchema>) {
     return {
       network_model: {
         economics_focus: args.economics_aspect,
@@ -1600,96 +1648,5 @@ export class EconomicModelingAgent implements MCPAgent {
 
   async initialize(): Promise<void> {
     console.log('📈 EconomicModelingAgent initialized - Ready to model Bitcoin economics');
-  }
-
-  getTools(): Tool[] {
-    return [
-      {
-        name: "create_inflation_model",
-        description: "Creates economic models demonstrating Bitcoin's inflation schedule vs fiat currencies",
-        inputSchema: {
-          type: "object",
-          properties: {
-            model_type: { type: "string", enum: ["comparative", "predictive", "historical"] },
-            time_horizon: { type: "string" },
-            fiat_currencies: { type: "array", items: { type: "string" } },
-            economic_scenarios: { type: "array", items: { type: "string" } }
-          },
-          required: ["model_type"]
-        }
-      },
-      {
-        name: "simulate_market_dynamics",
-        description: "Simulates Bitcoin market dynamics under various economic conditions",
-        inputSchema: {
-          type: "object",
-          properties: {
-            simulation_type: { type: "string" },
-            market_conditions: { type: "array", items: { type: "string" } },
-            time_frame: { type: "string" },
-            variables: { type: "array", items: { type: "string" } }
-          },
-          required: ["simulation_type"]
-        }
-      },
-      {
-        name: "analyze_monetary_policy_impact",
-        description: "Analyzes the impact of monetary policy changes on Bitcoin adoption and value",
-        inputSchema: {
-          type: "object",
-          properties: {
-            policy_changes: { type: "array", items: { type: "string" } },
-            analysis_scope: { type: "string" },
-            impact_metrics: { type: "array", items: { type: "string" } }
-          },
-          required: ["policy_changes"]
-        }
-      }
-    ];
-  }
-
-  async handleToolCall(name: string, args: any): Promise<any> {
-    try {
-      switch (name) {
-        case "create_inflation_model":
-          return await this.createInflationModel(args);
-        case "simulate_market_dynamics":
-          return await this.simulateMarketDynamics(args);
-        case "analyze_monetary_policy_impact":
-          return await this.analyzeMonetaryPolicyImpact(args);
-        default:
-          throw new Error(`Unknown tool: ${name}`);
-      }
-    } catch (error) {
-      console.error(`Error in ${name}:`, error);
-      throw error;
-    }
-  }
-
-  private async simulateMarketDynamics(args: any): Promise<any> {
-    return {
-      success: true,
-      simulation_results: {
-        simulation_type: args.simulation_type,
-        market_conditions: args.market_conditions || ["bull_market", "bear_market", "sideways"],
-        predicted_outcomes: ["increased_volatility", "adoption_acceleration", "price_discovery"],
-        confidence_intervals: { low: 0.2, medium: 0.6, high: 0.8 }
-      }
-    };
-  }
-
-  private async analyzeMonetaryPolicyImpact(args: any): Promise<any> {
-    return {
-      success: true,
-      impact_analysis: {
-        policy_changes: args.policy_changes,
-        bitcoin_impact: {
-          adoption_effect: "positive_correlation_with_monetary_expansion",
-          price_impact: "inverse_correlation_with_interest_rates",
-          institutional_response: "increased_allocation_during_uncertainty"
-        },
-        recommendations: ["monitor_fed_policy", "track_inflation_metrics", "assess_institutional_flows"]
-      }
-    };
   }
 }

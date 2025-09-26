@@ -5,7 +5,7 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { EnhancedTaskRouter } from './router/EnhancedTaskRouter.js';
 import { logger } from './utils/logger.js';
-import { mcpAgentServer } from './core/MCPAgentServer.js';
+import { mcpAgentServer } from './core/mcpAgentServer.js';
 import { agentCommunicationProtocol } from './core/AgentCommunicationProtocol.js';
 import { securityManager } from './core/SecurityManager.js';
 

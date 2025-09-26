@@ -1,5 +1,6 @@
-// Simple implementation without complex types for now
-import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
+import { BaseAgent } from './BaseAgent.js';
+import type { Tool } from '../types/agent.js';
 
 export interface GamificationProfile {
   playerId: string;
@@ -62,12 +63,49 @@ export interface QuestStage {
   unlockConditions: string[];
 }
 
-export class ContentGamificationEngine extends MCPAgent {
-  name = 'ContentGamificationEngine';
-  version = '1.0.0';
-  description = 'Creates engaging gamified learning experiences for Bitcoin education with personalized mechanics and rewards';
+export class ContentGamificationEngine extends BaseAgent {
+  readonly name = 'ContentGamificationEngine';
+  readonly description = 'Creates engaging gamified learning experiences for Bitcoin education with personalized mechanics and rewards';
 
-  tools: Tool[] = [
+  private readonly learnerMotivationSchema = z.object({
+    learnerId: z.string(),
+    behaviorData: z.object({
+      completionPatterns: z.array(z.string()).optional(),
+      preferredActivities: z.array(z.string()).optional(),
+      engagementTimes: z.array(z.string()).optional(),
+      socialInteractions: z.array(z.string()).optional()
+    }),
+    gamingExperience: z.enum(['none', 'casual', 'regular', 'hardcore']).optional(),
+    learningGoals: z.array(z.string()).optional(),
+    timeAvailability: z.string().optional()
+  });
+
+  private readonly progressionSystemSchema = z.object({
+    gamificationProfile: z.object({
+      playerId: z.string(),
+      motivationType: z.enum(['achievement', 'social', 'mastery', 'purpose']),
+      preferredMechanics: z.array(z.string()),
+      skillLevel: z.enum(['beginner', 'intermediate', 'advanced']),
+      engagementStyle: z.enum(['competitive', 'collaborative', 'exploratory', 'goal-oriented']),
+      timePreference: z.enum(['short-burst', 'extended-session', 'flexible']),
+      rewardPreferences: z.array(z.string())
+    }),
+    curriculumScope: z.array(z.string()),
+    difficultyProgression: z.enum(['linear', 'branching', 'adaptive', 'open-world']).optional(),
+    masteryDepth: z.enum(['overview', 'comprehensive', 'expert', 'mastery']).optional(),
+    socialElements: z.boolean().optional()
+  });
+
+  private readonly bitcoinQuestSchema = z.object({
+    bitcoinTopic: z.string(),
+    questType: z.enum(['discovery', 'challenge', 'creation', 'collaboration', 'mastery']),
+    narrativeTheme: z.enum(['adventure', 'mystery', 'simulation', 'historical', 'futuristic']),
+    difficultyLevel: z.enum(['beginner', 'intermediate', 'advanced', 'expert']).optional(),
+    duration: z.enum(['short', 'medium', 'long', 'epic']).optional(),
+    collaborativeElements: z.boolean().optional()
+  });
+
+  private readonly tools: Tool[] = [
     {
       name: 'analyze_learner_motivation',
       description: 'Analyze learner\'s motivation patterns and gaming preferences to design personalized gamification',
@@ -407,44 +445,63 @@ export class ContentGamificationEngine extends MCPAgent {
     }
   ];
 
-  async handleToolCall(name: string, args: any): Promise<any> {
-    try {
-      switch (name) {
-        case 'analyze_learner_motivation':
-          return await this.analyzeLearnerMotivation(args);
-        case 'design_progression_system':
-          return await this.designProgressionSystem(args);
-        case 'create_bitcoin_learning_quests':
-          return await this.createBitcoinLearningQuests(args);
-        case 'generate_interactive_challenges':
-          return await this.generateInteractiveChallenges(args);
-        case 'design_reward_economics':
-          return await this.designRewardEconomics(args);
-        case 'create_social_learning_mechanics':
-          return await this.createSocialLearningMechanics(args);
-        case 'implement_adaptive_difficulty':
-          return await this.implementAdaptiveDifficulty(args);
-        case 'generate_achievement_system':
-          return await this.generateAchievementSystem(args);
-        case 'create_learning_analytics_dashboard':
-          return await this.createLearningAnalyticsDashboard(args);
-        default:
-          throw new Error(`Unknown tool: ${name}`);
+  getTools(): Tool[] {
+    return this.tools;
+  }
+
+  async handleToolCall(name: string, args: unknown): Promise<unknown> {
+    switch (name) {
+      case 'analyze_learner_motivation': {
+        const validatedArgs = this.validateInput(this.learnerMotivationSchema, args);
+        return this.analyzeLearnerMotivation(validatedArgs);
       }
-    } catch (error) {
-      this.logger.error(`Error in ${name}:`, error);
-      return { success: false, error: error.message };
+      case 'design_progression_system': {
+        const validatedArgs = this.validateInput(this.progressionSystemSchema, args);
+        return this.designProgressionSystem(validatedArgs);
+      }
+      case 'create_bitcoin_learning_quests': {
+        const validatedArgs = this.validateInput(this.bitcoinQuestSchema, args);
+        return this.createBitcoinLearningQuests(validatedArgs);
+      }
+      case 'generate_interactive_challenges':
+      case 'design_reward_economics':
+      case 'create_social_learning_mechanics':
+      case 'implement_adaptive_difficulty':
+      case 'generate_achievement_system':
+      case 'create_learning_analytics_dashboard':
+        return this.handleLegacyToolCall(name, args);
+      default:
+        throw new Error(`Unknown tool: ${name}`);
     }
   }
 
-  private async analyzeLearnerMotivation(args: any): Promise<any> {
+  private async handleLegacyToolCall(toolName: string, args: unknown): Promise<unknown> {
+    switch (toolName) {
+      case 'generate_interactive_challenges':
+        return this.generateInteractiveChallenges(args);
+      case 'design_reward_economics':
+        return this.designRewardEconomics(args);
+      case 'create_social_learning_mechanics':
+        return this.createSocialLearningMechanics(args);
+      case 'implement_adaptive_difficulty':
+        return this.implementAdaptiveDifficulty(args);
+      case 'generate_achievement_system':
+        return this.generateAchievementSystem(args);
+      case 'create_learning_analytics_dashboard':
+        return this.createLearningAnalyticsDashboard(args);
+      default:
+        throw new Error(`Unknown legacy tool: ${toolName}`);
+    }
+  }
+
+  private async analyzeLearnerMotivation(args: z.infer<typeof this.learnerMotivationSchema>): Promise<any> {
     const {
       learnerId,
       behaviorData,
       gamingExperience = 'casual',
       learningGoals = [],
       timeAvailability = 'flexible'
-    } = input;
+    } = args;
 
     const motivationAnalysis = this.analyzeMotivationPatterns(
       behaviorData,
@@ -469,14 +526,14 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async designProgressionSystem(args: any): Promise<any> {
+  private async designProgressionSystem(args: z.infer<typeof this.progressionSystemSchema>): Promise<any> {
     const {
       gamificationProfile,
       curriculumScope,
       difficultyProgression = 'adaptive',
       masteryDepth = 'comprehensive',
       socialElements = true
-    } = input;
+    } = args;
 
     const progressionSystem = this.createProgressionSystem(
       gamificationProfile,
@@ -500,7 +557,7 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async createBitcoinLearningQuests(args: any): Promise<any> {
+  private async createBitcoinLearningQuests(args: z.infer<typeof this.bitcoinQuestSchema>): Promise<any> {
     const {
       bitcoinTopic,
       questType,
@@ -508,7 +565,7 @@ export class ContentGamificationEngine extends MCPAgent {
       difficultyLevel = 'intermediate',
       duration = 'medium',
       collaborativeElements = false
-    } = input;
+    } = args;
 
     const learningQuest = this.designLearningQuest(
       bitcoinTopic,
@@ -541,7 +598,7 @@ export class ContentGamificationEngine extends MCPAgent {
       feedbackType = 'immediate',
       adaptiveDifficulty = true,
       realWorldConnection = true
-    } = input;
+    } = args;
 
     const interactiveChallenges = this.createInteractiveChallenges(
       challengeType,
@@ -573,7 +630,7 @@ export class ContentGamificationEngine extends MCPAgent {
       socialRewards = true,
       progressionRewards = ['badges', 'levels'],
       rareRewards = true
-    } = input;
+    } = args;
 
     const rewardSystem = this.createRewardSystem(
       rewardPhilosophy,
@@ -604,7 +661,7 @@ export class ContentGamificationEngine extends MCPAgent {
       competitionLevel = 'friendly',
       collaborationEmphasis = 'group',
       mentorshipSystem = true
-    } = input;
+    } = args;
 
     const socialSystem = this.designSocialLearningSystem(
       socialMechanics,
@@ -635,7 +692,7 @@ export class ContentGamificationEngine extends MCPAgent {
       difficultyDimensions,
       failureHandling = 'supportive',
       masteryDetection = true
-    } = input;
+    } = args;
 
     const adaptiveSystem = this.createAdaptiveDifficultySystem(
       performanceMetrics,
@@ -667,7 +724,7 @@ export class ContentGamificationEngine extends MCPAgent {
       progressiveAchievements = true,
       hiddenAchievements = false,
       socialSharing = true
-    } = input;
+    } = args;
 
     const achievementSystem = this.createAchievementSystem(
       achievementCategories,
@@ -700,7 +757,7 @@ export class ContentGamificationEngine extends MCPAgent {
       personalizedInsights = true,
       goalSetting = true,
       comparativeAnalytics = false
-    } = input;
+    } = args;
 
     const analyticsDashboard = this.designAnalyticsDashboard(
       analyticsLevel,

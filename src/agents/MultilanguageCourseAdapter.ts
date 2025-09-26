@@ -1,15 +1,43 @@
-import { MCPAgent, Tool } from '../types/agent.js';
+import { z } from 'zod';
+import { BaseAgent } from './BaseAgent.js';
+import type { Tool } from '../types/agent.js';
 
 /**
  * Multilanguage Course Adapter Agent
  * Adapts Bitcoin education content for global accessibility across languages and cultures
  * Handles translation, localization, and cultural adaptation while maintaining technical accuracy
  */
-export class MultilanguageCourseAdapter implements MCPAgent {
-  name = "MultilanguageCourseAdapter";
-  description = "Global localization agent that adapts Bitcoin education content for different languages, cultures, and regions while maintaining technical accuracy and educational effectiveness across diverse global audiences";
+export class MultilanguageCourseAdapter extends BaseAgent {
+  readonly name = "MultilanguageCourseAdapter";
+  readonly description = "Global localization agent that adapts Bitcoin education content for different languages, cultures, and regions while maintaining technical accuracy and educational effectiveness across diverse global audiences";
 
-  tools = [
+  private readonly translateContentSchema = z.object({
+    source_language: z.string().min(2),
+    target_language: z.string().min(2),
+    content_type: z.enum(['lesson_text', 'video_subtitles', 'interactive_content', 'assessment_questions', 'glossary_terms', 'user_interface']),
+    content: z.string().min(1),
+    technical_terminology_handling: z.enum(['preserve_english_terms', 'translate_with_explanations', 'create_localized_glossary', 'mixed_approach']).optional(),
+    educational_context: z.enum(['beginner_friendly', 'technical_accuracy_priority', 'cultural_adaptation_focus', 'regulatory_compliance']).optional(),
+    quality_level: z.enum(['machine_translation', 'human_reviewed', 'native_expert_translation', 'technical_specialist_review']).optional()
+  });
+
+  private readonly culturalAdaptationSchema = z.object({
+    target_region: z.enum(['north_america', 'latin_america', 'europe', 'middle_east', 'africa', 'south_asia', 'east_asia', 'southeast_asia', 'oceania']),
+    cultural_adaptation_aspects: z.array(z.enum(['examples_and_analogies', 'currency_references', 'regulatory_context', 'payment_methods', 'cultural_values', 'educational_styles'])).optional(),
+    content_elements: z.array(z.enum(['case_studies', 'practical_examples', 'historical_references', 'economic_comparisons', 'regulatory_explanations', 'visual_elements'])).optional(),
+    sensitivity_considerations: z.array(z.enum(['religious_considerations', 'political_sensitivities', 'economic_conditions', 'technological_infrastructure', 'literacy_levels'])).optional(),
+    localization_depth: z.enum(['surface_adaptation', 'moderate_localization', 'deep_cultural_integration', 'region_specific_creation']).optional()
+  });
+
+  private readonly multilingualGlossarySchema = z.object({
+    languages: z.array(z.string()).min(1),
+    terminology_categories: z.array(z.enum(['basic_concepts', 'technical_terms', 'economic_concepts', 'regulatory_terms', 'mining_terminology', 'wallet_concepts', 'trading_terms'])),
+    complexity_levels: z.array(z.enum(['beginner', 'intermediate', 'advanced', 'expert'])).optional(),
+    glossary_format: z.enum(['simple_definitions', 'detailed_explanations', 'examples_included', 'interactive_glossary', 'contextual_usage']).optional(),
+    regional_variations: z.boolean().optional()
+  });
+
+  private readonly tools: Tool[] = [
     {
       name: "translate_educational_content",
       description: "Translate Bitcoin educational content while preserving technical accuracy and educational structure",
@@ -403,14 +431,39 @@ export class MultilanguageCourseAdapter implements MCPAgent {
     }
   ];
 
-  async executeToolCall(toolName: string, args: any): Promise<any> {
+  getTools(): Tool[] {
+    return this.tools;
+  }
+
+  async handleToolCall(name: string, args: unknown): Promise<unknown> {
+    switch (name) {
+      case 'translate_educational_content': {
+        const validatedArgs = this.validateInput(this.translateContentSchema, args);
+        return this.translateEducationalContent(validatedArgs);
+      }
+      case 'adapt_cultural_context': {
+        const validatedArgs = this.validateInput(this.culturalAdaptationSchema, args);
+        return this.adaptCulturalContext(validatedArgs);
+      }
+      case 'create_multilingual_glossary': {
+        const validatedArgs = this.validateInput(this.multilingualGlossarySchema, args);
+        return this.createMultilingualGlossary(validatedArgs);
+      }
+      case 'localize_regulatory_content':
+      case 'adapt_educational_methodology':
+      case 'create_regional_case_studies':
+      case 'optimize_content_accessibility':
+      case 'manage_translation_quality':
+      case 'coordinate_global_content_strategy':
+      case 'analyze_regional_adoption_patterns':
+        return this.handleLegacyToolCall(name, args);
+      default:
+        throw new Error(`Unknown tool: ${name}`);
+    }
+  }
+
+  private async handleLegacyToolCall(toolName: string, args: unknown): Promise<unknown> {
     switch (toolName) {
-      case 'translate_educational_content':
-        return this.translateEducationalContent(args);
-      case 'adapt_cultural_context':
-        return this.adaptCulturalContext(args);
-      case 'create_multilingual_glossary':
-        return this.createMultilingualGlossary(args);
       case 'localize_regulatory_content':
         return this.localizeRegulatoryContent(args);
       case 'adapt_educational_methodology':
@@ -426,11 +479,11 @@ export class MultilanguageCourseAdapter implements MCPAgent {
       case 'analyze_regional_adoption_patterns':
         return this.analyzeRegionalAdoptionPatterns(args);
       default:
-        throw new Error(`Unknown tool: ${toolName}`);
+        throw new Error(`Unknown legacy tool: ${toolName}`);
     }
   }
 
-  private async translateEducationalContent(args: any) {
+  private async translateEducationalContent(args: z.infer<typeof this.translateContentSchema>) {
     return {
       translation_project: {
         source_language: args.source_language,
@@ -534,7 +587,7 @@ export class MultilanguageCourseAdapter implements MCPAgent {
     };
   }
 
-  private async adaptCulturalContext(args: any) {
+  private async adaptCulturalContext(args: z.infer<typeof this.culturalAdaptationSchema>) {
     return {
       cultural_adaptation: {
         target_region: args.target_region,
@@ -625,7 +678,7 @@ export class MultilanguageCourseAdapter implements MCPAgent {
     };
   }
 
-  private async createMultilingualGlossary(args: any) {
+  private async createMultilingualGlossary(args: z.infer<typeof this.multilingualGlossarySchema>) {
     return {
       glossary_specification: {
         languages_included: args.languages,
@@ -1406,101 +1459,6 @@ export class MultilanguageCourseAdapter implements MCPAgent {
 
   async initialize(): Promise<void> {
     console.log('🌍 MultilanguageCourseAdapter initialized - Ready for global localization');
-  }
-
-  getTools(): Tool[] {
-    return [
-      {
-        name: "translate_course_content",
-        description: "Translates Bitcoin course content while maintaining technical accuracy",
-        inputSchema: {
-          type: "object",
-          properties: {
-            content: { type: "string" },
-            source_language: { type: "string" },
-            target_language: { type: "string" },
-            content_type: { type: "string" },
-            technical_terminology_handling: { type: "string" }
-          },
-          required: ["content", "source_language", "target_language"]
-        }
-      },
-      {
-        name: "adapt_cultural_context",
-        description: "Adapts content for specific cultural contexts and regional requirements",
-        inputSchema: {
-          type: "object",
-          properties: {
-            content: { type: "string" },
-            target_culture: { type: "string" },
-            adaptation_scope: { type: "string" },
-            cultural_considerations: { type: "array", items: { type: "string" } }
-          },
-          required: ["content", "target_culture"]
-        }
-      },
-      {
-        name: "analyze_regional_market",
-        description: "Analyzes regional Bitcoin education markets for content adaptation strategies",
-        inputSchema: {
-          type: "object",
-          properties: {
-            target_region: { type: "string" },
-            analysis_depth: { type: "string" },
-            focus_areas: { type: "array", items: { type: "string" } }
-          },
-          required: ["target_region"]
-        }
-      }
-    ];
-  }
-
-  async handleToolCall(name: string, args: any): Promise<any> {
-    try {
-      switch (name) {
-        case "translate_course_content":
-          return await this.translateCourseContent(args);
-        case "adapt_cultural_context":
-          return await this.adaptCulturalContext(args);
-        case "analyze_regional_market":
-          return await this.analyzeRegionalMarket(args);
-        default:
-          throw new Error(`Unknown tool: ${name}`);
-      }
-    } catch (error) {
-      console.error(`Error in ${name}:`, error);
-      throw error;
-    }
-  }
-
-  private async adaptCulturalContext(args: any): Promise<any> {
-    return {
-      success: true,
-      cultural_adaptation: {
-        original_content: args.content,
-        target_culture: args.target_culture,
-        adapted_content: `Culturally adapted content for ${args.target_culture}`,
-        adaptation_notes: ["localized_examples", "cultural_sensitivity_review", "regional_compliance"],
-        confidence_score: 0.85
-      }
-    };
-  }
-
-  private async analyzeRegionalMarket(args: any): Promise<any> {
-    return {
-      success: true,
-      market_analysis: {
-        target_region: args.target_region,
-        market_characteristics: {
-          bitcoin_adoption_level: "moderate",
-          regulatory_environment: "evolving",
-          educational_infrastructure: "developing",
-          local_competition: "limited"
-        },
-        recommendations: ["focus_on_regulatory_compliance", "partner_with_local_educators", "emphasize_practical_applications"],
-        priority_content_areas: ["basic_security", "practical_usage", "regulatory_compliance"]
-      }
-    };
   }
 
   // Helper method for demonstration purposes
