@@ -1,4 +1,4 @@
-import { MCPAgent } from '../types';
+import { MCPAgent, Tool } from '../types/agent.js';
 
 /**
  * Economic Modeling Agent
@@ -629,7 +629,7 @@ export class EconomicModelingAgent implements MCPAgent {
           future_projections: "fee_market_dependency_analysis"
         },
         attack_cost_analysis: {
-          51_percent_attack_cost: "hashrate_acquisition_and_operation_cost",
+          "51_percent_attack_cost": "hashrate_acquisition_and_operation_cost",
           attack_sustainability: "economic_incentives_and_disincentives",
           defense_mechanisms: "honest_miner_economic_incentives"
         },
@@ -1594,6 +1594,101 @@ export class EconomicModelingAgent implements MCPAgent {
           "environmental_sustainability_of_bitcoin_mining_long_term",
           "bitcoin_role_in_international_monetary_system_evolution"
         ]
+      }
+    };
+  }
+
+  async initialize(): Promise<void> {
+    console.log('📈 EconomicModelingAgent initialized - Ready to model Bitcoin economics');
+  }
+
+  getTools(): Tool[] {
+    return [
+      {
+        name: "create_inflation_model",
+        description: "Creates economic models demonstrating Bitcoin's inflation schedule vs fiat currencies",
+        inputSchema: {
+          type: "object",
+          properties: {
+            model_type: { type: "string", enum: ["comparative", "predictive", "historical"] },
+            time_horizon: { type: "string" },
+            fiat_currencies: { type: "array", items: { type: "string" } },
+            economic_scenarios: { type: "array", items: { type: "string" } }
+          },
+          required: ["model_type"]
+        }
+      },
+      {
+        name: "simulate_market_dynamics",
+        description: "Simulates Bitcoin market dynamics under various economic conditions",
+        inputSchema: {
+          type: "object",
+          properties: {
+            simulation_type: { type: "string" },
+            market_conditions: { type: "array", items: { type: "string" } },
+            time_frame: { type: "string" },
+            variables: { type: "array", items: { type: "string" } }
+          },
+          required: ["simulation_type"]
+        }
+      },
+      {
+        name: "analyze_monetary_policy_impact",
+        description: "Analyzes the impact of monetary policy changes on Bitcoin adoption and value",
+        inputSchema: {
+          type: "object",
+          properties: {
+            policy_changes: { type: "array", items: { type: "string" } },
+            analysis_scope: { type: "string" },
+            impact_metrics: { type: "array", items: { type: "string" } }
+          },
+          required: ["policy_changes"]
+        }
+      }
+    ];
+  }
+
+  async handleToolCall(name: string, args: any): Promise<any> {
+    try {
+      switch (name) {
+        case "create_inflation_model":
+          return await this.createInflationModel(args);
+        case "simulate_market_dynamics":
+          return await this.simulateMarketDynamics(args);
+        case "analyze_monetary_policy_impact":
+          return await this.analyzeMonetaryPolicyImpact(args);
+        default:
+          throw new Error(`Unknown tool: ${name}`);
+      }
+    } catch (error) {
+      console.error(`Error in ${name}:`, error);
+      throw error;
+    }
+  }
+
+  private async simulateMarketDynamics(args: any): Promise<any> {
+    return {
+      success: true,
+      simulation_results: {
+        simulation_type: args.simulation_type,
+        market_conditions: args.market_conditions || ["bull_market", "bear_market", "sideways"],
+        predicted_outcomes: ["increased_volatility", "adoption_acceleration", "price_discovery"],
+        confidence_intervals: { low: 0.2, medium: 0.6, high: 0.8 }
+      }
+    };
+  }
+
+  private async analyzeMonetaryPolicyImpact(args: any): Promise<any> {
+    return {
+      success: true,
+      impact_analysis: {
+        policy_changes: args.policy_changes,
+        bitcoin_impact: {
+          adoption_effect: "positive_correlation_with_monetary_expansion",
+          price_impact: "inverse_correlation_with_interest_rates",
+          institutional_response: "increased_allocation_during_uncertainty"
+        },
+        recommendations: ["monitor_fed_policy", "track_inflation_metrics", "assess_institutional_flows"]
       }
     };
   }

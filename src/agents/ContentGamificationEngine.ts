@@ -1,5 +1,5 @@
-import { MCPAgent } from '../core/MCPAgent';
-import { Tool, ToolInput, ToolOutput } from '../types/Agent';
+// Simple implementation without complex types for now
+import { Tool } from '@modelcontextprotocol/sdk/types.js';
 
 export interface GamificationProfile {
   playerId: string;
@@ -407,37 +407,37 @@ export class ContentGamificationEngine extends MCPAgent {
     }
   ];
 
-  async handleToolCall(tool: string, input: ToolInput): Promise<ToolOutput> {
+  async handleToolCall(name: string, args: any): Promise<any> {
     try {
-      switch (tool) {
+      switch (name) {
         case 'analyze_learner_motivation':
-          return await this.analyzeLearnerMotivation(input);
+          return await this.analyzeLearnerMotivation(args);
         case 'design_progression_system':
-          return await this.designProgressionSystem(input);
+          return await this.designProgressionSystem(args);
         case 'create_bitcoin_learning_quests':
-          return await this.createBitcoinLearningQuests(input);
+          return await this.createBitcoinLearningQuests(args);
         case 'generate_interactive_challenges':
-          return await this.generateInteractiveChallenges(input);
+          return await this.generateInteractiveChallenges(args);
         case 'design_reward_economics':
-          return await this.designRewardEconomics(input);
+          return await this.designRewardEconomics(args);
         case 'create_social_learning_mechanics':
-          return await this.createSocialLearningMechanics(input);
+          return await this.createSocialLearningMechanics(args);
         case 'implement_adaptive_difficulty':
-          return await this.implementAdaptiveDifficulty(input);
+          return await this.implementAdaptiveDifficulty(args);
         case 'generate_achievement_system':
-          return await this.generateAchievementSystem(input);
+          return await this.generateAchievementSystem(args);
         case 'create_learning_analytics_dashboard':
-          return await this.createLearningAnalyticsDashboard(input);
+          return await this.createLearningAnalyticsDashboard(args);
         default:
-          throw new Error(`Unknown tool: ${tool}`);
+          throw new Error(`Unknown tool: ${name}`);
       }
     } catch (error) {
-      this.logger.error(`Error in ${tool}:`, error);
+      this.logger.error(`Error in ${name}:`, error);
       return { success: false, error: error.message };
     }
   }
 
-  private async analyzeLearnerMotivation(input: ToolInput): Promise<ToolOutput> {
+  private async analyzeLearnerMotivation(args: any): Promise<any> {
     const {
       learnerId,
       behaviorData,
@@ -469,7 +469,7 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async designProgressionSystem(input: ToolInput): Promise<ToolOutput> {
+  private async designProgressionSystem(args: any): Promise<any> {
     const {
       gamificationProfile,
       curriculumScope,
@@ -500,7 +500,7 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async createBitcoinLearningQuests(input: ToolInput): Promise<ToolOutput> {
+  private async createBitcoinLearningQuests(args: any): Promise<any> {
     const {
       bitcoinTopic,
       questType,
@@ -533,7 +533,7 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async generateInteractiveChallenges(input: ToolInput): Promise<ToolOutput> {
+  private async generateInteractiveChallenges(args: any): Promise<any> {
     const {
       challengeType,
       bitcoinConcepts,
@@ -566,7 +566,7 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async designRewardEconomics(input: ToolInput): Promise<ToolOutput> {
+  private async designRewardEconomics(args: any): Promise<any> {
     const {
       rewardPhilosophy,
       bitcoinIntegration,
@@ -597,7 +597,7 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async createSocialLearningMechanics(input: ToolInput): Promise<ToolOutput> {
+  private async createSocialLearningMechanics(args: any): Promise<any> {
     const {
       socialMechanics,
       communitySize,
@@ -628,7 +628,7 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async implementAdaptiveDifficulty(input: ToolInput): Promise<ToolOutput> {
+  private async implementAdaptiveDifficulty(args: any): Promise<any> {
     const {
       performanceMetrics,
       adaptationStyle,
@@ -659,7 +659,7 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async generateAchievementSystem(input: ToolInput): Promise<ToolOutput> {
+  private async generateAchievementSystem(args: any): Promise<any> {
     const {
       achievementCategories,
       bitcoinMilestones,
@@ -692,7 +692,7 @@ export class ContentGamificationEngine extends MCPAgent {
     };
   }
 
-  private async createLearningAnalyticsDashboard(input: ToolInput): Promise<ToolOutput> {
+  private async createLearningAnalyticsDashboard(args: any): Promise<any> {
     const {
       analyticsLevel,
       trackingMetrics,

@@ -3,7 +3,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { EnhancedBrandAgent } from '../agents/EnhancedBrandAgent';
-import { GamificationEngine } from '../agents/GamificationEngine';
+import { ContentGamificationEngine } from '../agents/ContentGamificationEngine';
 
 /**
  * Marketing Pipeline
@@ -244,7 +244,7 @@ async function runMarketingPipeline() {
 
     // Initialize agents
     const brandAgent = new EnhancedBrandAgent();
-    const gamificationEngine = new GamificationEngine();
+    const gamificationEngine = new ContentGamificationEngine();
     console.log('✅ Marketing agents initialized');
 
     // Get approved lessons
