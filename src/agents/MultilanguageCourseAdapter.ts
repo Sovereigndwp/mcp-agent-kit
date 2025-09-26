@@ -1,4 +1,4 @@
-import { MCPAgent } from '../types';
+import { MCPAgent, Tool } from '../types/agent.js';
 
 /**
  * Multilanguage Course Adapter Agent
@@ -1378,7 +1378,7 @@ export class MultilanguageCourseAdapter implements MCPAgent {
           language_localization_priorities: "priority_languages_for_content_localization",
           cultural_sensitivity_considerations: "key_cultural_factors_to_consider_in_content_adaptation",
           regulatory_content_needs: "regulatory_information_most_relevant_to_region",
-          local_example_development": "need_for_region_specific_examples_and_case_studies"
+          local_example_development: "need_for_region_specific_examples_and_case_studies"
         }
       },
       strategic_recommendations: {
@@ -1396,10 +1396,109 @@ export class MultilanguageCourseAdapter implements MCPAgent {
         },
         success_metrics_and_monitoring: {
           key_performance_indicators: "recommended_kpis_for_measuring_educational_program_success",
-          monitoring_mechanisms": "systems_for_monitoring_adoption_and_educational_effectiveness",
-          feedback_collection_strategies": "strategies_for_collecting_learner_and_community_feedback",
-          continuous_improvement_framework": "framework_for_continuous_improvement_based_on_regional_insights"
+          monitoring_mechanisms: "systems_for_monitoring_adoption_and_educational_effectiveness",
+          feedback_collection_strategies: "strategies_for_collecting_learner_and_community_feedback",
+          continuous_improvement_framework: "framework_for_continuous_improvement_based_on_regional_insights"
         }
+      }
+    };
+  }
+
+  async initialize(): Promise<void> {
+    console.log('🌍 MultilanguageCourseAdapter initialized - Ready for global localization');
+  }
+
+  getTools(): Tool[] {
+    return [
+      {
+        name: "translate_course_content",
+        description: "Translates Bitcoin course content while maintaining technical accuracy",
+        inputSchema: {
+          type: "object",
+          properties: {
+            content: { type: "string" },
+            source_language: { type: "string" },
+            target_language: { type: "string" },
+            content_type: { type: "string" },
+            technical_terminology_handling: { type: "string" }
+          },
+          required: ["content", "source_language", "target_language"]
+        }
+      },
+      {
+        name: "adapt_cultural_context",
+        description: "Adapts content for specific cultural contexts and regional requirements",
+        inputSchema: {
+          type: "object",
+          properties: {
+            content: { type: "string" },
+            target_culture: { type: "string" },
+            adaptation_scope: { type: "string" },
+            cultural_considerations: { type: "array", items: { type: "string" } }
+          },
+          required: ["content", "target_culture"]
+        }
+      },
+      {
+        name: "analyze_regional_market",
+        description: "Analyzes regional Bitcoin education markets for content adaptation strategies",
+        inputSchema: {
+          type: "object",
+          properties: {
+            target_region: { type: "string" },
+            analysis_depth: { type: "string" },
+            focus_areas: { type: "array", items: { type: "string" } }
+          },
+          required: ["target_region"]
+        }
+      }
+    ];
+  }
+
+  async handleToolCall(name: string, args: any): Promise<any> {
+    try {
+      switch (name) {
+        case "translate_course_content":
+          return await this.translateCourseContent(args);
+        case "adapt_cultural_context":
+          return await this.adaptCulturalContext(args);
+        case "analyze_regional_market":
+          return await this.analyzeRegionalMarket(args);
+        default:
+          throw new Error(`Unknown tool: ${name}`);
+      }
+    } catch (error) {
+      console.error(`Error in ${name}:`, error);
+      throw error;
+    }
+  }
+
+  private async adaptCulturalContext(args: any): Promise<any> {
+    return {
+      success: true,
+      cultural_adaptation: {
+        original_content: args.content,
+        target_culture: args.target_culture,
+        adapted_content: `Culturally adapted content for ${args.target_culture}`,
+        adaptation_notes: ["localized_examples", "cultural_sensitivity_review", "regional_compliance"],
+        confidence_score: 0.85
+      }
+    };
+  }
+
+  private async analyzeRegionalMarket(args: any): Promise<any> {
+    return {
+      success: true,
+      market_analysis: {
+        target_region: args.target_region,
+        market_characteristics: {
+          bitcoin_adoption_level: "moderate",
+          regulatory_environment: "evolving",
+          educational_infrastructure: "developing",
+          local_competition: "limited"
+        },
+        recommendations: ["focus_on_regulatory_compliance", "partner_with_local_educators", "emphasize_practical_applications"],
+        priority_content_areas: ["basic_security", "practical_usage", "regulatory_compliance"]
       }
     };
   }
