@@ -21,7 +21,7 @@ Let's trace how these agents collaborate to create, validate, personalize, and m
 │ • Teaching Style: First principles approach            │
 │ • Brand Voice: Authoritative yet approachable          │
 │ • Methodology: Socratic questioning                    │
-│ • Visual Style: Clean, orange/blue color scheme        │
+│ • Visual Style: Clean, orange/yellow color scheme        │
 │ • Engagement: Uses analogies and real-world examples   │
 └─────────────────────────────────────────────────────────┘
 ```
