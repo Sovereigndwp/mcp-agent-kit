@@ -1,9 +1,11 @@
 {
-  "name": "educator-kit",
+  "name": "@sovereigndwp/mcp-agent-kit",
   "version": "1.0.0",
   "description": "Educator Kit for Bitcoin Education - Simple agents, clear tools, real data",
   "main": "dist/index.js",
   "type": "module",
+  "publishConfig": { "registry": "https://npm.pkg.github.com" },
+  "repository": { "type": "git", "url": "https://github.com/Sovereigndwp/mcp-agent-kit.git" },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "tsc -p tsconfig.json",
