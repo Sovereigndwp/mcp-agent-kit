@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bitcoin MCP Agent Kit — Demo</title>
+  <meta name="description" content="Model Context Protocol (MCP) Agent Kit for Bitcoin education: commands, architecture, agents, deployment." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><circle cx='128' cy='128' r='120' fill='%23000'/><text x='50%' y='55%' font-size='120' text-anchor='middle' fill='%23f7931a' font-family='Arial'>₿</text></svg>">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="logo">₿</span>
+        <div>
+          <h1>Bitcoin MCP Agent Kit</h1>
+          <p class="subtitle">Educational agents, orchestration, and integrations for Bitcoin.</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggle" aria-label="Toggle color theme">🌓</button>
+        <a class="btn primary" href="#getting-started">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h2>Build, Learn, and Orchestrate Bitcoin Education</h2>
+        <p>
+          MCP-compliant server, 30+ specialized agents, REST web interface, and integrations with
+          Canva, Notion, and Bitcoin data APIs.
+        </p>
+        <div class="cta-row">
+          <a class="btn primary" href="#commands">View Commands</a>
+          <a class="btn" href="#architecture">Explore Architecture</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="getting-started" class="panel container">
+      <h3>Quick Start</h3>
+      <ol class="steps">
+        <li>Install Node.js <strong>&gt;= 18</strong></li>
+        <li><code>npm install</code></li>
+        <li>Set env vars (optional but recommended)</li>
+        <li><code>npm run dev</code> for hot reload</li>
+        <li><code>npm run web</code> for REST API mode</li>
+      </ol>
+      <details class="codeblock" open>
+        <summary>Environment Variables</summary>
+<pre><code># Bitcoin Data APIs (optional)
+MEMPOOL_API_URL=https://mempool.space/api
+COINGECKO_API_URL=https://api.coingecko.com/api/v3
+
+# Integrations (optional)
+CANVA_API_KEY=your_canva_api_key
+NOTION_TOKEN=your_notion_token
+OPENAI_API_KEY=your_openai_key
+
+# Development
+LOG_LEVEL=info
+NODE_ENV=development
+</code></pre>
+      </details>
+    </section>
+
+    <section id="commands" class="panel container">
+      <div class="panel-header">
+        <h3>Development Commands</h3>
+        <input id="commandSearch" type="search" placeholder="Search commands (e.g., intel, canva, test)..." aria-label="Search commands" />
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Command categories">
+        <button class="tab active" data-tab="core" role="tab" aria-selected="true">Core</button>
+        <button class="tab" data-tab="courses" role="tab">Course Generation</button>
+        <button class="tab" data-tab="intel" role="tab">Bitcoin Intelligence</button>
+        <button class="tab" data-tab="content" role="tab">Content Integration</button>
+        <button class="tab" data-tab="demos" role="tab">Agent Demos</button>
+        <button class="tab" data-tab="tests" role="tab">Tests</button>
+        <button class="tab" data-tab="deploy" role="tab">Deployment</button>
+      </div>
+
+      <div class="tabpanes">
+        <div class="tabpane active" data-pane="core">
+<pre><code># Build & Typecheck
+npm run build
+npm run typecheck
+
+# Dev & Start
+npm run dev
+npm start
+
+# Tests & Lint
+npm test
+npm run test:watch
+npm run lint
+npm run lint:fix
+
+# Web Interface
+npm run web
+</code></pre>
+        </div>
+
+        <div class="tabpane" data-pane="courses">
+<pre><code># Course Generation
+npm run course:sample
+npm run course:create
+npm run course:agents
+</code></pre>
+        </div>
+
+        <div class="tabpane" data-pane="intel">
+<pre><code># Bitcoin Intelligence
+npm run intel:gather
+npm run intel:summary
+npm run intel:education
+npm run intel:sources
+</code></pre>
+        </div>
+
+        <div class="tabpane" data-pane="content">
+<pre><code># Content Integration
+npm run import:content
+npm run import:canva
+npm run import:notion
+npm run import:gpts
+
+# Analyze Imported Content
+npm run analyze:all-content
+</code></pre>
+        </div>
+
+        <div class="tabpane" data-pane="demos">
+<pre><code># Core System Demos
+npm run tutorial:demo
+npm run assessment:demo
+npm run orchestrator:demo
+npm run complete:demo
+
+# Canva Demos
+npm run canva:snippet
+npm run canva:enhanced
+npm run canva:design
+npm run canva:create
+
+# Specialized & System Integration
+npm run automation
+npm run workflow
+npm run phase1:demo
+npm run demo:real-content
+npm run content:philosophy
+</code></pre>
+        </div>
+
+        <div class="tabpane" data-pane="tests">
+<pre><code># Run single tests
+npm run test -- --testNamePattern="NewsScout"
+npm run test -- src/tests/agents/CanvaAgent.test.js
+
+# Directory patterns
+npm run test -- src/tests/tools/
+
+# Path & name patterns
+npm run test -- --testPathPattern="integration"
+npm run test -- --testNamePattern="MCP"
+</code></pre>
+        </div>
+
+        <div class="tabpane" data-pane="deploy">
+<pre><code># Production Build & Start
+npm run build:deploy
+npm run start:deploy
+
+# Modes
+# 1) MCP Server (default): src/index.ts (stdio)
+# 2) Web Interface: src/web/server.ts (Express on PORT, default 3000)
+
+# Docker (Node 18 Alpine), exposes 3000, includes /api/health
+</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="panel container">
+      <h3>Architecture Overview</h3>
+      <div class="grid two">
+        <div>
+          <h4>Layers</h4>
+          <ul class="checklist">
+            <li><strong>MCP Server Layer</strong> — <code>src/index.ts</code>, <code>src/core/MCPAgentServer.ts</code></li>
+            <li><strong>Task Routing Layer</strong> — <code>src/router/TaskRouter.ts</code>, <code>EnhancedTaskRouter.ts</code></li>
+            <li><strong>Agent Orchestration</strong> — <code>src/agents/</code>, <code>src/tools/</code>, <code>src/web/</code></li>
+          </ul>
+          <details class="codeblock">
+            <summary>MCP Protocol</summary>
+<pre><code>Protocol version: 2024-11-05
+- Resource URIs + metadata
+- Tool registration + input schema validation
+- Prompt mgmt + arg validation
+- Error handling with MCP error codes
+</code></pre>
+          </details>
+        </div>
+        <div>
+          <h4>Data Flow</h4>
+          <ol class="steps">
+            <li>Content Ingestion: Notion, Canva, RSS, Bitcoin APIs</li>
+            <li>Agent Processing: specialized transformations</li>
+            <li>Orchestration: ContentOrchestrator</li>
+            <li>Output: courses, visuals, assessments</li>
+            <li>Monitoring: Bitcoin ecosystem intel</li>
+          </ol>
+        </div>
+      </div>
+
+      <h4 style="margin-top:1rem;">Agents</h4>
+      <div class="chips" id="agentFilters" aria-label="Filter agents">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="education">Educational</button>
+        <button class="chip" data-filter="content">Content Intelligence</button>
+        <button class="chip" data-filter="bitcoin">Bitcoin-Specific</button>
+        <button class="chip" data-filter="design">Visual & Design</button>
+      </div>
+
+      <div class="grid three" id="agentGrid" aria-live="polite">
+        <!-- Cards injected by JS -->
+      </div>
+    </section>
+
+    <section id="endpoints" class="panel container">
+      <h3>Web Interface & Endpoints</h3>
+      <p>Run the REST API: <code>npm run web</code> (default on <code>http://localhost:3000</code>).</p>
+      <ul class="checklist">
+        <li><code>/api/health</code></li>
+        <li><code>/api/bitcoin/*</code> (price, fees, mempool)</li>
+        <li><code>/api/news</code></li>
+        <li><code>/api/simulation/*</code></li>
+      </ul>
+    </section>
+
+    <section id="files" class="panel container">
+      <h3>File Organization</h3>
+      <div class="grid two">
+        <div>
+<pre><code>src/
+  agents/           # 30+ agent implementations
+  tools/            # Bitcoin data + integrations
+  core/             # MCP server infra
+  router/           # Task routing
+  cases/            # Examples & demos
+  automation/       # Course updates
+  web/              # Express REST server
+  demos/            # System integration demos
+tests/              # Unit + integration
+exports/            # Generated content
+docs/               # Setup + deployment
+</code></pre>
+        </div>
+        <div>
+          <details class="codeblock" open>
+            <summary>Node & Docker</summary>
+<pre><code>Node: >= 18 (engines in package.json)
+Docker: Node 18 Alpine, exposes 3000, health check
+</code></pre>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Bitcoin MCP Agent Kit — MCP Server & Web Interface</p>
+      <p><small>Built for demos. Customize content in <code>index.html</code> / <code>styles.css</code> / <code>app.js</code>.</small></p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

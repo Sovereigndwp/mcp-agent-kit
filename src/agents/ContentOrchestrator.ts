@@ -518,6 +518,10 @@ export class ContentOrchestrator {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${request.topic} Educational Content</title>
+
+    <!-- Plausible Analytics - Privacy-friendly, GDPR compliant -->
+    <script defer data-domain="bitcoinsovereign.academy" src="https://plausible.io/js/script.js"></script>
+
     <style>
         body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
         .header { background: #f0f8ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; }

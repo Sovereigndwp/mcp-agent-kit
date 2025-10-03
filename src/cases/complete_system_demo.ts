@@ -7,6 +7,8 @@ import { ProgressTracker } from '../agents/ProgressTracker.js';
 import { btc_price } from '../tools/btc_price.js';
 import { getFeeEstimates } from '../tools/mempool_fee_estimates.js';
 import { logger } from '../utils/logger.js';
+import { abTesting, EXAMPLE_TESTS } from '../utils/ab-testing.js';
+import { eventTracker } from '../utils/event-tracking.js';
 import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
@@ -33,6 +35,10 @@ async function main() {
     const tutorialBuilder = new TutorialBuilder();
     const assessmentGenerator = new AssessmentGenerator();
     const progressTracker = new ProgressTracker('exports/demo_progress');
+
+    // Initialize A/B testing framework
+    abTesting.registerTest(EXAMPLE_TESTS.ctaButtonColor);
+    console.log('✅ A/B testing framework initialized');
 
     // Create demo output directory
     const demoDir = 'exports/complete_system_demo';
@@ -351,6 +357,16 @@ function generateInteractiveDashboard(report: any): string {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bitcoin Education Platform - Interactive Demo</title>
+
+    <!-- Plausible Analytics - Privacy-friendly, GDPR compliant -->
+    <script defer data-domain="bitcoinsovereign.academy" src="https://plausible.io/js/script.js"></script>
+
+    <!-- A/B Testing Framework -->
+    ${abTesting.generateClientScript('cta-button-color')}
+
+    <!-- Event Tracking -->
+    ${eventTracker.generateTrackingScript()}
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -546,7 +562,7 @@ function generateInteractiveDashboard(report: any): string {
         <div class="tools-section">
             <h2 style="color: #f7931a; margin-bottom: 25px; text-align: center;">🛠️ Interactive Learning Tools</h2>
             
-            <div class="tool-card">
+            <div class="tool-card" onclick="trackToolClick('fee-calculator')">
                 <div class="tool-title">
                     ⚡ Real-Time Fee Calculator
                 </div>
@@ -560,7 +576,7 @@ function generateInteractiveDashboard(report: any): string {
                 </div>
             </div>
 
-            <div class="tool-card">
+            <div class="tool-card" onclick="trackToolClick('mempool-visualizer')">
                 <div class="tool-title">
                     📊 Mempool Congestion Visualizer
                 </div>
@@ -572,7 +588,7 @@ function generateInteractiveDashboard(report: any): string {
                 </div>
             </div>
 
-            <div class="tool-card">
+            <div class="tool-card" onclick="trackToolClick('wallet-security-simulator')">
                 <div class="tool-title">
                     🔐 Wallet Security Simulator
                 </div>
@@ -607,27 +623,94 @@ function generateInteractiveDashboard(report: any): string {
             </div>
         </div>
 
-        <div class="cta-section">
+        <div class="cta-section" id="cta-section">
             <h2 style="margin-bottom: 15px;">🚀 Ready to Start Learning?</h2>
             <p style="margin-bottom: 25px; font-size: 1.1em;">
                 Experience the future of Bitcoin education with our interactive, data-driven learning platform
             </p>
-            <button class="cta-button" onclick="alert('Interactive course materials are available in the generated directories!')">
+            <button class="cta-button" id="cta-button-primary" onclick="trackCTAClick('course-materials')">
                 📚 Access Course Materials
             </button>
-            <button class="cta-button" onclick="alert('Check the exports/automated_content/ directory for full course packages!')">
+            <button class="cta-button" onclick="trackCTAClick('view-courses')">
                 🎓 View Full Courses
             </button>
-            <button class="cta-button" onclick="alert('Progress data is stored in exports/demo_progress/ for continued learning!')">
+            <button class="cta-button" onclick="trackCTAClick('continue-learning')">
                 📈 Continue Learning
             </button>
         </div>
     </div>
 
     <script>
-        // Add some interactivity
+        // Track page view
+        if (window.bitcoinAcademyTracker) {
+            window.bitcoinAcademyTracker.track('Page_View', {
+                page: 'interactive_dashboard',
+                category: 'demo',
+                btc_price: ${report.demo_metadata.btc_price_during_demo},
+                mastery_level: '${report.progress_analytics.overall_progress.mastery_level}'
+            });
+        }
+
+        // Apply A/B test variant styling
+        window.addEventListener('load', () => {
+            if (window.ABTest_cta_button_color) {
+                const variant = window.ABTest_cta_button_color;
+                const ctaSection = document.getElementById('cta-section');
+                const primaryButton = document.getElementById('cta-button-primary');
+
+                if (variant.config.bgColor) {
+                    ctaSection.style.background = variant.config.bgColor;
+                }
+
+                console.log('✅ A/B Test Applied:', variant.variant, variant.config);
+            }
+
+            // Animate progress bars
+            document.querySelectorAll('.progress-fill').forEach(fill => {
+                const width = fill.style.width;
+                fill.style.width = '0%';
+                setTimeout(() => {
+                    fill.style.width = width;
+                }, 500);
+            });
+        });
+
+        // Track tool interactions
+        function trackToolClick(toolName) {
+            if (window.bitcoinAcademyTracker) {
+                window.bitcoinAcademyTracker.trackToolUsage(toolName, 'click');
+            }
+        }
+
+        // Track CTA clicks with A/B test conversion
+        function trackCTAClick(action) {
+            // Track conversion in A/B test
+            if (window.ABTest_cta_button_color) {
+                window.ABTest_cta_button_color.trackConversion('cta_click', { action: action });
+            }
+
+            // Track with event tracker
+            if (window.bitcoinAcademyTracker) {
+                window.bitcoinAcademyTracker.trackCTAClick(action, 'dashboard');
+            }
+
+            // Show success message
+            alert('🎉 Great choice! Your learning materials are ready.');
+        }
+
+        // Track stat card interactions
         document.querySelectorAll('.stat-card').forEach(card => {
             card.addEventListener('click', () => {
+                const cardTitle = card.querySelector('h3').textContent;
+                if (window.bitcoinAcademyTracker) {
+                    window.bitcoinAcademyTracker.track('User_Engagement', {
+                        action: 'click',
+                        element: 'stat_card',
+                        card_title: cardTitle
+                    });
+                }
+
+                // Visual feedback
                 card.style.background = '#f8f9fa';
                 setTimeout(() => {
                     card.style.background = 'white';
@@ -635,14 +718,17 @@ function generateInteractiveDashboard(report: any): string {
             });
         });
 
-        // Animate progress bars on load
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.progress-fill').forEach(fill => {
-                const width = fill.style.width;
-                fill.style.width = '0%';
-                setTimeout(() => {
-                    fill.style.width = width;
-                }, 500);
+        // Track recommendation interactions
+        document.querySelectorAll('.recommendation-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const recommendationTitle = item.querySelector('strong').textContent;
+                if (window.bitcoinAcademyTracker) {
+                    window.bitcoinAcademyTracker.track('User_Engagement', {
+                        action: 'click',
+                        element: 'recommendation',
+                        title: recommendationTitle
+                    });
+                }
             });
         });
 

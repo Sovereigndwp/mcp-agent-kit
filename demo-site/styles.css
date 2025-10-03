@@ -1,0 +1,108 @@
+:root {
+  --bg: #0b0d10;
+  --bg-elev: #11141a;
+  --text: #e8eaf0;
+  --muted: #aab0bc;
+  --accent: #f7931a; /* Bitcoin orange */
+  --card: #141821;
+  --border: #202530;
+  --ok: #35c759;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  background: linear-gradient(180deg, var(--bg), #0d1014 40%, #0b0d10);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.container { width: min(1100px, 92vw); margin: 0 auto; }
+
+.site-header {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(11,13,16,0.7); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner { display:flex; align-items:center; justify-content:space-between; padding: 0.8rem 0; }
+.brand { display:flex; gap:0.8rem; align-items:center; }
+.brand .logo {
+  display:grid; place-items:center; width:42px; height:42px;
+  border-radius:10px; background: var(--card); border: 1px solid var(--border);
+  font-size: 24px;
+}
+.subtitle { margin: 0.1rem 0 0; color: var(--muted); }
+
+.header-actions { display:flex; gap:0.6rem; align-items:center; }
+#themeToggle { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 0.6rem; border-radius: 8px; cursor: pointer; }
+.btn {
+  display:inline-block; padding:0.6rem 0.9rem; border:1px solid var(--border);
+  background: var(--card); color:var(--text); border-radius:10px; text-decoration:none;
+}
+.btn.primary { background: var(--accent); color: #111; border-color: #000; font-weight: 700; }
+
+.hero { padding: 3rem 0 2rem; text-align: center; }
+.hero h2 { margin-top: 0; font-size: clamp(1.6rem, 2.8vw, 2.4rem); }
+.cta-row { display:flex; gap:0.6rem; justify-content:center; margin-top: 1rem; }
+
+.panel {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem;
+  margin: 1.2rem auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.panel-header { display:flex; gap: 1rem; align-items:center; justify-content: space-between; flex-wrap: wrap; }
+#commandSearch {
+  padding: 0.55rem 0.8rem; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--card); color: var(--text); width: 280px;
+}
+
+.tabs { display:flex; gap:0.4rem; flex-wrap: wrap; margin-top: 0.6rem; }
+.tab {
+  padding:0.4rem 0.7rem; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--card); color: var(--text); cursor: pointer;
+}
+.tab.active { outline: 2px solid var(--accent); border-color: #000; background: #1b212d; }
+
+.tabpanes { margin-top: 0.8rem; }
+.tabpane { display:none; }
+.tabpane.active { display:block; }
+
+.codeblock summary { cursor: pointer; color: var(--muted); }
+pre {
+  margin: 0.2rem 0 0; padding: 0.8rem; background: #0c0f14; border: 1px solid var(--border);
+  border-radius: 12px; overflow: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+.steps { padding-left: 1.2rem; }
+.checklist { list-style: none; padding-left: 0; }
+.checklist li { position: relative; padding-left: 1.4rem; margin: 0.4rem 0; }
+.checklist li::before {
+  content: "✔"; position: absolute; left: 0; color: var(--ok);
+}
+
+.grid.two { display:grid; grid-template-columns: 1fr; gap: 1rem; }
+.grid.three { display:grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 780px) {
+  .grid.two { grid-template-columns: 1fr 1fr; }
+  .grid.three { grid-template-columns: repeat(3, 1fr); }
+}
+
+.chips { display:flex; gap:0.4rem; flex-wrap: wrap; margin: 0.6rem 0; }
+.chip {
+  padding:0.35rem 0.7rem; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--card); color: var(--text); cursor: pointer; font-size: 0.95rem;
+}
+.chip.active { background: #1b212d; outline: 2px solid var(--accent); }
+
+.card {
+  background: var(--card); border:1px solid var(--border); border-radius: 12px; padding: 0.9rem;
+}
+.card h5 { margin: 0 0 0.25rem 0; }
+.card p { margin: 0; color: var(--muted); }
+
+.site-footer { text-align: center; color: var(--muted); padding: 2rem 0; }
