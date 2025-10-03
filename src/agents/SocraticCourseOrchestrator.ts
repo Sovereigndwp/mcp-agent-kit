@@ -646,6 +646,10 @@ ${workspace.automation_suggestions.map((suggestion: string) => `- ${suggestion}`
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${course.title}</title>
+
+    <!-- Plausible Analytics - Privacy-friendly, GDPR compliant -->
+    <script defer data-domain="bitcoinsovereign.academy" src="https://plausible.io/js/script.js"></script>
+
     <style>
         body { 
             font-family: 'Inter', -apple-system, sans-serif; 

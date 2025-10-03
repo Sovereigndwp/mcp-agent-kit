@@ -1,4 +1,18 @@
-<!DOCTYPE html>
+#!/usr/bin/env node
+
+/**
+ * Regenerate dashboard with analytics and A/B testing
+ */
+
+import { readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
+
+// Read existing demo report
+const reportPath = 'exports/complete_system_demo/interactive_demo_report.json';
+const report = JSON.parse(readFileSync(reportPath, 'utf-8'));
+
+// Generate dashboard HTML with analytics
+const dashboardHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -450,4 +464,20 @@ console.log('✅ Event tracking initialized');
         console.log('✅ Event Tracking Active');
     </script>
 </body>
-</html>
+</html>`;
+
+// Write updated dashboard
+const dashboardPath = 'exports/complete_system_demo/interactive_dashboard.html';
+writeFileSync(dashboardPath, dashboardHtml);
+
+console.log('✅ Dashboard regenerated with analytics!');
+console.log('📁 Location:', dashboardPath);
+console.log('');
+console.log('🌐 Open in browser:');
+console.log('   file://' + join(process.cwd(), dashboardPath));
+console.log('');
+console.log('✨ Features enabled:');
+console.log('   ✅ Plausible Analytics (bitcoinsovereign.academy)');
+console.log('   ✅ A/B Testing (CTA button color: Orange vs Blue)');
+console.log('   ✅ Event Tracking (Page views, clicks, conversions)');
+console.log('   ✅ Privacy-compliant (No cookies, No PII)');
