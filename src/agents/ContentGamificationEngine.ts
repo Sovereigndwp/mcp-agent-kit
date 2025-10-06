@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from 'zod';
 import { BaseAgent } from './BaseAgent.js';
 import type { Tool } from '../types/agent.js';

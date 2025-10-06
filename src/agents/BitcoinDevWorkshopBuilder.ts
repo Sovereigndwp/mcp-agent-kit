@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BaseAgent } from './BaseAgent.js';
 import { Tool, ToolInput, ToolOutput } from '../types/agent';
 

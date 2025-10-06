@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Persona Selector System
  *

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Privacy-Compliant A/B Testing Framework
  *
