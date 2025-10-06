@@ -6,6 +6,7 @@ import { mempoolFeeEstimatesTool } from '../tools/mempool_fee_estimates.js';
 import { fxRateTool } from '../tools/fx_rate.js';
 import { NewsScout } from '../agents/NewsScout.js';
 import { SimulationBuilder } from '../agents/SimulationBuilder.js';
+import { aiTutorService } from '../services/AITutorService.js';
 // Note: canva_snippet and bitcoin_learning_demo are scripts, not modules
 import { bitcoinCurriculum } from '../cases/bitcoin_curriculum.js';
 import { logger } from '../utils/logger.js';
@@ -229,6 +230,67 @@ app.get('/api/fx/rate', async (req, res) => {
   } catch (error) {
     logger.error('FX rate API error:', error);
     res.status(500).json({ success: false, error: 'Failed to fetch exchange rate' });
+  }
+});
+
+// AI Tutor APIs
+app.post('/api/tutors/story-navigator', async (req, res) => {
+  try {
+    const result = await aiTutorService.generateStoryNavigatorSession(req.body || {});
+    res.json({ success: true, data: result });
+  } catch (error) {
+    logger.error('Story Navigator error:', error);
+    res.status(500).json({ success: false, error: 'Failed to generate narrative guidance' });
+  }
+});
+
+app.post('/api/tutors/visual-synth', async (req, res) => {
+  try {
+    const result = await aiTutorService.generateVisualSynthesis(req.body || {});
+    res.json({ success: true, data: result });
+  } catch (error) {
+    logger.error('Visual Synthesizer error:', error);
+    res.status(500).json({ success: false, error: 'Failed to generate visual synthesis' });
+  }
+});
+
+app.post('/api/tutors/debate-arena', (req, res) => {
+  try {
+    const result = aiTutorService.generateDebateSession(req.body || {});
+    res.json({ success: true, data: result });
+  } catch (error) {
+    logger.error('Debate Arena error:', error);
+    res.status(500).json({ success: false, error: 'Failed to prepare debate session' });
+  }
+});
+
+app.post('/api/tutors/future-oracle', async (req, res) => {
+  try {
+    const result = await aiTutorService.generateFutureOracleScenario(req.body || {});
+    res.json({ success: true, data: result });
+  } catch (error) {
+    logger.error('Future Oracle error:', error);
+    res.status(500).json({ success: false, error: 'Failed to generate future scenario' });
+  }
+});
+
+app.post('/api/tutors/strategy-advisor', async (req, res) => {
+  try {
+    const result = await aiTutorService.generateStrategyAdvisorPlan(req.body || {});
+    res.json({ success: true, data: result });
+  } catch (error) {
+    logger.error('Strategy Advisor error:', error);
+    res.status(500).json({ success: false, error: 'Failed to create strategy plan' });
+  }
+});
+
+app.post('/api/tutors/data-poet', async (req, res) => {
+  try {
+    const result = await aiTutorService.generateDataPoetPiece(req.body || {});
+    res.json({ success: true, data: result });
+  } catch (error) {
+    logger.error('Data Poet error:', error);
+    res.status(500).json({ success: false, error: 'Failed to compose data poem' });
   }
 });
 

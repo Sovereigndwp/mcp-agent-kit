@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educator Kit - Bitcoin Education</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="brand.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #000000 0%, #FF6B35 50%, #FFD700 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-bitcoin text-3xl"></i>
+                    <div>
+                        <h1 class="text-2xl font-bold">Educator Kit</h1>
+                        <p class="text-sm opacity-90">Bitcoin Education Platform</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="server-status" class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                        <span class="text-sm">Connected</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-6">
+            <div class="flex space-x-8 overflow-x-auto">
+                <button onclick="showTab('dashboard')" class="tab-btn active py-4 px-2 border-b-2 border-orange-500 text-orange-600 font-medium">
+                    <i class="fas fa-chart-line mr-2"></i>Dashboard
+                </button>
+                <button onclick="showTab('price')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-orange-600 font-medium">
+                    <i class="fas fa-dollar-sign mr-2"></i>Bitcoin Price
+                </button>
+                <button onclick="showTab('fees')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-orange-600 font-medium">
+                    <i class="fas fa-coins mr-2"></i>Fee Analysis
+                </button>
+                <button onclick="showTab('news')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-orange-600 font-medium">
+                    <i class="fas fa-newspaper mr-2"></i>News & Sentiment
+                </button>
+                <button onclick="showTab('simulation')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-orange-600 font-medium">
+                    <i class="fas fa-calculator mr-2"></i>Fee Simulation
+                </button>
+                <button onclick="showTab('canva')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-orange-600 font-medium">
+                    <i class="fas fa-palette mr-2"></i>Canva Snippets
+                </button>
+                <button onclick="showTab('learning')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-orange-600 font-medium">
+                    <i class="fas fa-graduation-cap mr-2"></i>Learning
+                </button>
+                <button onclick="showTab('tutors')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-orange-600 font-medium">
+                    <i class="fas fa-robot mr-2"></i>AI Tutors
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                            <i class="fas fa-bitcoin text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Bitcoin Price</p>
+                            <p id="dashboard-price" class="text-2xl font-bold text-gray-900">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-chart-line text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">24h Change</p>
+                            <p id="dashboard-change" class="text-2xl font-bold text-gray-900">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                            <i class="fas fa-coins text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Network Fees</p>
+                            <p id="dashboard-fees" class="text-2xl font-bold text-gray-900">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                            <i class="fas fa-newspaper text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Market Sentiment</p>
+                            <p id="dashboard-sentiment" class="text-2xl font-bold text-gray-900">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <button onclick="showTab('price')" class="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-dollar-sign text-blue-600 mr-3"></i>
+                            View Bitcoin Price Details
+                        </button>
+                        <button onclick="showTab('fees')" class="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-coins text-green-600 mr-3"></i>
+                            Analyze Network Fees
+                        </button>
+                        <button onclick="showTab('simulation')" class="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-calculator text-yellow-600 mr-3"></i>
+                            Simulate Transaction Fees
+                        </button>
+                        <button onclick="showTab('canva')" class="w-full text-left p-3 rounded-lg border hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-palette text-purple-600 mr-3"></i>
+                            Generate Canva Snippets
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+                    <div id="recent-activity" class="space-y-3">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-clock mr-2"></i>
+                            Loading recent activity...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bitcoin Price Tab -->
+        <div id="price" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Bitcoin Price Analysis</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Current Price</h3>
+                        <div id="price-details" class="space-y-3">
+                            <div class="loading"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Global Prices</h3>
+                        <div id="global-prices" class="space-y-3">
+                            <div class="loading"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fee Analysis Tab -->
+        <div id="fees" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Network Fee Analysis</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Current Fee Estimates</h3>
+                        <div id="fee-estimates" class="space-y-3">
+                            <div class="loading"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Network Status</h3>
+                        <div id="network-status" class="space-y-3">
+                            <div class="loading"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- News Tab -->
+        <div id="news" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Bitcoin News & Sentiment</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <h3 class="text-lg font-semibold mb-4">Latest Headlines</h3>
+                        <div id="news-headlines" class="space-y-4">
+                            <div class="loading"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Market Sentiment</h3>
+                        <div id="sentiment-analysis" class="space-y-3">
+                            <div class="loading"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulation Tab -->
+        <div id="simulation" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Fee Simulation</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Create Simulation</h3>
+                        <form id="simulation-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Transaction Size (bytes)</label>
+                                <input type="number" id="tx-size" value="250" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Target Confirmations</label>
+                                <input type="number" id="confirmations" value="6" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Urgency</label>
+                                <select id="urgency" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">BTC Amount</label>
+                                <input type="number" id="btc-amount" value="0.001" step="0.001" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                                Create Simulation
+                            </button>
+                        </form>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Simulation Results</h3>
+                        <div id="simulation-results" class="space-y-3">
+                            <p class="text-gray-500">Fill out the form and click "Create Simulation" to see results.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canva Tab -->
+        <div id="canva" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Canva Snippets</h2>
+                <div class="mb-6">
+                    <button onclick="generateCanvaSnippets()" class="bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors">
+                        <i class="fas fa-magic mr-2"></i>Generate All Snippets
+                    </button>
+                </div>
+                <div id="canva-snippets" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="loading"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Tab -->
+        <div id="learning" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Bitcoin Learning Curriculum</h2>
+                <div id="curriculum-content" class="space-y-6">
+                    <div class="loading"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Tutors Tab -->
+        <div id="tutors" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Story Navigator</h3>
+                    <p class="text-sm text-gray-600 mb-4">Craft a personalized Bitcoin journey narrative that ties history to your goals.</p>
+                    <div class="space-y-3">
+                        <input id="story-name" type="text" placeholder="Learner name" class="w-full border rounded px-3 py-2" />
+                        <input id="story-interests" type="text" placeholder="Interests (comma separated e.g., history, privacy)" class="w-full border rounded px-3 py-2" />
+                        <input id="story-goal" type="text" placeholder="Primary learning goal" class="w-full border rounded px-3 py-2" />
+                        <button id="story-navigator-btn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 rounded">Generate Story</button>
+                    </div>
+                    <div id="story-navigator-result" class="mt-4 space-y-3 text-sm text-gray-700"></div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Visual Synthesizer</h3>
+                    <p class="text-sm text-gray-600 mb-4">Translate complex Bitcoin concepts into visual metaphors and diagram specs.</p>
+                    <div class="space-y-3">
+                        <input id="visual-concept" type="text" placeholder="Concept (e.g., self-custody)" class="w-full border rounded px-3 py-2" />
+                        <select id="visual-audience" class="w-full border rounded px-3 py-2">
+                            <option value="beginner">Beginner Audience</option>
+                            <option value="intermediate">Intermediate Audience</option>
+                            <option value="advanced">Advanced Audience</option>
+                        </select>
+                        <select id="visual-type" class="w-full border rounded px-3 py-2">
+                            <option value="process_flow">Process Flow</option>
+                            <option value="comparison">Comparison</option>
+                            <option value="timeline">Timeline</option>
+                            <option value="hierarchy">Hierarchy</option>
+                            <option value="relationship">Relationship</option>
+                        </select>
+                        <label class="inline-flex items-center text-sm text-gray-600">
+                            <input id="visual-interactivity" type="checkbox" class="mr-2" /> Include interactive elements
+                        </label>
+                        <button id="visual-synth-btn" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 rounded">Build Visual Plan</button>
+                    </div>
+                    <div id="visual-synth-result" class="mt-4 space-y-3 text-sm text-gray-700"></div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Debate Arena</h3>
+                    <p class="text-sm text-gray-600 mb-4">Summon multi-perspective Bitcoin debates to pressure-test your understanding.</p>
+                    <div class="space-y-3">
+                        <input id="debate-topic" type="text" placeholder="Debate topic (e.g., energy usage)" class="w-full border rounded px-3 py-2" />
+                        <select id="debate-focus" class="w-full border rounded px-3 py-2">
+                            <option value="economic">Economic Focus</option>
+                            <option value="technical">Technical Focus</option>
+                            <option value="philosophical">Philosophical Focus</option>
+                        </select>
+                        <select id="debate-difficulty" class="w-full border rounded px-3 py-2">
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate" selected>Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                        <button id="debate-arena-btn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded">Launch Debate</button>
+                    </div>
+                    <div id="debate-arena-result" class="mt-4 space-y-3 text-sm text-gray-700"></div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Future Oracle</h3>
+                    <p class="text-sm text-gray-600 mb-4">Explore plausible Bitcoin futures and stress-test your strategy.</p>
+                    <div class="space-y-3">
+                        <select id="oracle-horizon" class="w-full border rounded px-3 py-2">
+                            <option value="2030">2030 Horizon</option>
+                            <option value="2040" selected>2040 Horizon</option>
+                            <option value="2050">2050 Horizon</option>
+                        </select>
+                        <select id="oracle-scenario" class="w-full border rounded px-3 py-2">
+                            <option value="balanced_adoption" selected>Balanced Adoption</option>
+                            <option value="hyperbitcoinization">Hyperbitcoinization</option>
+                            <option value="regulatory_pushback">Regulatory Pushback</option>
+                        </select>
+                        <button id="future-oracle-btn" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-medium py-2 rounded">Simulate Future</button>
+                    </div>
+                    <div id="future-oracle-result" class="mt-4 space-y-3 text-sm text-gray-700"></div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Strategy Advisor</h3>
+                    <p class="text-sm text-gray-600 mb-4">Receive individualized sovereignty roadmaps and quick wins.</p>
+                    <div class="space-y-3">
+                        <select id="strategy-level" class="w-full border rounded px-3 py-2">
+                            <option value="aware">Aware</option>
+                            <option value="learning" selected>Learning</option>
+                            <option value="practicing">Practicing</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                        <select id="strategy-risk" class="w-full border rounded px-3 py-2">
+                            <option value="low">Low Risk Tolerance</option>
+                            <option value="medium" selected>Medium Risk Tolerance</option>
+                            <option value="high">High Risk Tolerance</option>
+                        </select>
+                        <input id="strategy-focus" type="text" placeholder="Priority areas (e.g., self-custody, privacy)" class="w-full border rounded px-3 py-2" />
+                        <select id="strategy-timeframe" class="w-full border rounded px-3 py-2">
+                            <option value="immediate">Immediate</option>
+                            <option value="short-term">Short Term</option>
+                            <option value="medium-term" selected>Medium Term</option>
+                            <option value="long-term">Long Term</option>
+                        </select>
+                        <button id="strategy-advisor-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded">Build Strategy</button>
+                    </div>
+                    <div id="strategy-advisor-result" class="mt-4 space-y-3 text-sm text-gray-700"></div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Data Poet</h3>
+                    <p class="text-sm text-gray-600 mb-4">Convert live Bitcoin metrics into evocative verse and performance guidance.</p>
+                    <div class="space-y-3">
+                        <select id="poet-theme" class="w-full border rounded px-3 py-2">
+                            <option value="market" selected>Market Pulse</option>
+                            <option value="sovereignty">Sovereignty Journey</option>
+                            <option value="technology">Technology & Nodes</option>
+                        </select>
+                        <select id="poet-emphasis" class="w-full border rounded px-3 py-2">
+                            <option value="hopeful" selected>Hopeful</option>
+                            <option value="cautious">Cautious</option>
+                            <option value="celebratory">Celebratory</option>
+                        </select>
+                        <button id="data-poet-btn" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 rounded">Compose Poem</button>
+                    </div>
+                    <div id="data-poet-result" class="mt-4 space-y-3 text-sm text-gray-700"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <p>&copy; 2024 MCP Agent Kit for Bitcoin Education. Built with ❤️ for learning.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
