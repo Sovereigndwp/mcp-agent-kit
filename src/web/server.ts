@@ -7,6 +7,7 @@ import { fxRateTool } from '../tools/fx_rate.js';
 import { NewsScout } from '../agents/NewsScout.js';
 import { SimulationBuilder } from '../agents/SimulationBuilder.js';
 import { aiTutorService } from '../services/AITutorService.js';
+import sovereigntyPhases from '../data/sovereigntyPath.js';
 // Note: canva_snippet and bitcoin_learning_demo are scripts, not modules
 import { bitcoinCurriculum } from '../cases/bitcoin_curriculum.js';
 import { logger } from '../utils/logger.js';
@@ -292,6 +293,14 @@ app.post('/api/tutors/data-poet', async (req, res) => {
     logger.error('Data Poet error:', error);
     res.status(500).json({ success: false, error: 'Failed to compose data poem' });
   }
+});
+
+// Sovereignty learning path API
+app.get('/api/sovereignty/path', (_req, res) => {
+  res.json({
+    success: true,
+    data: sovereigntyPhases
+  });
 });
 
 // Serve the main HTML page

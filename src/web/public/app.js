@@ -1,6 +1,7 @@
 // Global variables
 let currentTab = 'dashboard';
 let recentActivity = [];
+let sovereigntyPathLoaded = false;
 
 // API base URL
 const API_BASE = window.location.origin;
@@ -222,6 +223,8 @@ async function loadDashboardData() {
             text: 'Dashboard data loaded',
             time: new Date().toLocaleTimeString()
         });
+
+        loadSovereigntyPath();
     } catch (error) {
         console.error('Failed to load dashboard data:', error);
         document.getElementById('dashboard-price').textContent = '—';
@@ -230,6 +233,57 @@ async function loadDashboardData() {
         changeElement.className = 'text-2xl font-bold text-gray-500';
         document.getElementById('dashboard-fees').textContent = '—';
         document.getElementById('dashboard-sentiment').textContent = '—';
+    }
+}
+
+async function loadSovereigntyPath(force = false) {
+    if (sovereigntyPathLoaded && !force) {
+        return;
+    }
+
+    const container = document.getElementById('sovereignty-path');
+    if (!container) return;
+
+    showLoading('sovereignty-path');
+
+    try {
+        const response = await apiCall('/api/sovereignty/path');
+        if (!response.success) {
+            throw new Error('Request failed');
+        }
+
+        const phases = response.data || [];
+        container.innerHTML = phases.map(phase => {
+            const modules = (phase.modules || []).sort((a, b) => a.order - b.order);
+            const moduleList = modules.map(module => `
+                <div class="flex items-start space-x-3 p-3 rounded border border-gray-200 bg-gray-50">
+                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-orange-100 text-orange-600 font-bold rounded-full">${module.order}</div>
+                    <div class="flex-1">
+                        <div class="font-semibold text-gray-900">${module.title}</div>
+                        <p class="text-sm text-gray-600 mb-2">${module.description}</p>
+                        <a href="${module.route}" target="_blank" rel="noopener" class="inline-flex items-center text-sm text-orange-600 hover:text-orange-700 font-medium">
+                            Launch module <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <section class="border border-gray-200 rounded-lg p-4 flex flex-col space-y-3">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900">${phase.title}</h4>
+                        <p class="text-sm text-gray-600">${phase.summary}</p>
+                        <p class="text-xs text-gray-500 mt-1">${phase.context}</p>
+                    </div>
+                    <div class="space-y-3">${moduleList}</div>
+                </section>
+            `;
+        }).join('');
+
+        sovereigntyPathLoaded = true;
+    } catch (error) {
+        console.error('Failed to load sovereignty path:', error);
+        showError('sovereignty-path', 'Unable to load sovereignty roadmap. Try reloading.');
     }
 }
 
