@@ -87,8 +87,8 @@ export class CanvaAutoDesigner {
         height: 1080,
         type: 'social-media',
         elements: {
-          price: '$108000', // Placeholder
-          fees: '5 sat/vB',
+          price: '$124000', // Placeholder
+          fees: '2 sat/vB',
           congestion: 'Low',
           colors: ['#44CC44', '#FFFFFF', '#333333'],
           call_to_action: 'Learn More →'
@@ -100,8 +100,8 @@ export class CanvaAutoDesigner {
         height: 800,
         type: 'educational',
         elements: {
-          price: '$108000',
-          fees: 'Fast: 10, Medium: 5, Slow: 2',
+          price: '$124000',
+          fees: 'Fast: 2, Medium: 1, Slow: 1',
           congestion: 'Medium',
           colors: ['#FFD700', '#FFFFFF', '#333333'],
           call_to_action: 'Calculate Fees →'
@@ -113,8 +113,8 @@ export class CanvaAutoDesigner {
         height: 900,
         type: 'certificate',
         elements: {
-          price: '$108000',
-          fees: '1 sat/vB',
+          price: '$124000',
+          fees: '2 sat/vB',
           congestion: 'Low',
           colors: ['#4CAF50', '#FFD700', '#FFFFFF'],
           call_to_action: 'Continue Learning →'

@@ -1,15 +1,15 @@
 # Bitcoin Education Snapshot 📊
-**Generated:** 8/30/2025 at 9:48:28 AM
+**Generated:** 10/6/2025, 8:12:33 AM
 
 ## 💰 Price Data
-- **BTC Price:** $108,713.77 USD | €92,406.71 EUR
-- **COP Price:** 437.060.885 COP
-- **24h Context:** 🚀 Above $100K!
+- **BTC Price:** $124,394.00 USD | €106,552.00 EUR
+- **COP Price:** 480.893.392 COP
+- **24h Context:** 🚀 Testing the $124K range
 
 ## ⚡ Network Fees & Congestion 🟢
 - **Network Status:** Low Congestion
-- **Fast (1 sat/vB):** ~$0.27 for standard tx
-- **Medium (1 sat/vB):** ~$0.27 for standard tx  
+- **Fast (2 sat/vB):** ~$0.62 for standard tx
+- **Medium (1 sat/vB):** ~$0.31 for standard tx  
 - **Slow (1 sat/vB):** For non-urgent transactions
 - **Best Practice:** Good time for routine transactions
 
@@ -25,7 +25,7 @@
 ## 📐 Design Guidelines
 - **Reading Ease Score:** Aim for 60-75 (conversational)
 - **Colors:** Bitcoin Orange (#F7931A), White (#FFFFFF), Dark Gray (#333333)
-- **Key Message:** Low network activity, $109K price level
+- **Key Message:** Low network activity, $124K price level
 - **Call-to-Action:** "Learn why fees are lower today →"
 
 ---

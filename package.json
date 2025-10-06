@@ -80,7 +80,8 @@
     "marketing:run": "tsx src/pipelines/marketing_run.ts",
     "eval:run": "tsx src/pipelines/eval_run.ts",
     "lesson:new": "tsx src/pipelines/lesson_new.ts",
-    "export:pack": "tsx src/pipelines/export_pack.ts"
+    "export:pack": "tsx src/pipelines/export_pack.ts",
+    "cross:sync": "tsx src/pipelines/cross_repo_sync.ts"
   },
   "keywords": [
     "mcp",

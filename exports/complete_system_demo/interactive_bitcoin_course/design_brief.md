@@ -1,7 +1,7 @@
 # Design Brief — bitcoin-basics Educational Materials
 Reading Ease (Flesch): **22.7** (aim 60–75).
-BTC price ~ **108714 USD** | **437,060,885 COP**.
-Fees (sat/vB): Fast **1**, Medium **1**, Slow **1**.
+BTC price ~ **124394 USD** | **480,893,392 COP**.
+Fees (sat/vB): Fast **2**, Medium **1**, Slow **1**.
 
 ## Slide Plan
 1. Title & Promise
@@ -175,8 +175,8 @@ Fees (sat/vB): Fast **1**, Medium **1**, Slow **1**.
 
 ## Ready-to-paste copy (edit as needed)
 **Fees today**
-Fast: 1 sat/vB · Medium: 1 · Slow: 1
-**Price**: ~108714 USD
+Fast: 2 sat/vB · Medium: 1 · Slow: 1
+**Price**: ~124394 USD
 
 **Socratic prompts (pick 1 per slide):**
 1. What factors influence Bitcoin transaction fees?

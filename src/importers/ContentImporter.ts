@@ -6,10 +6,11 @@ import { ContentPhilosophyAnalyzer } from '../agents/ContentPhilosophyAnalyzer.j
 import { CanvaDesignAnalyzer } from '../agents/CanvaDesignAnalyzer.js';
 import { NotionContentAnalyzer } from '../agents/NotionContentAnalyzer.js';
 import { GPTInstructionsAnalyzer } from '../agents/GPTInstructionsAnalyzer.js';
+import { RepositoryContentService, RepositoryScanResult } from '../services/RepositoryContentService.js';
 import winston from 'winston';
 
 export interface ImportedContent {
-  source: 'canva' | 'notion' | 'gpt';
+  source: 'canva' | 'notion' | 'gpt' | 'repository';
   id: string;
   name: string;
   type: string;
@@ -26,14 +27,17 @@ export interface ImportResults {
     canva: number;
     notion: number;
     gpt: number;
+    repositories: number;
   };
   imported_content: ImportedContent[];
+  repository_scans?: RepositoryScanResult[];
 }
 
 export class ContentImporter {
   private logger: winston.Logger;
   private config: any;
   private contentEngine: ContentImprovementEngine;
+  private repositoryService?: RepositoryContentService;
 
   constructor() {
     this.logger = winston.createLogger({
@@ -68,6 +72,10 @@ export class ContentImporter {
       notionAnalyzer,
       gptAnalyzer
     );
+
+    if (this.config?.repositories?.enabled) {
+      this.repositoryService = new RepositoryContentService(this.config);
+    }
   }
 
   async importAllContent(): Promise<ImportResults> {
@@ -77,7 +85,7 @@ export class ContentImporter {
       total_imported: 0,
       successful: 0,
       failed: 0,
-      sources: { canva: 0, notion: 0, gpt: 0 },
+      sources: { canva: 0, notion: 0, gpt: 0, repositories: 0 },
       imported_content: []
     };
 
@@ -99,6 +107,39 @@ export class ContentImporter {
         const gptResults = await this.importGPTContent();
         results.sources.gpt = gptResults.length;
         results.imported_content.push(...gptResults);
+      }
+
+      if (this.repositoryService) {
+        const repositoryResults = this.repositoryService.scanRepositories();
+        this.repositoryService.saveScanSnapshot(repositoryResults);
+        results.repository_scans = repositoryResults;
+        results.sources.repositories = repositoryResults.filter(r => r.status === 'ok').length;
+
+        for (const repo of repositoryResults) {
+          if (repo.status !== 'ok') continue;
+
+          results.imported_content.push({
+            source: 'repository',
+            id: repo.repository.id,
+            name: repo.repository.label || repo.repository.id,
+            type: 'repository-scan',
+            data: {
+              totalWordCount: repo.totalWordCount,
+              totalHeadings: repo.totalHeadings,
+              totalInteractiveElements: repo.totalInteractiveElements,
+              conceptTotals: repo.conceptTotals,
+              items: repo.items.map(item => ({
+                path: item.relativePath,
+                wordCount: item.wordCount,
+                headings: item.headingCount,
+                interactiveElements: item.interactiveElements,
+                concepts: item.concepts
+              }))
+            },
+            imported_at: new Date().toISOString(),
+            status: 'imported'
+          });
+        }
       }
 
       // Calculate totals
@@ -591,6 +632,11 @@ export class ContentImporter {
       for (const content of importResults.imported_content) {
         if (content.status === 'imported') {
           // Map source to platform type
+          if (content.source === 'repository') {
+            // Repository scans are already summarized; skip LLM-powered analysis for now
+            continue;
+          }
+
           let platform: 'canva' | 'notion' | 'chatgpt' | 'custom_gpt';
           switch (content.source) {
             case 'canva':

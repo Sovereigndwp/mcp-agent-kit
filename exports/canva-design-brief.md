@@ -1,9 +1,9 @@
 # Design Brief — Bitcoin Snapshot
 **Reading Ease Target:** 60–75 (keep content accessible)
-**Price Context:** $108,714 | **Network:** Low activity
+**Price Context:** $124,394 | **Network:** Low activity
 
 ## Visual Hierarchy
-1. **Hero Number:** $109K (large, prominent)
+1. **Hero Number:** $124K (large, prominent)
 2. **Fee Status:** 🟢 Low Network Activity
 3. **Learning Hook:** What would happen if there were no transaction fee...
 

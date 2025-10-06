@@ -1,18 +1,67 @@
-// src/tools/btc_price.ts
-import { httpClient } from '../utils/http.js';
-import { getExchangeRate } from './fx_rate.js';
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
+import { httpClient, coingeckoClient } from '../utils/http.js';
+import { getExchangeRate } from './fx_rate.js';
+import { logger } from '../utils/logger.js';
 
-type Price = { usd: number; cop: number };
+type FallbackPrice = { usd: number; cop: number };
+
+export interface BitcoinSupply {
+  circulating?: number | null;
+  total?: number | null;
+  max?: number | null;
+}
+
+export interface BitcoinPriceSnapshot {
+  usd: number;
+  cop: number;
+  eur?: number;
+  gbp?: number;
+  cad?: number;
+  jpy?: number;
+  conversions: Record<string, number>;
+  change24h?: number;
+  change24hPercent?: number;
+  high24h?: number;
+  low24h?: number;
+  marketCap?: number;
+  volume24h?: number;
+  marketCapRank?: number;
+  supply?: BitcoinSupply;
+  lastUpdated?: string;
+  timestamp: number;
+  source: string;
+}
+
+const CACHE_PATH = 'exports/cache/btc_price.json';
+const SUPPORTED_CONVERSIONS = ['usd', 'eur', 'gbp', 'cad', 'jpy', 'cop'] as const;
+
+type SupportedConversion = (typeof SUPPORTED_CONVERSIONS)[number];
+
+type CoinGeckoMarketResponse = Array<{
+  current_price: number;
+  price_change_percentage_24h: number | null;
+  price_change_24h: number | null;
+  high_24h: number | null;
+  low_24h: number | null;
+  market_cap: number | null;
+  total_volume: number | null;
+  market_cap_rank: number | null;
+  circulating_supply: number | null;
+  total_supply: number | null;
+  max_supply: number | null;
+  last_updated: string;
+}>;
+
+type CoinGeckoSimpleResponse = {
+  bitcoin?: Record<string, number | undefined> & { last_updated_at?: number };
+};
 
 async function tryCoinpaprika(): Promise<number> {
-  // No key needed
   const r = await httpClient.get<{ quotes: { USD: { price: number } } }>('https://api.coinpaprika.com/v1/tickers/btc-bitcoin');
   return r.quotes.USD.price;
 }
 
 async function tryBinance(): Promise<number> {
-  // BTC/USDT ~ USD
   const r = await httpClient.get<{ price: string }>('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
   return Number(r.price);
 }
@@ -28,27 +77,82 @@ async function tryKraken(): Promise<number> {
   return Number(r.result[key].c[0]);
 }
 
-function saveCache(p: Price) {
+function saveCache(price: BitcoinPriceSnapshot): void {
   mkdirSync('exports/cache', { recursive: true });
-  writeFileSync('exports/cache/btc_price.json', JSON.stringify({ ...p, ts: Date.now() }, null, 2));
+  writeFileSync(CACHE_PATH, JSON.stringify(price, null, 2));
 }
 
-function loadCache(): Price | null {
+function loadCache(): BitcoinPriceSnapshot | null {
   try {
-    if (!existsSync('exports/cache/btc_price.json')) return null;
-    const j = JSON.parse(readFileSync('exports/cache/btc_price.json','utf8'));
-    // accept cache up to 6 hours old
-    if (Date.now() - (j.ts ?? 0) < 6 * 60 * 60 * 1000) return { usd: j.usd, cop: j.cop };
+    if (!existsSync(CACHE_PATH)) return null;
+    const parsed = JSON.parse(readFileSync(CACHE_PATH, 'utf8')) as BitcoinPriceSnapshot;
+    // accept cache up to 10 minutes old
+    if (parsed?.timestamp && Date.now() - parsed.timestamp < 10 * 60 * 1000) {
+      return parsed;
+    }
     return null;
-  } catch { return null; }
+  } catch (error) {
+    logger.warn('Failed to load BTC price cache, ignoring', error);
+    return null;
+  }
 }
 
-export async function btc_price(): Promise<Price> {
-  // 1) Try cache first (prevents breaking on 429s)
-  const cached = loadCache();
-  if (cached) return cached;
+async function fetchCoinGeckoSnapshot(): Promise<BitcoinPriceSnapshot> {
+  const marketData = await coingeckoClient.get<CoinGeckoMarketResponse>(
+    'coins/markets?vs_currency=usd&ids=bitcoin&sparkline=false&price_change_percentage=24h'
+  );
 
-  // 2) Try multiple sources in order
+  const market = marketData?.[0];
+  if (!market) {
+    throw new Error('CoinGecko returned no market data for bitcoin');
+  }
+
+  const simpleResponse = await coingeckoClient.get<CoinGeckoSimpleResponse>(
+    `simple/price?ids=bitcoin&vs_currencies=${SUPPORTED_CONVERSIONS.join(',')}&include_24hr_change=true&include_last_updated_at=true`
+  );
+
+  const conversionsRaw = simpleResponse.bitcoin || {};
+  const conversions: Record<string, number> = {};
+
+  SUPPORTED_CONVERSIONS.forEach(code => {
+    const value = conversionsRaw[code];
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      conversions[code.toUpperCase()] = value;
+    }
+  });
+
+  const usdPrice = conversions.USD ?? market.current_price;
+  const copPrice = conversions.COP ?? usdPrice;
+
+  const snapshot: BitcoinPriceSnapshot = {
+    usd: usdPrice,
+    cop: copPrice,
+    eur: conversions.EUR,
+    gbp: conversions.GBP,
+    cad: conversions.CAD,
+    jpy: conversions.JPY,
+    conversions,
+    change24hPercent: market.price_change_percentage_24h ?? undefined,
+    change24h: market.price_change_24h ?? undefined,
+    high24h: market.high_24h ?? undefined,
+    low24h: market.low_24h ?? undefined,
+    marketCap: market.market_cap ?? undefined,
+    volume24h: market.total_volume ?? undefined,
+    marketCapRank: market.market_cap_rank ?? undefined,
+    supply: {
+      circulating: market.circulating_supply ?? undefined,
+      total: market.total_supply ?? undefined,
+      max: market.max_supply ?? undefined,
+    },
+    lastUpdated: market.last_updated,
+    timestamp: Date.now(),
+    source: 'CoinGecko'
+  };
+
+  return snapshot;
+}
+
+async function fetchFallbackPrice(): Promise<BitcoinPriceSnapshot> {
   const attempts: Array<() => Promise<number>> = [
     tryCoinpaprika,
     tryBinance,
@@ -63,29 +167,61 @@ export async function btc_price(): Promise<Price> {
     try {
       usd = await fn();
       if (usd > 0) break;
-    } catch (e) {
-      lastErr = e;
+    } catch (error) {
+      lastErr = error;
     }
   }
 
   if (usd <= 0) {
-    // If everything failed but we have any cache, return it; else throw
-    if (cached) return cached;
-    throw new Error('All BTC price sources failed' + (lastErr ? `: ${String((lastErr as any)?.message ?? lastErr)}` : ''));
+    throw new Error('All fallback BTC price sources failed' + (lastErr ? `: ${String((lastErr as any)?.message ?? lastErr)}` : ''));
   }
 
-  // 3) Get USD->COP and build the final object
-  const exchangeRate = await getExchangeRate('usd', 'cop');
-  const cop = usd * exchangeRate.rate;
+  let cop = usd;
+  try {
+    const exchangeRate = await getExchangeRate('usd', 'cop');
+    cop = usd * exchangeRate.rate;
+  } catch (error) {
+    logger.warn('Failed to convert USD to COP for fallback price', error);
+  }
 
-  const out = { usd, cop };
-  saveCache(out);
-  return out;
+  const conversions: Record<string, number> = {
+    USD: usd,
+  };
+  if (Number.isFinite(cop)) {
+    conversions.COP = cop;
+  }
+
+  return {
+    usd,
+    cop,
+    conversions,
+    timestamp: Date.now(),
+    source: 'Fallback multi-source'
+  };
+}
+
+export async function btc_price(): Promise<BitcoinPriceSnapshot> {
+  const cached = loadCache();
+  if (cached) {
+    return cached;
+  }
+
+  try {
+    const snapshot = await fetchCoinGeckoSnapshot();
+    saveCache(snapshot);
+    return snapshot;
+  } catch (error) {
+    logger.warn('Primary CoinGecko price fetch failed, attempting fallback', error);
+  }
+
+  const fallback = await fetchFallbackPrice();
+  saveCache(fallback);
+  return fallback;
 }
 
 export const bitcoinPriceTool = {
   name: 'bitcoin_price',
-  description: 'Get current Bitcoin price in USD and COP',
+  description: 'Get current Bitcoin price with market context',
   inputSchema: {
     type: 'object',
     properties: {},
@@ -96,9 +232,20 @@ export const bitcoinPriceTool = {
     return {
       price: price.usd,
       currency: 'usd',
-      cop_price: price.cop,
-      timestamp: Date.now(),
-      source: 'Multiple exchanges'
+      conversions: price.conversions,
+      market: {
+        change24hPercent: price.change24hPercent,
+        change24h: price.change24hPercent,
+        change24hValue: price.change24h,
+        high24h: price.high24h,
+        low24h: price.low24h,
+        marketCap: price.marketCap,
+        volume24h: price.volume24h,
+        marketCapRank: price.marketCapRank,
+        supply: price.supply,
+      },
+      timestamp: price.timestamp,
+      source: price.source
     };
   },
   getBitcoinPrice: async () => {
@@ -111,8 +258,20 @@ export const bitcoinPriceTool = {
       price: price.usd,
       currency: 'usd',
       cop_price: price.cop,
-      timestamp: Date.now(),
-      source: 'Multiple exchanges'
+      conversions: price.conversions,
+      change24hPercent: price.change24hPercent,
+      change24h: price.change24hPercent,
+      change24hValue: price.change24h,
+      high24h: price.high24h,
+      low24h: price.low24h,
+      marketCap: price.marketCap,
+      volume24h: price.volume24h,
+      marketCapRank: price.marketCapRank,
+      supply: price.supply,
+      timestamp: price.timestamp,
+      source: price.source
     };
   }
 };
+
+export type BitcoinPriceTool = typeof bitcoinPriceTool;

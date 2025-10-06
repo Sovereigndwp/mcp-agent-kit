@@ -36,14 +36,29 @@ app.get('/api/health', (req, res) => {
 app.get('/api/bitcoin/price', async (req, res) => {
   try {
     const priceData = await btc_price();
-    
+    const details = {
+      change24hPercent: priceData.change24hPercent ?? null,
+      change24h: priceData.change24hPercent ?? null,
+      change24hValue: priceData.change24h ?? null,
+      high24h: priceData.high24h ?? null,
+      low24h: priceData.low24h ?? null,
+      marketCap: priceData.marketCap ?? null,
+      volume24h: priceData.volume24h ?? null,
+      marketCapRank: priceData.marketCapRank ?? null,
+      supply: priceData.supply ?? null,
+      lastUpdated: priceData.lastUpdated ?? (priceData.timestamp ? new Date(priceData.timestamp).toISOString() : null)
+    };
+
     res.json({
       success: true,
       data: {
-        price_usd: priceData.usd,
-        price_cop: priceData.cop,
-        currency: 'usd',
-        timestamp: new Date().toISOString()
+        price: priceData.usd,
+        currency: 'USD',
+        copPrice: priceData.cop,
+        conversions: priceData.conversions,
+        details,
+        timestamp: priceData.timestamp,
+        source: priceData.source
       }
     });
   } catch (error) {

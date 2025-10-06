@@ -83,7 +83,7 @@ class CanvaFolderImprover {
     const suggestions = [];
 
     if (bitcoinRelated.length === 0) {
-      suggestions.push('Add Bitcoin educational designs to leverage the current $109K market moment');
+      suggestions.push('Add Bitcoin educational designs to leverage the current $124K market moment');
       suggestions.push('Create fee comparison charts showing current low-cost transaction opportunities');
     }
 
@@ -92,7 +92,7 @@ class CanvaFolderImprover {
       suggestions.push('Add interactive fee calculators for different transaction types');
     }
 
-    suggestions.push('Integrate live Bitcoin data (price: $108K+, fees: 1 sat/vB)');
+    suggestions.push('Integrate live Bitcoin data (price: $124K+, fees: 2 sat/vB)');
     suggestions.push('Add dynamic content that updates with market conditions');
     suggestions.push('Create educational series about current market context');
     suggestions.push('Build automated design pipeline for daily Bitcoin insights');
@@ -105,9 +105,9 @@ class CanvaFolderImprover {
    */
   private identifyLiveDataOpportunities(designs: any[]): string[] {
     return [
-      'Price alerts with current $108K+ market data',
-      'Fee optimization guides using live 1 sat/vB rates',
-      'Market context certificates for $109K era learning',
+      'Price alerts with current $124K+ market data',
+      'Fee optimization guides using live 2 sat/vB fast rates',
+      'Market context certificates for $124K era learning',
       'Network status banners with real-time congestion data',
       'Educational infographics with current transaction costs',
       'Automated social media posts for market updates'
@@ -148,7 +148,7 @@ class CanvaFolderImprover {
   private generateRecommendations(analysis: FolderAnalysis): string[] {
     const recs = [
       `Your folder has ${analysis.designs.length} designs - ${analysis.bitcoin_related.length} are Bitcoin-related`,
-      'Current Bitcoin context: $108K+ price, 1 sat/vB fees - perfect for educational content',
+      'Current Bitcoin context: $124K+ price, 2 sat/vB fees - perfect for educational content',
       'Low network congestion = great opportunity for transaction fee education',
     ];
 
@@ -168,7 +168,7 @@ class CanvaFolderImprover {
   private generateNextSteps(analysis: FolderAnalysis): string[] {
     return [
       '1. 📊 Import enhanced CSV data into Canva Bulk Create',
-      '2. 🎨 Create 4 new Bitcoin education designs using current $109K context',
+      '2. 🎨 Create 4 new Bitcoin education designs using current $124K context',
       '3. 🔄 Set up daily automation to refresh content with live data',
       '4. 📱 Export designs for social media and educational platforms',
       '5. 🎯 Focus on fee education while network congestion is low',
@@ -189,7 +189,7 @@ class CanvaFolderImprover {
 
 **Folder ID:** ${this.folderId}  
 **Analysis Date:** ${timestamp}  
-**Bitcoin Context:** $108K+ price, 1 sat/vB fees (Low congestion)
+**Bitcoin Context:** $124K+ price, 2 sat/vB fees (Low congestion)
 
 ## 📁 Current Folder Status
 
@@ -234,8 +234,8 @@ Your existing MCP agent can:
 
 ## 💰 Current Bitcoin Context for Design
 
-- **Price:** ${enhanced.enhanced_designs[0]?.elements.price || '$108K+'}
-- **Fees:** ${enhanced.enhanced_designs[0]?.elements.fees || '1 sat/vB'}  
+- **Price:** ${enhanced.enhanced_designs[0]?.elements.price || '$124K+'}
+- **Fees:** ${enhanced.enhanced_designs[0]?.elements.fees || '2 sat/vB'}  
 - **Status:** ${enhanced.enhanced_designs[0]?.elements.congestion || 'Low Activity'}
 - **Educational Opportunity:** High (Market attention + low transaction costs)
 

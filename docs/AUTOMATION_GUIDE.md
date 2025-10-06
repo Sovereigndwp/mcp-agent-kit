@@ -42,8 +42,8 @@ The system automatically updates your course when:
 
 Each automation run updates your course designs with:
 
-✅ **Current Bitcoin Price**: $108K (live data)  
-✅ **Network Status**: 🟢 Low congestion (1 sat/vB)  
+✅ **Current Bitcoin Price**: $124K (live data)  
+✅ **Network Status**: 🟢 Low congestion (2 sat/vB)  
 ✅ **Educational Prompts**: Fresh Socratic questions  
 ✅ **Color Psychology**: Green for low fees, red for high fees  
 ✅ **Timestamp**: Always shows when last updated  
@@ -127,7 +127,7 @@ logs/
 ## 🎯 **Latest Update Results**
 
 **Last Run**: August 31, 2025 at 9:22 AM  
-**Bitcoin Context**: $108,456.91, Low congestion (1 sat/vB)  
+**Bitcoin Context**: $124,394.00, Low congestion (2 sat/vB)  
 **Updates Applied**: 2 designs successfully updated  
 **Next Check**: September 1, 2025 at 9:22 AM  
 

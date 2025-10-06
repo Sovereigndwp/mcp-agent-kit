@@ -9,6 +9,9 @@ import { btc_price } from '../tools/btc_price.js';
 import { SocraticTutor } from '../agents/SocraticTutor.js';
 import { logger } from '../utils/logger.js';
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'fs';
+import path from 'path';
+import { RepositoryContentService } from '../services/RepositoryContentService.js';
+import { CrossRepositoryAnalyzer } from '../analysis/CrossRepositoryAnalyzer.js';
 
 interface AutomationConfig {
   enabled: boolean;
@@ -109,6 +112,37 @@ class CourseUpdateAutomation {
     }
   }
 
+  private async runCrossRepositorySync(): Promise<void> {
+    try {
+      const configPath = path.resolve('content-sources/config.json');
+      if (!existsSync(configPath)) {
+        logger.info('Skipping cross-repository sync: configuration file not found.');
+        return;
+      }
+
+      const raw = readFileSync(configPath, 'utf-8');
+      const config = JSON.parse(raw);
+
+      if (!config.repositories?.enabled) {
+        logger.info('Cross-repository sync disabled.');
+        return;
+      }
+
+      const repositoryService = new RepositoryContentService(config);
+      const analyzer = new CrossRepositoryAnalyzer(repositoryService, config);
+      const report = analyzer.runAnalysis();
+      const { jsonPath, markdownPath } = analyzer.saveReport(report);
+
+      logger.info('Cross-repository sync executed after course update', {
+        recommendations: report.recommendations.length,
+        jsonPath,
+        markdownPath
+      });
+    } catch (error) {
+      logger.error('Cross-repository sync failed', error);
+    }
+  }
+
   private async shouldUpdate(): Promise<{ should: boolean; reason: string }> {
     try {
       const history = this.getUpdateHistory();
@@ -196,6 +230,8 @@ class CourseUpdateAutomation {
         applied: updateRecord.updates_applied,
         failed: updateRecord.updates_failed
       });
+
+      await this.runCrossRepositorySync();
 
       return updateRecord;
 

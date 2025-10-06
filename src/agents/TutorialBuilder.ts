@@ -449,7 +449,7 @@ export class TutorialBuilder {
   private async generateExampleContent(title: string, difficulty: string): Promise<string> {
     // Generate practical, real-world examples
     if (title.includes('Fee')) {
-      return 'Example: Sarah wants to send $50 worth of Bitcoin to her friend. She can choose: Fast delivery (2 sat/vB, ~$0.34 fee) for urgent payments, or Standard delivery (1 sat/vB, ~$0.17 fee) for regular transfers.';
+      return 'Example: Sarah wants to send $50 worth of Bitcoin to her friend. She can choose: Fast delivery (2 sat/vB, ~$0.62 fee) for urgent payments, or Standard delivery (1 sat/vB, ~$0.31 fee) for regular transfers.';
     }
     return `Practical example demonstrating ${title.toLowerCase()} in real-world scenarios with current market conditions.`;
   }
