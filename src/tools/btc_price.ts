@@ -1,5 +1,5 @@
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
-import { httpClient, coingeckoClient } from '../utils/http.js';
+import { httpClient, coingeckoClient, coinmarketcapClient } from '../utils/http.js';
 import { getExchangeRate } from './fx_rate.js';
 import { logger } from '../utils/logger.js';
 
@@ -95,6 +95,62 @@ function loadCache(): BitcoinPriceSnapshot | null {
     logger.warn('Failed to load BTC price cache, ignoring', error);
     return null;
   }
+}
+
+async function fetchCoinMarketCapSnapshot(): Promise<BitcoinPriceSnapshot> {
+  if (!process.env.COINMARKETCAP_API_KEY) {
+    throw new Error('CoinMarketCap API key not configured');
+  }
+
+  const convert = SUPPORTED_CONVERSIONS.join(',');
+  const response = await coinmarketcapClient.get<{ data: Record<string, any> }>(
+    `/v1/cryptocurrency/quotes/latest?symbol=BTC&convert=${convert}`
+  );
+
+  const btc = response?.data?.BTC;
+  if (!btc || !btc.quote) {
+    throw new Error('CoinMarketCap returned incomplete data for BTC');
+  }
+
+  const conversions: Record<string, number> = {};
+  SUPPORTED_CONVERSIONS.forEach(code => {
+    const quote = btc.quote[code.toUpperCase()];
+    if (quote && typeof quote.price === 'number') {
+      conversions[code.toUpperCase()] = quote.price;
+    }
+  });
+
+  const usdQuote = btc.quote.USD;
+  if (!usdQuote) {
+    throw new Error('CoinMarketCap USD quote missing');
+  }
+
+  const snapshot: BitcoinPriceSnapshot = {
+    usd: usdQuote.price,
+    cop: conversions.COP ?? usdQuote.price,
+    eur: conversions.EUR,
+    gbp: conversions.GBP,
+    cad: conversions.CAD,
+    jpy: conversions.JPY,
+    conversions,
+    change24hPercent: usdQuote.percent_change_24h ?? undefined,
+    change24h: usdQuote.price * ((usdQuote.percent_change_24h ?? 0) / 100),
+    high24h: usdQuote.high_24h ?? undefined,
+    low24h: usdQuote.low_24h ?? undefined,
+    marketCap: usdQuote.market_cap ?? undefined,
+    volume24h: usdQuote.volume_24h ?? undefined,
+    marketCapRank: btc.cmc_rank ?? undefined,
+    supply: {
+      circulating: btc.circulating_supply ?? undefined,
+      total: btc.total_supply ?? undefined,
+      max: btc.max_supply ?? undefined
+    },
+    lastUpdated: usdQuote.last_updated,
+    timestamp: Date.now(),
+    source: 'CoinMarketCap'
+  };
+
+  return snapshot;
 }
 
 async function fetchCoinGeckoSnapshot(): Promise<BitcoinPriceSnapshot> {
@@ -204,6 +260,16 @@ export async function btc_price(): Promise<BitcoinPriceSnapshot> {
   const cached = loadCache();
   if (cached) {
     return cached;
+  }
+
+  try {
+    if (process.env.COINMARKETCAP_API_KEY) {
+      const snapshot = await fetchCoinMarketCapSnapshot();
+      saveCache(snapshot);
+      return snapshot;
+    }
+  } catch (error) {
+    logger.warn('Primary CoinMarketCap price fetch failed, attempting CoinGecko', error);
   }
 
   try {

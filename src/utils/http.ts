@@ -126,6 +126,14 @@ export const coingeckoClient = new HttpClient({
   timeout: 15000,
 });
 
+export const coinmarketcapClient = new HttpClient({
+  baseURL: process.env.COINMARKETCAP_API_URL || 'https://pro-api.coinmarketcap.com',
+  timeout: 15000,
+  headers: process.env.COINMARKETCAP_API_KEY ? {
+    'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY
+  } : {}
+});
+
 export const githubClient = new HttpClient({
   baseURL: 'https://api.github.com',
   timeout: 15000,
