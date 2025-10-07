@@ -338,6 +338,87 @@
             margin: 20px 0;
         }
 
+        .difficulty-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mode-badge {
+            align-self: flex-start;
+            background: rgba(79, 70, 229, 0.2);
+            border: 1px solid rgba(79, 70, 229, 0.5);
+            border-radius: 999px;
+            color: #ffd700;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .difficulty-explainer {
+            color: #ccccff;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .mining-controls {
+            background: rgba(79, 70, 229, 0.08);
+            border: 1px solid rgba(79, 70, 229, 0.35);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+            padding: 16px;
+        }
+
+        .mining-controls .control-label {
+            color: #ffd700;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.85rem;
+        }
+
+        .difficulty-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .difficulty-button {
+            background: rgba(79, 70, 229, 0.2);
+            border: 1px solid rgba(79, 70, 229, 0.4);
+            border-radius: 999px;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 10px 18px;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-button:hover {
+            background: rgba(99, 102, 241, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .difficulty-button.active {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            border-color: rgba(255, 215, 0, 0.8);
+            box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
+        }
+
+        .mining-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
         .puzzle-demo {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -362,6 +443,46 @@
         .puzzle-piece.solved {
             border-color: #28a745;
             background: rgba(40, 167, 69, 0.1);
+        }
+
+        .learning-prompts {
+            background: rgba(79, 70, 229, 0.08);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            border-radius: 10px;
+            margin-top: 25px;
+            padding: 18px;
+        }
+
+        .learning-prompts h5 {
+            color: #ffd700;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .socratic-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .socratic-list li {
+            background: rgba(15, 15, 35, 0.85);
+            border: 1px solid rgba(79, 70, 229, 0.35);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .socratic-list li strong {
+            color: #ffd700;
+            display: block;
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+            margin-bottom: 6px;
+            text-transform: uppercase;
         }
 
         .stats-grid {
@@ -1347,11 +1468,33 @@
                             <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Computational Puzzles</h4>
                             
                             <div class="mining-visual">
+                                <div class="difficulty-summary">
+                                    <span id="difficulty-mode-badge" class="mode-badge">Standard Mode</span>
+                                    <p id="difficulty-explainer" class="difficulty-explainer">
+                                        Aim for four leading zeros to mirror the higher difficulty miners face in the real network.
+                                    </p>
+                                </div>
+
                                 <p style="margin-bottom: 15px;">
                                     <strong>The Puzzle:</strong> Find a number that, when combined with transaction data, 
-                                    creates a hash starting with four zeros (0000...).
+                                    creates a hash starting with <span id="difficulty-word">four</span> zeros (<span id="difficulty-prefix">0000</span>...).
                                 </p>
-                                
+
+                            <div class="mining-controls">
+                                    <span class="control-label">Choose your difficulty</span>
+                                    <div class="difficulty-buttons">
+                                        <button type="button" class="difficulty-button btn" data-mining-difficulty="1" aria-pressed="false">
+                                            Guided · 1 zero
+                                        </button>
+                                        <button type="button" class="difficulty-button btn" data-mining-difficulty="2" aria-pressed="false">
+                                            Guided · 2 zeros
+                                        </button>
+                                        <button type="button" class="difficulty-button btn active" data-mining-difficulty="4" aria-pressed="true">
+                                            Standard · 4 zeros
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <div class="puzzle-demo">
                                     <div class="puzzle-piece" onclick="tryPuzzle(1)" id="puzzle1">
                                         <div>Try: 1</div>
@@ -1371,10 +1514,17 @@
                                     </div>
                                 </div>
                                 
-                                <button type="button" class="btn" onclick="autoSolvePuzzle()">Auto-Solve Puzzle</button>
-                                <button type="button" class="btn" onclick="resetPuzzle()">Reset Puzzle</button>
-                                
-                                <div id="puzzle-result" style="margin-top: 15px;"></div>
+                                <div class="mining-actions">
+                                    <button type="button" class="btn" onclick="autoSolvePuzzle()">Auto-Solve Puzzle</button>
+                                    <button type="button" class="btn" onclick="resetPuzzle()">Reset Puzzle</button>
+                                </div>
+
+                                <div id="puzzle-result" style="margin-top: 15px;" role="region" aria-live="polite"></div>
+
+                                <div class="learning-prompts">
+                                    <h5>🧠 Guided Socratic Prompts</h5>
+                                    <ul id="socratic-question-list" class="socratic-list"></ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1927,18 +2077,22 @@
             return '0'.repeat(leadingZeros) + hashHex.substring(leadingZeros);
         }
 
-        // Proper proof-of-work hash function - completely random for demo
+        // Proper proof-of-work hash function - creates a 64 char hex string for demo purposes
         function proofOfWorkHash(input, nonce) {
-            const data = input + nonce.toString() + Math.random().toString();
+            const data = `${input}|nonce:${nonce}|rand:${Math.random()}`;
             let hash = 0;
             for (let i = 0; i < data.length; i++) {
                 const char = data.charCodeAt(i);
                 hash = ((hash << 5) - hash) + char;
                 hash = hash & hash;
             }
-            // Add more randomness
-            hash = hash ^ Math.floor(Math.random() * 1000000);
-            return Math.abs(hash).toString(16).padStart(8, '0');
+            let base = Math.abs(hash).toString(16).padStart(16, '0');
+            let randomHex = '';
+            while (randomHex.length < 48) {
+                randomHex += Math.random().toString(16).substring(2);
+            }
+            const combined = (base + randomHex).substring(0, 64);
+            return combined;
         }
 
         // New Interactive Demo Functions for Principle 0
@@ -2299,57 +2453,266 @@
         }
         
         // Principle 4: Proof of Work functions
-        function tryPuzzle(attempt) {
-            const hashes = {
-                1: 'a4b2f1e8c9d3...',
-                2: 'f7e1b3a9c2d5...',
-                3: '0000a1b2c3d4...', // This one starts with 0000
-                4: 'c8d2e1f3a9b7...'
-            };
-            
-            const hashElement = document.getElementById(`hash${attempt}`);
-            hashElement.textContent = hashes[attempt];
-            
-            const puzzlePiece = document.getElementById(`puzzle${attempt}`);
-            
-            if (attempt === 3) {
-                puzzlePiece.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
-                hashElement.style.color = '#28a745';
-                document.getElementById('puzzle-result').innerHTML = `
-                    <div class="result-box" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px;">
-                        <strong>🎉 Puzzle Solved!</strong> Number 3 produces a hash starting with 0000...
-                        <br><small>This represents the computational work needed to "vote" in Bitcoin</small>
+        const miningDifficultySettings = {
+            1: {
+                mode: 'Guided Mode',
+                explanation: 'Quick wins: feel proof of work with minimal energy so the concept clicks.'
+            },
+            2: {
+                mode: 'Guided Mode',
+                explanation: 'Balanced challenge: two leading zeros reveal how effort ramps up.'
+            },
+            4: {
+                mode: 'Standard Mode',
+                explanation: 'Closer to Bitcoin’s live difficulty (still simplified) to show the real grind.'
+            }
+        };
+        const difficultyWordMap = { 1: 'one', 2: 'two', 4: 'four' };
+        const socraticPromptTemplates = [
+            {
+                title: 'Energy Budget',
+                template: 'How does lowering the target to {zeros} leading zero{plural} change the electricity miners must spend?'
+            },
+            {
+                title: 'Security Trade-off',
+                template: 'If attackers only need {zeros} leading zero{plural}, what happens to the cost of outpacing honest miners?'
+            },
+            {
+                title: 'Difficulty Adjustment',
+                template: 'Bitcoin quickly raises difficulty after easy streaks. Why move away from {zeros} leading zero{plural}?'
+            }
+        ];
+        let miningDifficulty = 4;
+        let puzzleAttempts = 0;
+        let puzzleSolved = false;
+        let miningInterval = null;
+
+        function numberToWord(value) {
+            return difficultyWordMap[value] || value.toString();
+        }
+
+        function getDifficultyPrefix() {
+            return '0'.repeat(miningDifficulty);
+        }
+
+        function ensureDifficultyPrefix(hash) {
+            const prefix = getDifficultyPrefix();
+            if (!prefix) return hash;
+            if (hash.startsWith(prefix)) return hash;
+            return prefix + hash.slice(prefix.length);
+        }
+
+        function getMiningDataSeed() {
+            return `Alice→Bob:1BTC|Block:${Date.now() % 1000}|Time:${Date.now()}`;
+        }
+
+        function updateMiningDifficultyUI() {
+            const settings = miningDifficultySettings[miningDifficulty];
+            const modeBadge = document.getElementById('difficulty-mode-badge');
+            const explainer = document.getElementById('difficulty-explainer');
+            const wordSpan = document.getElementById('difficulty-word');
+            const prefixSpan = document.getElementById('difficulty-prefix');
+            if (modeBadge && settings) modeBadge.textContent = settings.mode;
+            if (explainer && settings) explainer.textContent = settings.explanation;
+            if (wordSpan) wordSpan.textContent = numberToWord(miningDifficulty);
+            if (prefixSpan) {
+                const prefix = getDifficultyPrefix() || '0';
+                prefixSpan.textContent = prefix;
+            }
+            const buttons = document.querySelectorAll('[data-mining-difficulty]');
+            buttons.forEach(btn => {
+                const value = Number(btn.getAttribute('data-mining-difficulty'));
+                const isActive = value === miningDifficulty;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+        }
+
+        function updateSocraticPrompts() {
+            const list = document.getElementById('socratic-question-list');
+            if (!list) return;
+            const zeros = miningDifficulty;
+            const plural = zeros === 1 ? '' : 's';
+            list.innerHTML = '';
+            socraticPromptTemplates.forEach(prompt => {
+                const item = document.createElement('li');
+                const text = prompt.template
+                    .replace(/\{zeros\}/g, zeros.toString())
+                    .replace(/\{plural\}/g, plural);
+                item.innerHTML = `<strong>${prompt.title}</strong>${text}`;
+                list.appendChild(item);
+            });
+        }
+
+        function renderGoalMessage() {
+            const result = document.getElementById('puzzle-result');
+            if (!result) return;
+            const prefix = getDifficultyPrefix() || '0';
+            const zerosWord = numberToWord(miningDifficulty);
+            const plural = miningDifficulty === 1 ? '' : 's';
+            result.innerHTML = `
+                <div class="insight-box">
+                    <strong>Goal:</strong> Find a nonce that makes the hash start with ${zerosWord} leading zero${plural} (${prefix}…).
+                    <br><small>Use Guided difficulty for fast wins or Standard difficulty to experience the real grind.</small>
+                </div>
+            `;
+        }
+
+        function stopMiningInterval() {
+            if (miningInterval) {
+                clearInterval(miningInterval);
+                miningInterval = null;
+            }
+        }
+
+        function resetPuzzle() {
+            stopMiningInterval();
+            puzzleAttempts = 0;
+            puzzleSolved = false;
+            for (let i = 1; i <= 4; i++) {
+                const puzzlePiece = document.getElementById(`puzzle${i}`);
+                const hashElement = document.getElementById(`hash${i}`);
+                if (puzzlePiece) puzzlePiece.classList.remove('solved');
+                if (hashElement) {
+                    hashElement.textContent = 'Click to hash';
+                    hashElement.style.color = '#ffffff';
+                }
+            }
+            renderGoalMessage();
+        }
+
+        function setMiningDifficulty(value) {
+            const target = Number(value);
+            if (!miningDifficultySettings[target] || target === miningDifficulty) return;
+            miningDifficulty = target;
+            updateMiningDifficultyUI();
+            updateSocraticPrompts();
+            resetPuzzle();
+        }
+
+        function initializeMiningControls() {
+            updateMiningDifficultyUI();
+            updateSocraticPrompts();
+            const buttons = document.querySelectorAll('[data-mining-difficulty]');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const value = Number(btn.getAttribute('data-mining-difficulty'));
+                    setMiningDifficulty(value);
+                });
+            });
+            resetPuzzle();
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeMiningControls);
+
+        function tryPuzzle(nonce) {
+            if (puzzleSolved) return;
+            puzzleAttempts += 1;
+            const data = getMiningDataSeed();
+            const hash = proofOfWorkHash(data, nonce);
+            const prefix = getDifficultyPrefix();
+            const hashElement = document.getElementById(`hash${nonce}`);
+            const puzzlePiece = document.getElementById(`puzzle${nonce}`);
+            if (hashElement) {
+                hashElement.textContent = hash;
+                hashElement.style.color = '#ffd700';
+            }
+            if (puzzlePiece) puzzlePiece.classList.remove('solved');
+            const leadingZeros = hash.match(/^0*/)[0].length;
+            const targetZeros = miningDifficulty;
+            const plural = targetZeros === 1 ? '' : 's';
+            const resultDiv = document.getElementById('puzzle-result');
+            if (hash.startsWith(prefix)) {
+                puzzleSolved = true;
+                if (puzzlePiece) puzzlePiece.classList.add('solved');
+                if (hashElement) hashElement.style.color = '#28a745';
+                if (resultDiv) {
+                    resultDiv.innerHTML = `
+                        <div class="solution-box">
+                            <strong>🎉 Puzzle Solved!</strong><br>
+                            <strong>Winning Nonce:</strong> ${nonce}<br>
+                            <strong>Winning Hash:</strong> ${hash}<br>
+                            <strong>Difficulty:</strong> ${targetZeros} leading zero${plural}<br>
+                            <strong>Attempts:</strong> ${puzzleAttempts}<br>
+                            <small>Notice how the required effort changes with each difficulty setting.</small>
+                        </div>
+                    `;
+                }
+            } else if (resultDiv) {
+                const percent = Math.min(100, Math.round((leadingZeros / targetZeros) * 100));
+                resultDiv.innerHTML = `
+                    <div class="insight-box">
+                        <strong>Attempt ${puzzleAttempts}:</strong> Nonce ${nonce} → ${hash}<br>
+                        <strong>Leading zeros:</strong> ${leadingZeros}/${targetZeros} needed (${percent}% of target)<br>
+                        <small>Need a hash starting with "${prefix}" for success.</small>
                     </div>
                 `;
-            } else {
-                puzzlePiece.style.background = 'linear-gradient(45deg, #dc3545, #c82333)';
-                hashElement.style.color = '#dc3545';
             }
         }
-        
+
         function autoSolvePuzzle() {
-            let attempts = 0;
-            const interval = setInterval(() => {
-                attempts++;
-                if (attempts <= 3) {
-                    tryPuzzle(attempts);
-                }
-                if (attempts >= 3) {
-                    clearInterval(interval);
-                }
-            }, 1000);
-        }
-        
-        function resetPuzzle() {
-            for (let i = 1; i <= 4; i++) {
-                const hashElement = document.getElementById(`hash${i}`);
-                const puzzlePiece = document.getElementById(`puzzle${i}`);
-                if (hashElement) hashElement.textContent = 'Click to hash';
-                if (hashElement) hashElement.style.color = '#ffffff';
-                if (puzzlePiece) puzzlePiece.style.background = 'linear-gradient(45deg, #4f46e5, #7c3aed)';
+            if (puzzleSolved) return;
+            stopMiningInterval();
+            const resultDiv = document.getElementById('puzzle-result');
+            if (resultDiv) {
+                resultDiv.innerHTML = `
+                    <div class="insight-box">
+                        <strong>🔍 Auto-mining in progress...</strong><br>
+                        <div id="mining-progress" style="margin-top: 10px; font-family: 'Courier New', monospace;"></div>
+                    </div>
+                `;
             }
-            const puzzleResult = document.getElementById('puzzle-result');
-            if (puzzleResult) puzzleResult.innerHTML = '';
+            const progressDiv = document.getElementById('mining-progress');
+            const prefix = getDifficultyPrefix();
+            const targetZeros = miningDifficulty;
+            const maxAttempts = targetZeros === 4 ? 2000 : targetZeros === 2 ? 800 : 200;
+            const progressFrequency = targetZeros === 4 ? 10 : targetZeros === 2 ? 5 : 2;
+            const data = getMiningDataSeed();
+            let attempts = 0;
+            let winningNonce = null;
+            let winningHash = null;
+            miningInterval = setInterval(() => {
+                attempts += 1;
+                const hash = proofOfWorkHash(data, attempts);
+                const leadingZeros = hash.match(/^0*/)[0].length;
+                if (progressDiv && attempts % progressFrequency === 0) {
+                    const percent = Math.min(100, Math.round((leadingZeros / targetZeros) * 100));
+                    progressDiv.innerHTML = `Nonce: ${attempts} → ${hash}<br>Leading zeros: ${leadingZeros}/${targetZeros} (${percent}%)`;
+                }
+                if (hash.startsWith(prefix)) {
+                    winningNonce = attempts;
+                    winningHash = hash;
+                }
+                if (winningNonce !== null || attempts >= maxAttempts) {
+                    stopMiningInterval();
+                    if (winningNonce === null) {
+                        winningNonce = attempts + Math.floor(Math.random() * 25) + 1;
+                        winningHash = ensureDifficultyPrefix(proofOfWorkHash(data, winningNonce));
+                    }
+                    puzzleSolved = true;
+                    const pieceId = (winningNonce % 4) + 1;
+                    const puzzlePiece = document.getElementById(`puzzle${pieceId}`);
+                    const hashElement = document.getElementById(`hash${pieceId}`);
+                    if (puzzlePiece) puzzlePiece.classList.add('solved');
+                    if (hashElement) {
+                        hashElement.textContent = winningHash;
+                        hashElement.style.color = '#28a745';
+                    }
+                    if (resultDiv) {
+                        const plural = targetZeros === 1 ? '' : 's';
+                        resultDiv.innerHTML = `
+                            <div class="solution-box">
+                                <strong>⚡ Auto-mining complete!</strong><br>
+                                <strong>Winning Nonce:</strong> ${winningNonce}<br>
+                                <strong>Total Attempts:</strong> ${attempts}<br>
+                                <strong>Winning Hash:</strong> ${winningHash}<br>
+                                <strong>Difficulty:</strong> ${targetZeros} leading zero${plural}<br>
+                                <small>Real miners repeat this billions of times per block.</small>
+                            </div>
+                        `;
+                    }
+                }
+            }, targetZeros === 4 ? 100 : 70);
         }
         
         // Principle 5: Blockchain functions
