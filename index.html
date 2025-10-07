@@ -303,6 +303,98 @@
             margin: 20px 0;
         }
 
+        .transaction-builder {
+            background: rgba(79, 70, 229, 0.08);
+            border: 1px solid rgba(79, 70, 229, 0.35);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .transaction-builder h5 {
+            color: #ffd700;
+            font-size: 1.05rem;
+            margin: 0;
+        }
+
+        .transaction-builder p {
+            margin: 0;
+            color: #d6d6ff;
+            font-size: 0.95rem;
+        }
+
+        .transaction-builder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .builder-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .builder-field label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #ffd700;
+        }
+
+        .builder-field select,
+        .builder-field input,
+        .builder-field textarea {
+            background: #1f1f3a;
+            border: 1px solid rgba(79, 70, 229, 0.4);
+            border-radius: 6px;
+            color: #ffffff;
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+
+        .builder-field input:focus,
+        .builder-field select:focus,
+        .builder-field textarea:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+        }
+
+        .transaction-preview {
+            background: rgba(15, 15, 35, 0.8);
+            border: 1px solid rgba(79, 70, 229, 0.35);
+            border-radius: 10px;
+            padding: 16px;
+            display: grid;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .preview-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .preview-label {
+            color: #a5adff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .builder-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
         .ledger-entry {
             background: #2d2d5f;
             border-radius: 8px;
@@ -561,6 +653,302 @@
             font-weight: bold;
             margin-bottom: 15px;
             color: #ffd700;
+        }
+
+        .synth-access {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.35);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin: 30px 0;
+        }
+
+        .visual-synth-btn {
+            background: linear-gradient(45deg, #ff8c00, #ffd700);
+            border: none;
+            color: #1a1a1a;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 999px;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .visual-synth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .synth-tip {
+            color: #d6d6ff;
+            font-size: 0.95rem;
+        }
+
+        .visual-synth-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 900;
+        }
+
+        .visual-synth-panel {
+            position: fixed;
+            top: 50%;
+            right: 50%;
+            transform: translate(150%, -50%);
+            width: min(480px, 90vw);
+            max-height: 80vh;
+            overflow-y: auto;
+            background: #14142b;
+            border: 1px solid rgba(79, 70, 229, 0.6);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(17, 24, 39, 0.6);
+            padding: 24px;
+            z-index: 950;
+            transition: transform 0.3s ease;
+        }
+
+        .visual-synth-panel.active {
+            transform: translate(50%, -50%);
+        }
+
+        .visual-synth-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .synth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .synth-header h3 {
+            margin: 0;
+            color: #ffd700;
+            font-size: 1.4rem;
+        }
+
+        .synth-close {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .synth-close:hover {
+            color: #ffd700;
+        }
+
+        .synth-search {
+            margin: 15px 0 20px;
+        }
+
+        .synth-search input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(79, 70, 229, 0.4);
+            background: rgba(26, 26, 58, 0.9);
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        .synth-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .metaphor-card {
+            background: rgba(33, 33, 66, 0.9);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 12px;
+            padding: 16px;
+            display: grid;
+            gap: 10px;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .metaphor-card.highlight {
+            border-color: #ffd700;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .metaphor-card h4 {
+            margin: 0;
+            color: #ffd700;
+            font-size: 1.1rem;
+        }
+
+        .metaphor-card pre {
+            margin: 0;
+            background: rgba(9, 10, 25, 0.9);
+            border-radius: 8px;
+            padding: 12px;
+            color: #8be9fd;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .synth-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #c4c6ff;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            border-radius: 999px;
+            padding: 4px 10px;
+        }
+
+        .synth-link {
+            background: none;
+            border: none;
+            color: #ffd700;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        .synth-link::before {
+            content: "🧭";
+        }
+
+        .synth-reference {
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .diagram {
+            background: rgba(15, 15, 35, 0.85);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            border-radius: 12px;
+            padding: 14px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .diagram-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .diagram-controls label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a5adff;
+        }
+
+        .diagram-controls select,
+        .diagram-controls input[type="range"],
+        .diagram-controls input[type="number"] {
+            background: rgba(26, 26, 58, 0.9);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            border-radius: 8px;
+            color: #ffffff;
+            padding: 6px 10px;
+            font-size: 0.9rem;
+        }
+
+        .diagram-stage {
+            background: rgba(9, 10, 25, 0.9);
+            border-radius: 10px;
+            padding: 14px;
+            min-height: 120px;
+            display: grid;
+            gap: 10px;
+            color: #d1d7ff;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .diagram-stage strong {
+            color: #ffd700;
+        }
+
+        .diagram-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .diagram-pill {
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            color: #c4c6ff;
+        }
+
+        .diagram-arrow {
+            font-size: 1.2rem;
+            color: #ffd700;
+        }
+
+        .diagram-progress {
+            width: 100%;
+            height: 12px;
+            background: rgba(79, 70, 229, 0.2);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .diagram-progress span {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+
+        .diagram-note {
+            font-size: 0.8rem;
+            color: #a5adff;
+            line-height: 1.4;
+        }
+
+        .diagram-toggle {
+            display: flex;
+            gap: 12px;
+        }
+
+        .diagram-toggle label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #d6d6ff;
         }
         
         /* New styles for principles 3-9 */
@@ -995,6 +1383,219 @@
 </head>
 <body>
     <div class="container">
+        <div class="synth-access">
+            <button type="button" class="visual-synth-btn" onclick="toggleVisualSynth(true)">🧭 Open Visual Synthesizer</button>
+            <span class="synth-tip">Spot the compass icon in modules for quick metaphors and diagrams.</span>
+        </div>
+
+        <div id="visual-synth-overlay" class="visual-synth-overlay" aria-hidden="true" onclick="toggleVisualSynth(false)"></div>
+        <aside id="visual-synth-panel" class="visual-synth-panel" aria-hidden="true" role="dialog" aria-labelledby="visual-synth-title">
+            <div class="synth-header">
+                <h3 id="visual-synth-title">Visual Synthesizer</h3>
+                <button type="button" class="synth-close" onclick="toggleVisualSynth(false)" aria-label="Close visual synthesizer">✖</button>
+            </div>
+            <p style="margin: 0 0 10px; color: #d6d6ff;">
+                Metaphors, analogies, and quick diagrams to anchor tricky Bitcoin concepts. Use search or jump straight from module references.
+            </p>
+            <div class="synth-search">
+                <input type="search" id="synth-search" placeholder="Search e.g. 'inflation', 'blockchain', 'mining'" aria-label="Search visual synthesizer entries">
+            </div>
+            <div class="synth-grid" id="synth-grid">
+                <article class="metaphor-card" data-topic="money-basics">
+                    <div class="synth-tag">Money Basics</div>
+                    <h4>Money as Universal Tickets</h4>
+                    <p>Imagine every item you own can be swapped for the same color wristband. Once you get that wristband (money), you can hop onto any ride (buy any good) without hunting for a perfect swap.</p>
+                    <div class="diagram" id="money-diagram">
+                        <div class="diagram-controls">
+                            <label for="money-item-select">Trade goal</label>
+                            <select id="money-item-select">
+                                <option value="chocolate">Buy a chocolate bar ($4.50)</option>
+                                <option value="concert">Buy a concert ticket ($75)</option>
+                                <option value="bike">Buy a used bike ($280)</option>
+                            </select>
+                        </div>
+                        <div class="diagram-stage" id="money-flow-diagram">
+                            <div class="diagram-flow">
+                                <span class="diagram-pill">Select a target purchase</span>
+                            </div>
+                            <div class="diagram-note">Money becomes the universal wristband that makes any trade sequence possible.</div>
+                        </div>
+                    </div>
+                </article>
+                <article class="metaphor-card" data-topic="inflation">
+                    <div class="synth-tag">Inflation</div>
+                    <h4>Inflation as A Rising Tide</h4>
+                    <p>Prices rising together are like a tide coming in—markers that were dry (affordable) are suddenly underwater.</p>
+                    <div class="diagram">
+                        <div class="diagram-controls">
+                            <label for="inflation-year-slider">Years ahead</label>
+                            <input type="range" id="inflation-year-slider" min="0" max="10" value="3">
+                            <span id="inflation-years-display">3 yrs</span>
+                        </div>
+                        <div class="diagram-stage">
+                            <div class="diagram-flow">
+                                <span class="diagram-pill">$50 ticket (Base year)</span>
+                                <span class="diagram-arrow">→</span>
+                                <span class="diagram-pill" id="inflation-price-display">$57.74</span>
+                            </div>
+                            <div class="diagram-progress">
+                                <span id="inflation-progress-bar"></span>
+                            </div>
+                            <div class="diagram-note">Rising tide = {inflation_rate}% annual increase. Same money, less weekend fun.</div>
+                        </div>
+                    </div>
+                </article>
+                <article class="metaphor-card" data-topic="money-supply">
+                    <div class="synth-tag">Money Supply</div>
+                    <h4>Fractional Reserve as Shadow Tickets</h4>
+                    <p>Depositors think they have their ticket, but banks lend out look-alike tickets. The theater starts feeling overbooked.</p>
+                    <div class="diagram">
+                        <div class="diagram-controls">
+                            <label for="fractional-deposit-input">Deposit ($)</label>
+                            <input type="number" id="fractional-deposit-input" min="10" step="10" value="100">
+                        </div>
+                        <div class="diagram-stage" id="fractional-summary">
+                            <div class="diagram-flow">
+                                <span class="diagram-pill">Deposit: $100</span>
+                                <span class="diagram-arrow">→</span>
+                                <span class="diagram-pill">Loaned: $90</span>
+                                <span class="diagram-arrow">→</span>
+                                <span class="diagram-pill">Re-deposited: $81</span>
+                            </div>
+                            <div class="diagram-note">Shadow tickets circulate while the original sits in the vault.</div>
+                        </div>
+                    </div>
+                </article>
+                <article class="metaphor-card" data-topic="hyperinflation">
+                    <div class="synth-tag">Historical Lessons</div>
+                    <h4>Germany & Zimbabwe: Broken Thermostats</h4>
+                    <p>Governments kept cranking the “heat” to stay warm. When the thermostat broke, the room burst into flames.</p>
+                    <div class="diagram">
+                        <div class="diagram-controls">
+                            <div id="hyperinflation-buttons">
+                                <button type="button" class="btn" data-hyperinflation="germany">Germany (1923)</button>
+                                <button type="button" class="btn" data-hyperinflation="zimbabwe">Zimbabwe (2008)</button>
+                            </div>
+                        </div>
+                        <div class="diagram-stage" id="hyperinflation-summary">
+                            <div class="diagram-flow">
+                                <span class="diagram-pill">Select a scenario</span>
+                            </div>
+                            <div class="diagram-note">Hyperinflation = thermostat stuck on maximum, purchasing power melts.</div>
+                        </div>
+                    </div>
+                </article>
+                <article class="metaphor-card" data-topic="blockchain">
+                    <div class="synth-tag">Blockchain</div>
+                    <h4>Blockchain as a Transparent Train</h4>
+                    <p>Each block is a carriage everyone can inspect. To tamper with carriage 2, you must detach the entire rest of the train.</p>
+                    <div class="diagram">
+                        <div class="diagram-stage" id="blockchain-diagram-display">
+                            <div class="diagram-flow">
+                                <span class="diagram-pill">Genesis</span>
+                                <span class="diagram-arrow">→</span>
+                                <span class="diagram-pill">Block 1</span>
+                                <span class="diagram-arrow">→</span>
+                                <span class="diagram-pill">Block 2</span>
+                                <span class="diagram-arrow">→</span>
+                                <span class="diagram-pill">Block 3</span>
+                            </div>
+                            <div class="diagram-note">Immutable history: every carriage locks the one behind it.</div>
+                        </div>
+                        <div class="diagram-controls">
+                            <button type="button" class="btn" id="blockchain-attack-btn">Try to tamper with Block 2</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="metaphor-card" data-topic="mining">
+                    <div class="synth-tag">Mining</div>
+                    <h4>Mining as Global Sudoku</h4>
+                    <p>Millions of miners race on the same puzzle. The winner shouts the completed board; everyone else checks it instantly.</p>
+                    <div class="diagram">
+                        <div class="diagram-controls">
+                            <button type="button" class="btn" id="mining-race-btn">Start mining sprint</button>
+                            <span id="mining-progress-label">Waiting to start…</span>
+                        </div>
+                        <div class="diagram-stage">
+                            <div class="diagram-flow">
+                                <span class="diagram-pill">Miner A</span>
+                                <span class="diagram-pill">Miner B</span>
+                                <span class="diagram-pill">Miner C</span>
+                            </div>
+                            <div class="diagram-progress">
+                                <span id="mining-progress-bar"></span>
+                            </div>
+                            <div class="diagram-note">Billions of guesses per second; one correct hash wins, others verify and try again.</div>
+                        </div>
+                    </div>
+                </article>
+                <article class="metaphor-card" data-topic="scarcity">
+                    <div class="synth-tag">Scarcity</div>
+                    <h4>Bitcoin Scarcity as Cosmic Seats</h4>
+                    <p>Only 21 million cosmic seats exist on the starship. As the queue grows, existing passengers can charge more to swap seats.</p>
+                    <div class="diagram">
+                        <div class="diagram-controls">
+                            <label for="scarcity-slider">Seats claimed</label>
+                            <input type="range" id="scarcity-slider" min="0" max="21000000" step="1050000" value="19800000">
+                        </div>
+                        <div class="diagram-stage" id="scarcity-summary">
+                            <div class="diagram-flow" id="scarcity-visual">
+                                <span class="diagram-pill">Seats claimed: 0%</span>
+                                <span class="diagram-arrow">→</span>
+                                <span class="diagram-pill">Price pressure: low</span>
+                            </div>
+                            <div class="diagram-note">More seats taken = higher premium to convince someone to swap with you.</div>
+                        </div>
+                    </div>
+                </article>
+                <article class="metaphor-card" data-topic="security">
+                    <div class="synth-tag">Security</div>
+                    <h4>Private Keys as Master Skeleton Keys</h4>
+                    <p>Your private key is the master key to the vault. The public key is the lock diagram everyone can study without gaining access.</p>
+                    <div class="diagram">
+                        <div class="diagram-controls diagram-toggle">
+                            <label>
+                                <input type="checkbox" id="security-toggle">
+                                simulate revealing the master key
+                            </label>
+                        </div>
+                        <div class="diagram-stage" id="security-summary">
+                            <div class="diagram-flow">
+                                <span class="diagram-pill">Vault lock design (public key)</span>
+                                <span class="diagram-arrow">→</span>
+                                <span class="diagram-pill">Signatures prove access without exposing key</span>
+                            </div>
+                            <div class="diagram-note">Keep the master key off-display. Only show the blueprint.</div>
+                        </div>
+                    </div>
+                </article>
+                <article class="metaphor-card" data-topic="digital-money">
+                    <div class="synth-tag">Digital Money</div>
+                    <h4>CBDCs vs Bitcoin: Control Tower vs Open Skies</h4>
+                    <p>CBDCs rely on a single control tower. Bitcoin is like open skies governed by rules etched into the atmosphere.</p>
+                    <div class="diagram">
+                        <div class="diagram-toggle">
+                            <label>
+                                <input type="radio" name="digital-mode" value="cbdc" checked>
+                                Central bank tower
+                            </label>
+                            <label>
+                                <input type="radio" name="digital-mode" value="bitcoin">
+                                Open Bitcoin skies
+                            </label>
+                        </div>
+                        <div class="diagram-stage" id="digital-summary">
+                            <div class="diagram-flow">
+                                <span class="diagram-pill">Tower issues authorization</span>
+                                <span class="diagram-arrow">→</span>
+                                <span class="diagram-pill">Flights (transactions) must wait</span>
+                            </div>
+                            <div class="diagram-note">Toggle to compare centralized clearance vs self-verifying pilots.</div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </aside>
         <div class="header">
             <h1>Bitcoin from First Principles</h1>
             <p>Understanding Bitcoin by building it from the ground up - starting with the fundamental problem it solves</p>
@@ -1052,6 +1653,11 @@
                             Each had different properties that made them succeed or fail. Understanding these 
                             properties reveals why Bitcoin might be the ultimate form of money.
                         </p>
+                    </div>
+
+                    <div class="synth-reference">
+                        <button type="button" class="synth-link" data-topic="money-basics">Money as universal tickets</button>
+                        <button type="button" class="synth-link" data-topic="money-supply">Fractional reserve snapshot</button>
                     </div>
                     
                     <div class="demo-container">
@@ -1466,6 +2072,9 @@
                         
                         <div class="demo-container">
                             <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Computational Puzzles</h4>
+                            <div class="synth-reference">
+                                <button type="button" class="synth-link" data-topic="mining">Sudoku mining race</button>
+                            </div>
                             
                             <div class="mining-visual">
                                 <div class="difficulty-summary">
@@ -1575,6 +2184,9 @@
                         
                         <div class="demo-container">
                             <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Building the Chain</h4>
+                            <div class="synth-reference">
+                                <button type="button" class="synth-link" data-topic="blockchain">Train-chain diagram</button>
+                            </div>
                             
                             <div class="ledger-demo">
                                 <h4 style="color: #4f46e5; margin-bottom: 15px;">Current Ledger State:</h4>
@@ -1587,8 +2199,59 @@
                                 </div>
                             </div>
                             
+                            <div class="transaction-builder">
+                                <div>
+                                    <h5>Guided Transaction Builder</h5>
+                                    <p>Pick a sender, amount, and destination scenario to auto-generate a realistic Bitcoin transaction.</p>
+                                </div>
+                                <div class="transaction-builder-grid">
+                                    <div class="builder-field">
+                                        <label for="tx-sender">Sender Wallet</label>
+                                        <select id="tx-sender" title="Choose which wallet is sending bitcoin">
+                                            <option value="Alice">Alice • Main savings wallet</option>
+                                            <option value="Bob">Bob • Operations wallet</option>
+                                            <option value="Charlie">Charlie • Treasury wallet</option>
+                                        </select>
+                                    </div>
+                                    <div class="builder-field">
+                                        <label for="tx-amount">Amount (BTC)</label>
+                                        <input type="number" id="tx-amount" min="0.01" step="0.01" value="1.00" title="Amount of bitcoin to send">
+                                    </div>
+                                    <div class="builder-field">
+                                        <label for="tx-scenario">Destination Scenario</label>
+                                        <select id="tx-scenario" title="Select the type of address receiving the bitcoin">
+                                            <option value="online_purchase">Vendor Wallet • Pay for online product</option>
+                                            <option value="employee_payroll">Employee Wallet • Payroll</option>
+                                            <option value="alice_savings">Alice Savings Vault • Move funds back to Alice</option>
+                                            <option value="charity_donation">Community Fund • Donate to open-source project</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="transaction-preview" id="transaction-preview">
+                                    <div class="preview-row">
+                                        <span class="preview-label">Summary</span>
+                                        <span id="preview-summary">Select options to draft a transaction...</span>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span class="preview-label">From</span>
+                                        <span id="preview-from">Not set yet</span>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span class="preview-label">To</span>
+                                        <span id="preview-to">Not set yet</span>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span class="preview-label">Purpose</span>
+                                        <span id="preview-purpose">Not set yet</span>
+                                    </div>
+                                </div>
+                                <div class="builder-actions">
+                                    <button type="button" class="btn" onclick="applyTransactionBuilder(false)">Update Transaction Text</button>
+                                    <button type="button" class="btn btn-success" onclick="applyTransactionBuilder(true)">Apply &amp; Add to Chain</button>
+                                </div>
+                            </div>
                             <div style="margin: 20px 0;">
-                                <label for="new-tx" style="display: block; margin-bottom: 5px; color: #ffffff;">Transaction Details:</label>
+                                <label for="new-tx" style="display: block; margin-bottom: 5px; color: #ffffff;">Custom Transaction Text:</label>
                                 <input type="text" id="new-tx" placeholder="Enter transaction (e.g., 'Alice sends 10 BTC to Bob')" style="width: 70%; padding: 10px; border: 2px solid #4f46e5; border-radius: 5px; background: #2d2d5f; color: #ffffff; margin-right: 10px;">
                                 <button type="button" class="btn" onclick="addTransaction()">Add Transaction</button>
                             </div>
@@ -1650,16 +2313,19 @@
                         </p>
                     </div>
                     
-                    <div class="solution-box">
-                        <h4 style="color: #28a745; margin-bottom: 15px;">The Insight: Public-Key Cryptography</h4>
-                        <p style="margin-bottom: 15px;">
-                            Use public-key cryptography! Generate a pair of keys: a private key (secret) and 
-                            a public key (shareable). You can create a digital signature with your private 
-                            key that proves you own the corresponding public key, without revealing the private key.
-                        </p>
-                        
-                        <div class="demo-container">
-                            <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Digital Signatures</h4>
+                        <div class="solution-box">
+                            <h4 style="color: #28a745; margin-bottom: 15px;">The Insight: Public-Key Cryptography</h4>
+                            <p style="margin-bottom: 15px;">
+                                Use public-key cryptography! Generate a pair of keys: a private key (secret) and 
+                                a public key (shareable). You can create a digital signature with your private 
+                                key that proves you own the corresponding public key, without revealing the private key.
+                            </p>
+                            
+                            <div class="demo-container">
+                                <h4 style="color: #4f46e5; margin-bottom: 15px;">Interactive Demo: Digital Signatures</h4>
+                                <div class="synth-reference">
+                                    <button type="button" class="synth-link" data-topic="security">Vault + master key analogy</button>
+                                </div>
                             
                             <div style="margin: 20px 0;">
                                 <button type="button" class="btn" onclick="generateKeyPair()">Generate Key Pair</button>
@@ -2061,6 +2727,511 @@
             'Charlie': [],
             'Dave': []
         };
+
+        const moneyTradeScenarios = {
+            chocolate: {
+                saleItem: 'Fancy pen',
+                salePrice: 13,
+                target: 'Chocolate bar',
+                targetPrice: 4.5,
+                note: 'Convert goods → money → chocolate, with change saved for later.'
+            },
+            concert: {
+                saleItem: 'Vintage game cartridge',
+                salePrice: 92,
+                target: 'Concert ticket',
+                targetPrice: 75,
+                note: 'Use money to bridge collectibles into experiences.'
+            },
+            bike: {
+                saleItem: 'Spare electric guitar',
+                salePrice: 320,
+                target: 'Used bike',
+                targetPrice: 280,
+                note: 'Sell one asset to buy mobility, no matching trader required.'
+            }
+        };
+
+        const hyperinflationProfiles = {
+            germany: {
+                label: 'Weimar Germany (1923)',
+                monthlyRate: '29,500%',
+                doubling: 'Every 3-4 days',
+                priceExample: 'Loaf of bread: 250 marks → 200,000,000,000 marks in 1 year'
+            },
+            zimbabwe: {
+                label: 'Zimbabwe (2008)',
+                monthlyRate: '79,600,000,000%',
+                doubling: 'Every 24 hours',
+                priceExample: 'Bus fare: Z$2 → Z$1,000,000,000,000+ within months'
+            }
+        };
+
+        let miningRaceInterval = null;
+        let miningRaceActive = false;
+        let visualSynthInitialized = false;
+        const inflationBasePrice = 50;
+        const inflationAnnualRate = 0.05;
+        const reserveRatio = 0.1;
+        const scarcityMaxSeats = 21000000;
+
+        const walletDirectory = {
+            Alice: {
+                label: 'Alice • Main savings wallet',
+                address: 'bc1qalice7sj9f4v0shw3hqz8k20x5zpk5m7'
+            },
+            Bob: {
+                label: 'Bob • Operations wallet',
+                address: 'bc1qbobops9k42vn0ha9xf267lmw0hd3rqs'
+            },
+            Charlie: {
+                label: 'Charlie • Treasury wallet',
+                address: 'bc1qcharlietreasury58ygx7st2vn84mqw6'
+            }
+        };
+
+        const transactionScenarioDirectory = {
+            online_purchase: {
+                recipient: 'Vendor Wallet',
+                address: 'bc1qvendorpay4hardware88t2pr57h0w3',
+                purpose: 'Paying an online merchant for a hardware wallet upgrade.'
+            },
+            employee_payroll: {
+                recipient: 'Employee Wallet (Payroll)',
+                address: 'bc1qemployee12paycheck4team5support',
+                purpose: 'Covering weekly payroll for a remote team member.'
+            },
+            alice_savings: {
+                recipient: 'Alice Savings Vault',
+                address: 'bc1qalicevault6longterm7plan8hold',
+                purpose: "Returning funds to Alice's cold-storage savings wallet."
+            },
+            charity_donation: {
+                recipient: 'Community Fund (Open-Source)',
+                address: 'bc1qopensourcegrant77build8future',
+                purpose: 'Donating to an open-source Bitcoin education project.'
+            }
+        };
+
+        function buildTransactionFromInputs() {
+            const senderSelect = document.getElementById('tx-sender');
+            const amountInput = document.getElementById('tx-amount');
+            const scenarioSelect = document.getElementById('tx-scenario');
+            if (!senderSelect || !amountInput || !scenarioSelect) return null;
+
+            const senderKey = senderSelect.value;
+            const scenarioKey = scenarioSelect.value;
+            const senderInfo = walletDirectory[senderKey];
+            const scenarioInfo = transactionScenarioDirectory[scenarioKey];
+            if (!senderInfo || !scenarioInfo) return null;
+
+            const amountRaw = parseFloat(amountInput.value);
+            const amount = Number.isFinite(amountRaw) && amountRaw > 0 ? amountRaw : 0;
+            const amountFormatted = amount.toFixed(2);
+
+            const summary = `${senderKey} sends ${amountFormatted} BTC to ${scenarioInfo.recipient}`;
+            const purpose = scenarioInfo.purpose;
+            const transactionText = `${summary} (${purpose})`;
+
+            return {
+                summary,
+                purpose,
+                transactionText,
+                senderDisplay: `${senderInfo.label} - ${senderInfo.address}`,
+                recipientDisplay: `${scenarioInfo.recipient} - ${scenarioInfo.address}`,
+                amount
+            };
+        }
+
+        function updateTransactionPreview() {
+            const details = buildTransactionFromInputs();
+            const summaryEl = document.getElementById('preview-summary');
+            const fromEl = document.getElementById('preview-from');
+            const toEl = document.getElementById('preview-to');
+            const purposeEl = document.getElementById('preview-purpose');
+            const txInput = document.getElementById('new-tx');
+
+            if (!summaryEl || !fromEl || !toEl || !purposeEl) return;
+
+            if (!details) {
+                summaryEl.textContent = 'Select options to draft a transaction...';
+                fromEl.textContent = 'Not set yet';
+                toEl.textContent = 'Not set yet';
+                purposeEl.textContent = 'Not set yet';
+                return;
+            }
+
+            summaryEl.textContent = details.summary;
+            fromEl.textContent = details.senderDisplay;
+            toEl.textContent = details.recipientDisplay;
+            purposeEl.textContent = details.purpose;
+
+            if (txInput && document.activeElement !== txInput) {
+                txInput.value = details.transactionText;
+            }
+        }
+
+        function applyTransactionBuilder(autoAdd = false) {
+            const txInput = document.getElementById('new-tx');
+            const details = buildTransactionFromInputs();
+            if (!details || !txInput) return;
+
+            txInput.value = details.transactionText;
+            updateTransactionPreview();
+
+            if (autoAdd) {
+                addTransaction();
+            }
+        }
+
+        function initializeTransactionBuilder() {
+            updateTransactionPreview();
+            ['tx-sender', 'tx-amount', 'tx-scenario'].forEach(id => {
+                const element = document.getElementById(id);
+                if (!element) return;
+                const eventType = id === 'tx-amount' ? 'input' : 'change';
+                element.addEventListener(eventType, updateTransactionPreview);
+            });
+        }
+
+        function toggleVisualSynth(show, topic) {
+            const panel = document.getElementById('visual-synth-panel');
+            const overlay = document.getElementById('visual-synth-overlay');
+            if (!panel || !overlay) return;
+
+            if (show) {
+                if (!visualSynthInitialized) {
+                    initializeVisualSynthDiagrams();
+                    visualSynthInitialized = true;
+                }
+                panel.classList.add('active');
+                overlay.classList.add('active');
+                panel.setAttribute('aria-hidden', 'false');
+                overlay.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+                const searchInput = document.getElementById('synth-search');
+                if (searchInput) {
+                    setTimeout(() => searchInput.focus(), 160);
+                }
+                filterSynthEntries('');
+                if (topic) {
+                    highlightSynthTopic(topic);
+                }
+            } else {
+                panel.classList.remove('active');
+                overlay.classList.remove('active');
+                panel.setAttribute('aria-hidden', 'true');
+                overlay.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                highlightSynthTopic(null);
+                const searchInput = document.getElementById('synth-search');
+                if (searchInput) {
+                    searchInput.value = '';
+                    filterSynthEntries('');
+                }
+                if (miningRaceInterval) {
+                    clearInterval(miningRaceInterval);
+                    miningRaceInterval = null;
+                    miningRaceActive = false;
+                    const progressBar = document.getElementById('mining-progress-bar');
+                    const label = document.getElementById('mining-progress-label');
+                    if (progressBar) progressBar.style.width = '0%';
+                    if (label) label.textContent = 'Waiting to start…';
+                }
+            }
+        }
+
+        function highlightSynthTopic(topic) {
+            const cards = document.querySelectorAll('.metaphor-card');
+            cards.forEach(card => card.classList.remove('highlight'));
+
+            if (!topic) return;
+
+            const target = Array.from(cards).find(card => card.dataset.topic === topic);
+            if (target) {
+                target.classList.add('highlight');
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function filterSynthEntries(query) {
+            const cards = document.querySelectorAll('.metaphor-card');
+            const normalized = query.trim().toLowerCase();
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = normalized === '' || text.includes(normalized) ? 'grid' : 'none';
+            });
+        }
+
+        function registerSynthLinks() {
+            document.querySelectorAll('.synth-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    const topic = link.getAttribute('data-topic');
+                    toggleVisualSynth(true, topic);
+                });
+            });
+
+            const searchInput = document.getElementById('synth-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', event => {
+                    filterSynthEntries(event.target.value);
+                });
+            }
+        }
+
+        function initializeVisualSynthDiagrams() {
+            const moneySelect = document.getElementById('money-item-select');
+            if (moneySelect) {
+                moneySelect.addEventListener('change', updateMoneyFlowDiagram);
+                updateMoneyFlowDiagram();
+            }
+
+            const inflationSlider = document.getElementById('inflation-year-slider');
+            if (inflationSlider) {
+                inflationSlider.addEventListener('input', updateInflationDiagram);
+                updateInflationDiagram();
+            }
+
+            const depositInput = document.getElementById('fractional-deposit-input');
+            if (depositInput) {
+                depositInput.addEventListener('input', updateFractionalReserveDiagram);
+                updateFractionalReserveDiagram();
+            }
+
+            document.querySelectorAll('[data-hyperinflation]').forEach(button => {
+                button.addEventListener('click', () => {
+                    const scenario = button.getAttribute('data-hyperinflation');
+                    updateHyperinflationDiagram(scenario);
+                });
+            });
+            updateHyperinflationDiagram('germany');
+
+            const blockchainAttackBtn = document.getElementById('blockchain-attack-btn');
+            if (blockchainAttackBtn) {
+                blockchainAttackBtn.addEventListener('click', attemptBlockchainTamper);
+            }
+
+            const miningButton = document.getElementById('mining-race-btn');
+            if (miningButton) {
+                miningButton.addEventListener('click', startMiningRace);
+            }
+
+            const scarcitySlider = document.getElementById('scarcity-slider');
+            if (scarcitySlider) {
+                scarcitySlider.addEventListener('input', updateScarcityDiagram);
+                updateScarcityDiagram();
+            }
+
+            const securityToggle = document.getElementById('security-toggle');
+            if (securityToggle) {
+                securityToggle.addEventListener('change', updateSecurityDiagram);
+                updateSecurityDiagram();
+            }
+
+            document.querySelectorAll('input[name="digital-mode"]').forEach(radio => {
+                radio.addEventListener('change', updateDigitalMoneyDiagram);
+            });
+            updateDigitalMoneyDiagram();
+        }
+
+        function updateMoneyFlowDiagram() {
+            const select = document.getElementById('money-item-select');
+            const stage = document.getElementById('money-flow-diagram');
+            if (!select || !stage) return;
+
+            const scenario = moneyTradeScenarios[select.value];
+            if (!scenario) return;
+
+            const change = (scenario.salePrice - scenario.targetPrice);
+            const changeText = change > 0 ? `$${change.toFixed(2)} change` : change === 0 ? 'exact spend' : `$${Math.abs(change).toFixed(2)} additional savings needed`;
+
+            stage.innerHTML = `
+                <div class="diagram-flow">
+                    <span class="diagram-pill">Sell ${scenario.saleItem} ($${scenario.salePrice.toFixed(2)})</span>
+                    <span class="diagram-arrow">→</span>
+                    <span class="diagram-pill">Receive $${scenario.salePrice.toFixed(2)} (money wristband)</span>
+                    <span class="diagram-arrow">→</span>
+                    <span class="diagram-pill">Buy ${scenario.target} ($${scenario.targetPrice.toFixed(2)}) + ${changeText}</span>
+                </div>
+                <div class="diagram-note">${scenario.note}</div>
+            `;
+        }
+
+        function updateInflationDiagram() {
+            const slider = document.getElementById('inflation-year-slider');
+            const priceDisplay = document.getElementById('inflation-price-display');
+            const yearsDisplay = document.getElementById('inflation-years-display');
+            const bar = document.getElementById('inflation-progress-bar');
+            const note = document.querySelector('#inflation-price-display')?.closest('.diagram-stage')?.querySelector('.diagram-note');
+            if (!slider || !priceDisplay || !yearsDisplay || !bar) return;
+
+            const years = Number(slider.value);
+            const futurePrice = inflationBasePrice * Math.pow(1 + inflationAnnualRate, years);
+            const percentIncrease = ((futurePrice - inflationBasePrice) / inflationBasePrice) * 100;
+
+            priceDisplay.textContent = `$${futurePrice.toFixed(2)}`;
+            yearsDisplay.textContent = `${years} yrs`;
+            bar.style.width = `${Math.min(100, percentIncrease)}%`;
+            if (note) {
+                note.textContent = `Rising tide = ${(inflationAnnualRate * 100).toFixed(1)}% annual increase. Same money, ${percentIncrease.toFixed(1)}% less buying power.`;
+            }
+        }
+
+        function updateFractionalReserveDiagram() {
+            const input = document.getElementById('fractional-deposit-input');
+            const summary = document.getElementById('fractional-summary');
+            if (!input || !summary) return;
+
+            const deposit = Math.max(10, Number(input.value) || 0);
+            const loan1 = deposit * (1 - reserveRatio);
+            const redeposit = loan1 * (1 - reserveRatio);
+            const expandedMoney = deposit + loan1 + redeposit;
+
+            summary.innerHTML = `
+                <div class="diagram-flow">
+                    <span class="diagram-pill">Deposit: $${deposit.toFixed(2)}</span>
+                    <span class="diagram-arrow">→</span>
+                    <span class="diagram-pill">Loaned: $${loan1.toFixed(2)}</span>
+                    <span class="diagram-arrow">→</span>
+                    <span class="diagram-pill">Re-deposited: $${redeposit.toFixed(2)}</span>
+                </div>
+                <div class="diagram-note">Effective money in circulation ≈ $${expandedMoney.toFixed(2)} (shadow tickets stacked on the original).</div>
+            `;
+        }
+
+        function updateHyperinflationDiagram(scenario) {
+            const profile = hyperinflationProfiles[scenario] || hyperinflationProfiles.germany;
+            const summary = document.getElementById('hyperinflation-summary');
+            if (!summary) return;
+
+            summary.innerHTML = `
+                <div class="diagram-flow">
+                    <span class="diagram-pill">${profile.label}</span>
+                    <span class="diagram-arrow">→</span>
+                    <span class="diagram-pill">${profile.monthlyRate} monthly inflation</span>
+                </div>
+                <div class="diagram-note">
+                    Purchasing power halves ${profile.doubling}. Example: ${profile.priceExample}.
+                </div>
+            `;
+        }
+
+        function attemptBlockchainTamper() {
+            const display = document.getElementById('blockchain-diagram-display');
+            if (!display) return;
+
+            display.innerHTML = `
+                <div class="diagram-flow">
+                    <span class="diagram-pill">Genesis</span>
+                    <span class="diagram-arrow">→</span>
+                    <span class="diagram-pill">Block 1</span>
+                    <span class="diagram-arrow">→</span>
+                    <span class="diagram-pill" style="border-color:#dc3545;color:#ff9a9a;">Tamper Block 2 ❌</span>
+                    <span class="diagram-arrow">→</span>
+                    <span class="diagram-pill">Block 3 (invalid)</span>
+                </div>
+                <div class="diagram-note">Tampering Block 2 breaks every block after it. Honest nodes reject your entire train.</div>
+            `;
+        }
+
+        function startMiningRace() {
+            const progressBar = document.getElementById('mining-progress-bar');
+            const label = document.getElementById('mining-progress-label');
+            if (!progressBar || !label) return;
+
+            if (miningRaceActive) return;
+            miningRaceActive = true;
+            let progress = 0;
+            label.textContent = 'Racing… billions of hashes flying!';
+            progressBar.style.width = '0%';
+
+            miningRaceInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(miningRaceInterval);
+                    miningRaceInterval = null;
+                    miningRaceActive = false;
+                    label.textContent = 'Winner found! Others verify and try again.';
+                }
+                progressBar.style.width = `${progress}%`;
+            }, 200);
+        }
+
+        function updateScarcityDiagram() {
+            const slider = document.getElementById('scarcity-slider');
+            const visual = document.getElementById('scarcity-visual');
+            if (!slider || !visual) return;
+
+            const claimed = Number(slider.value);
+            const percentClaimed = (claimed / scarcityMaxSeats) * 100;
+            let pressure = 'low';
+            if (percentClaimed > 95) pressure = 'extreme';
+            else if (percentClaimed > 75) pressure = 'high';
+            else if (percentClaimed > 50) pressure = 'medium';
+
+            visual.innerHTML = `
+                <span class="diagram-pill">Seats claimed: ${percentClaimed.toFixed(1)}% (${claimed.toLocaleString()})</span>
+                <span class="diagram-arrow">→</span>
+                <span class="diagram-pill">Price pressure: ${pressure}</span>
+            `;
+        }
+
+        function updateSecurityDiagram() {
+            const toggle = document.getElementById('security-toggle');
+            const summary = document.getElementById('security-summary');
+            if (!toggle || !summary) return;
+
+            if (toggle.checked) {
+                summary.innerHTML = `
+                    <div class="diagram-flow">
+                        <span class="diagram-pill" style="border-color:#dc3545;color:#ff9a9a;">Master key exposed!</span>
+                        <span class="diagram-arrow">→</span>
+                        <span class="diagram-pill">Attackers clone the key instantly</span>
+                    </div>
+                    <div class="diagram-note">Never reveal the private key. Signatures prove access without unlocking the vault for everyone.</div>
+                `;
+            } else {
+                summary.innerHTML = `
+                    <div class="diagram-flow">
+                        <span class="diagram-pill">Vault lock design (public key)</span>
+                        <span class="diagram-arrow">→</span>
+                        <span class="diagram-pill">Signatures prove access without exposing key</span>
+                    </div>
+                    <div class="diagram-note">Keep the master key off-display. Only show the blueprint.</div>
+                `;
+            }
+        }
+
+        function updateDigitalMoneyDiagram() {
+            const selected = document.querySelector('input[name="digital-mode"]:checked');
+            const summary = document.getElementById('digital-summary');
+            if (!selected || !summary) return;
+
+            if (selected.value === 'bitcoin') {
+                summary.innerHTML = `
+                    <div class="diagram-flow">
+                        <span class="diagram-pill">Pilots verify flight plans (nodes)</span>
+                        <span class="diagram-arrow">→</span>
+                        <span class="diagram-pill">Open sky, strict protocol</span>
+                        <span class="diagram-arrow">→</span>
+                        <span class="diagram-pill">Anyone can fly if rules are followed</span>
+                    </div>
+                    <div class="diagram-note">Bitcoin removes the tower. Rules are baked into the sky itself.</div>
+                `;
+            } else {
+                summary.innerHTML = `
+                    <div class="diagram-flow">
+                        <span class="diagram-pill">Central tower approves each flight</span>
+                        <span class="diagram-arrow">→</span>
+                        <span class="diagram-pill">Clearance required</span>
+                        <span class="diagram-arrow">→</span>
+                        <span class="diagram-pill">Tower can ground any plane</span>
+                    </div>
+                    <div class="diagram-note">CBDCs keep the tower in charge, with complete visibility and veto power.</div>
+                `;
+            }
+        }
 
         // Improved hash function for demos (SHA-256 simulation)
         function simpleHash(input) {
@@ -2604,6 +3775,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', initializeMiningControls);
+        document.addEventListener('DOMContentLoaded', initializeTransactionBuilder);
+        document.addEventListener('DOMContentLoaded', registerSynthLinks);
 
         function tryPuzzle(nonce) {
             if (puzzleSolved) return;
