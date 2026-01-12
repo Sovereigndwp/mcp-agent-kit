@@ -90,11 +90,22 @@ document.getElementById('year').textContent = new Date().getFullYear();
     agents.filter(a => filter === 'all' || a.cat === filter).forEach(a => {
       const el = document.createElement('div');
       el.className = 'card';
-      el.innerHTML = `
-        <h5>${a.name}</h5>
-        <p>${a.desc}</p>
-        <p><small>Category: ${a.cat}</small></p>
-      `;
+
+      // Create elements safely without innerHTML to prevent XSS
+      const title = document.createElement('h5');
+      title.textContent = a.name;
+
+      const desc = document.createElement('p');
+      desc.textContent = a.desc;
+
+      const cat = document.createElement('p');
+      const small = document.createElement('small');
+      small.textContent = `Category: ${a.cat}`;
+      cat.appendChild(small);
+
+      el.appendChild(title);
+      el.appendChild(desc);
+      el.appendChild(cat);
       grid.appendChild(el);
     });
   }

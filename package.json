@@ -81,7 +81,10 @@
     "eval:run": "tsx src/pipelines/eval_run.ts",
     "lesson:new": "tsx src/pipelines/lesson_new.ts",
     "export:pack": "tsx src/pipelines/export_pack.ts",
-    "cross:sync": "tsx src/pipelines/cross_repo_sync.ts"
+    "cross:sync": "tsx src/pipelines/cross_repo_sync.ts",
+    "course:build:enhanced": "tsx src/pipelines/course_build_enhanced.ts",
+    "academy:sync": "tsx src/scripts/academy_sync.ts",
+    "academy:watch": "watch 'npm run academy:sync' workspace/"
   },
   "keywords": [
     "mcp",

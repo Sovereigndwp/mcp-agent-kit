@@ -6,6 +6,19 @@ let sovereigntyPathLoaded = false;
 // API base URL
 const API_BASE = window.location.origin;
 
+// Security: HTML sanitization to prevent XSS attacks
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') {
+        return String(unsafe);
+    }
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 // Utility functions
 function showLoading(elementId) {
     const element = document.getElementById(elementId);
@@ -17,7 +30,7 @@ function showLoading(elementId) {
 function showError(elementId, message) {
     const element = document.getElementById(elementId);
     if (element) {
-        element.innerHTML = `<div class="text-red-600">${message}</div>`;
+        element.innerHTML = `<div class="text-red-600">${escapeHtml(message)}</div>`;
     }
 }
 
@@ -70,9 +83,9 @@ function updateRecentActivity() {
 
     container.innerHTML = recentActivity.map(activity => `
         <div class="flex items-center text-sm text-gray-600">
-            <i class="fas fa-${activity.icon} mr-2 text-${activity.color}-500"></i>
-            <span>${activity.text}</span>
-            <span class="ml-auto text-xs text-gray-400">${activity.time}</span>
+            <i class="fas fa-${escapeHtml(activity.icon)} mr-2 text-${escapeHtml(activity.color)}-500"></i>
+            <span>${escapeHtml(activity.text)}</span>
+            <span class="ml-auto text-xs text-gray-400">${escapeHtml(activity.time)}</span>
         </div>
     `).join('');
 }
@@ -257,11 +270,11 @@ async function loadSovereigntyPath(force = false) {
             const modules = (phase.modules || []).sort((a, b) => a.order - b.order);
             const moduleList = modules.map(module => `
                 <div class="flex items-start space-x-3 p-3 rounded border border-gray-200 bg-gray-50">
-                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-orange-100 text-orange-600 font-bold rounded-full">${module.order}</div>
+                    <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-orange-100 text-orange-600 font-bold rounded-full">${escapeHtml(module.order)}</div>
                     <div class="flex-1">
-                        <div class="font-semibold text-gray-900">${module.title}</div>
-                        <p class="text-sm text-gray-600 mb-2">${module.description}</p>
-                        <a href="${module.route}" target="_blank" rel="noopener" class="inline-flex items-center text-sm text-orange-600 hover:text-orange-700 font-medium">
+                        <div class="font-semibold text-gray-900">${escapeHtml(module.title)}</div>
+                        <p class="text-sm text-gray-600 mb-2">${escapeHtml(module.description)}</p>
+                        <a href="${escapeHtml(module.route)}" target="_blank" rel="noopener" class="inline-flex items-center text-sm text-orange-600 hover:text-orange-700 font-medium">
                             Launch module <i class="fas fa-external-link-alt ml-2"></i>
                         </a>
                     </div>
@@ -271,9 +284,9 @@ async function loadSovereigntyPath(force = false) {
             return `
                 <section class="border border-gray-200 rounded-lg p-4 flex flex-col space-y-3">
                     <div>
-                        <h4 class="text-lg font-semibold text-gray-900">${phase.title}</h4>
-                        <p class="text-sm text-gray-600">${phase.summary}</p>
-                        <p class="text-xs text-gray-500 mt-1">${phase.context}</p>
+                        <h4 class="text-lg font-semibold text-gray-900">${escapeHtml(phase.title)}</h4>
+                        <p class="text-sm text-gray-600">${escapeHtml(phase.summary)}</p>
+                        <p class="text-xs text-gray-500 mt-1">${escapeHtml(phase.context)}</p>
                     </div>
                     <div class="space-y-3">${moduleList}</div>
                 </section>
@@ -478,10 +491,10 @@ async function loadNewsData() {
             // News headlines
             document.getElementById('news-headlines').innerHTML = headlines.map(headline => `
                 <div class="border-l-4 border-blue-500 pl-4 py-3">
-                    <h4 class="font-medium text-gray-900 mb-1">${headline.title}</h4>
-                    <p class="text-sm text-gray-600 mb-2">${headline.description}</p>
+                    <h4 class="font-medium text-gray-900 mb-1">${escapeHtml(headline.title)}</h4>
+                    <p class="text-sm text-gray-600 mb-2">${escapeHtml(headline.description)}</p>
                     <div class="flex items-center text-xs text-gray-500">
-                        <span class="mr-3">${headline.source}</span>
+                        <span class="mr-3">${escapeHtml(headline.source)}</span>
                         <span>${new Date(headline.pubDate).toLocaleDateString()}</span>
                     </div>
                 </div>
@@ -663,15 +676,15 @@ async function loadLearningData() {
             document.getElementById('curriculum-content').innerHTML = curriculum.map(path => `
                 <div class="bg-white border rounded-lg p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-gray-900">${path.title}</h3>
+                        <h3 class="text-xl font-semibold text-gray-900">${escapeHtml(path.title)}</h3>
                         <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                            ${path.totalDuration}
+                            ${escapeHtml(path.totalDuration)}
                         </span>
                     </div>
-                    <p class="text-gray-600 mb-4">${path.description}</p>
+                    <p class="text-gray-600 mb-4">${escapeHtml(path.description)}</p>
                     <div class="mb-4">
                         <span class="text-sm font-medium text-gray-700">Target Audience:</span>
-                        <span class="text-sm text-gray-600 ml-2">${path.targetAudience}</span>
+                        <span class="text-sm text-gray-600 ml-2">${escapeHtml(path.targetAudience)}</span>
                     </div>
                     <div class="space-y-2">
                         <h4 class="font-medium text-gray-900">Modules:</h4>
@@ -679,8 +692,8 @@ async function loadLearningData() {
                             ${path.modules.map(module => `
                                 <div class="flex items-center text-sm">
                                     <i class="fas fa-${getModuleIcon(module.difficulty)} text-${getModuleColor(module.difficulty)}-500 mr-2"></i>
-                                    <span class="text-gray-700">${module.title}</span>
-                                    <span class="ml-auto text-xs text-gray-500">${module.duration}</span>
+                                    <span class="text-gray-700">${escapeHtml(module.title)}</span>
+                                    <span class="ml-auto text-xs text-gray-500">${escapeHtml(module.duration)}</span>
                                 </div>
                             `).join('')}
                         </div>
@@ -776,14 +789,14 @@ function renderStoryNavigatorResult(data) {
     const storyline = data?.storyline || [];
     const chapters = storyline.map(chapter => `
         <div class="border border-gray-200 rounded p-3">
-            <h4 class="font-semibold text-gray-900">${chapter.title}</h4>
-            <p class="text-xs text-gray-500 mb-2">${chapter.year} · ${chapter.setting}</p>
+            <h4 class="font-semibold text-gray-900">${escapeHtml(chapter.title)}</h4>
+            <p class="text-xs text-gray-500 mb-2">${escapeHtml(chapter.year)} · ${escapeHtml(chapter.setting)}</p>
             <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-                ${(chapter.keyEvents || []).map(event => `<li>${event}</li>`).join('')}
+                ${(chapter.keyEvents || []).map(event => `<li>${escapeHtml(event)}</li>`).join('')}
             </ul>
-            <p class="text-sm text-gray-600 mt-2">${chapter.bitcoinRelevance}</p>
-            <p class="text-sm text-gray-600 italic mt-2">${chapter.decisionPoint}</p>
-            <p class="text-sm text-gray-700 mt-2"><strong>Sovereignty Signal:</strong> ${chapter.sovereigntySignal}</p>
+            <p class="text-sm text-gray-600 mt-2">${escapeHtml(chapter.bitcoinRelevance)}</p>
+            <p class="text-sm text-gray-600 italic mt-2">${escapeHtml(chapter.decisionPoint)}</p>
+            <p class="text-sm text-gray-700 mt-2"><strong>Sovereignty Signal:</strong> ${escapeHtml(chapter.sovereigntySignal)}</p>
         </div>
     `).join('');
 
@@ -793,28 +806,28 @@ function renderStoryNavigatorResult(data) {
 
     container.innerHTML = `
         <div class="bg-blue-50 border border-blue-100 rounded p-3">
-            <p class="text-sm text-blue-800">${data?.profile?.name || 'Explorer'} is primed to turn Bitcoin history into actionable conviction.</p>
-            ${data?.profile?.goal ? `<p class="text-sm text-blue-700 mt-1">Goal: ${data.profile.goal}</p>` : ''}
+            <p class="text-sm text-blue-800">${escapeHtml(data?.profile?.name || 'Explorer')} is primed to turn Bitcoin history into actionable conviction.</p>
+            ${data?.profile?.goal ? `<p class="text-sm text-blue-700 mt-1">Goal: ${escapeHtml(data.profile.goal)}</p>` : ''}
         </div>
         <div class="mt-3 space-y-3">${chapters}</div>
         <div class="mt-4">
             <h4 class="font-semibold text-gray-900">Reflection Prompts</h4>
             <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-                ${reflections.map(prompt => `<li>${prompt}</li>`).join('')}
+                ${reflections.map(prompt => `<li>${escapeHtml(prompt)}</li>`).join('')}
             </ul>
         </div>
         ${experiences.length ? `
         <div class="mt-4">
             <h4 class="font-semibold text-gray-900">Suggested Experiences</h4>
             <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
-                ${experiences.map(item => `<li>${item}</li>`).join('')}
+                ${experiences.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
             </ul>
         </div>` : ''}
         ${nextSteps.length ? `
         <div class="mt-4">
             <h4 class="font-semibold text-gray-900">Next Steps</h4>
             <ol class="list-decimal list-inside text-sm text-gray-700 space-y-1">
-                ${nextSteps.map(step => `<li>${step}</li>`).join('')}
+                ${nextSteps.map(step => `<li>${escapeHtml(step)}</li>`).join('')}
             </ol>
         </div>` : ''}
     `;

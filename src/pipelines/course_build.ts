@@ -293,7 +293,9 @@ function generateSecuritySection(): string {
 }
 
 // Run if called directly
-if (require.main === module) {
+import { fileURLToPath } from 'url';
+
+if (import.meta.url === `file://${process.argv[1]}`) {
   runCourseBuild()
     .then(() => process.exit(0))
     .catch(() => process.exit(1));
