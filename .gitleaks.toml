@@ -1,0 +1,21 @@
+# Gitleaks configuration — mcp-agent-kit
+# Purpose: keep ALL default detection rules active, and suppress ONLY the
+# deterministic, fake, educational Bitcoin-simulator constants documented in
+# docs/security/2026-07-18-credential-remediation.md (Remaining Accepted Findings).
+#
+# Scope discipline:
+#   - Do NOT disable the generic-api-key rule (or any rule) globally.
+#   - Do NOT add path-wide allowlists for content directories.
+#   - Only the two exact simulator constants below are allowlisted, by value.
+#   - Any new secret-like value anywhere in the repo MUST still fail the scan.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Deterministic educational Bitcoin key-simulator constants (accepted security exception, 2026-07-18). The private key is the published example key from 'Mastering Bitcoin'; the public key is a visibly fake 1234567890ABCDEF pattern. Never used for real funds."
+regexTarget = "secret"
+regexes = [
+  '''E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262''',
+  '''03D4B4A4E1D1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF123456''',
+]

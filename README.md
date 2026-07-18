@@ -155,6 +155,15 @@ Or run a quick demo:
 node demo.js
 ```
 
+## Security
+
+This repository takes secret hygiene seriously — and it also deliberately contains **fake, deterministic Bitcoin key material for teaching**, so the boundary is documented rather than assumed.
+
+- **Credential scanning:** [gitleaks](https://github.com/gitleaks/gitleaks) runs over history and worktree; all default rules are active. Only the two documented educational simulator constants are allowlisted (by exact value) in [`.gitleaks.toml`](.gitleaks.toml). A pre-commit hook ([`.pre-commit-config.yaml`](.pre-commit-config.yaml)) scans every commit — run `pre-commit install` after cloning.
+- **Secrets policy:** what may never be committed, and what educational mock values are allowed: [`docs/security/SECRETS_POLICY.md`](docs/security/SECRETS_POLICY.md).
+- **Responsible disclosure:** report vulnerabilities privately per [`SECURITY.md`](SECURITY.md) — GitHub private vulnerability reporting or dalia@thesovereign.academy.
+- **History:** the 2026-07-18 credential remediation (revocation + history rewrite + fresh-clone verification) is recorded in [`docs/security/2026-07-18-credential-remediation.md`](docs/security/2026-07-18-credential-remediation.md). The simulated Bitcoin keys are intentional teaching artifacts, never used for real funds.
+
 ## Contributing
 
 1. Fork the repository
